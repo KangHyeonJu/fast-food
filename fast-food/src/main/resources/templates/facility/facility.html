@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout1}">
+
+<th:block layout:fragment="css">
+    <style>
+        p, select{
+            font-size: 16px;
+        }
+    </style>
+</th:block>
+<div layout:fragment="content">
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">설비 관리</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+            <!-- 검색 -->
+            <div class="panel panel-default">
+                <ul class="list-inline" style="margin: 15px 10px 10px 10px;">
+                    <li>
+                        <p>설비 코드 : <input name="#"> </p>
+                    </li>
+                    <li>
+                        <p>설비명 : <input name="#"> </p>
+                    </li>
+                    <li>
+                        <p>가동여부 :
+                            <select>
+                                <option>전체</option>
+                                <option>동작O</option>
+                                <option>동작X</option>
+                            </select>
+                        </p>
+                    </li>
+                    <li style="float: right;">
+                        <button class="btn btn-primary" style="width: 60px;">검색</button>
+                    </li>
+                </ul>
+            </div>
+            <!-- 검색 끝-->
+
+            <div class="row" style="padding-right: 15px; display: flex; justify-content: flex-end;">
+                <!-- 버튼 모음 -->
+                <button class="btn" type="button" style="background-color: rgb(189,215,238)" data-toggle="modal" data-target="#myModal">설비 등록</button>
+                <button class="btn" style="background-color: rgb(197,224,180); margin-left: 5px" type="button">엑셀파일저장</button>
+            </div>
+
+            <br/>
+
+            <!-- 테이블 1 -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            설비 목록
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body" style="height: 500px; overflow: auto">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="width: 100%;">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>설비코드</th>
+                                    <th>설비명</th>
+                                    <th>동작여부</th>
+                                    <th>가동시간</th>
+                                    <th>휴식시간</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="gradeA">
+                                    <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                                    <td>SB001</td>
+                                    <td>추출기</td>
+                                    <td>O</td>
+                                    <td>20시간</td>
+                                    <td>0시간</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- 테이블 1 끝-->
+
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">설비 등록</h4>
+            </div>
+            <div class="modal-body">
+                <!--        <label for="recipient-name" class="col-form-label">설비명: <input type="text" class="form-control" id="recipient-name"></label>-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">등록</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>

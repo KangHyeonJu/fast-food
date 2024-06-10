@@ -2,6 +2,24 @@
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout1}">
 
+<th:block layout:fragment="css">
+  <style>
+    p, select{
+      font-size: 16px;
+    }
+    </style>
+</th:block>
+<th:block layout:fragment="script">
+  <script>
+    $(function(){
+      $('#shipBtn').click(function (){
+        if(!confirm('출하등록시 취소가 불가능합니다.\n출하하시겠습니까?')){
+          return false;
+        }
+      });
+    });
+  </script>
+</th:block>
 <div layout:fragment="content">
 
   <!-- Page Content -->
@@ -9,18 +27,51 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12">
-          <h1 class="page-header">설비 관리</h1>
+          <h1 class="page-header">출하 관리</h1>
         </div>
         <!-- /.col-lg-12 -->
       </div>
       <!-- /.row -->
 
-      <div class="row" style="padding-left: 15px">
+      <!-- 검색 -->
+      <div class="panel panel-default">
+        <ul class="list-inline" style="margin: 15px 10px 10px 10px;">
+          <li>
+            <p>출하코드 : <input name="#"> </p>
+          </li>
+          <li>
+            <p>수주코드 : <input name="#"> </p>
+          </li>
+          <li>
+            <p>출하여부 :
+              <select>
+                <option>전체</option>
+                <option>출하O</option>
+                <option>출하X</option>
+              </select>
+            </p>
+          </li>
+        </ul>
+
+<!--        <hr>-->
+
+        <ul class="list-inline" style="margin: 15px 10px 10px 10px;">
+          <li>
+            <p>업체명 : <input name="#"> </p>
+          </li>
+          <li>
+            <p>제품명 : <input name="#"> </p>
+          </li>
+          <li style="float: right;">
+            <button class="btn btn-primary" style="width: 60px;">검색</button>
+          </li>
+        </ul>
+      </div>
+      <!-- 검색 끝-->
+
+      <div class="row" style="padding-right: 15px; display: flex; justify-content: flex-end;">
         <!-- 버튼 모음 -->
-        <div class="col-md-6 text-right" style="margin-left: 160px">
-          <button class="btn" type="button" style="background-color: rgb(189,215,238)">설비 등록</button>
-          <button class="btn" style="margin-left: 20px; background-color: rgb(197,224,180)" type="button">엑셀파일저장</button>
-        </div>
+        <button class="btn" style="background-color: rgb(197,224,180); margin-left: 5px" type="button">엑셀파일저장</button>
       </div>
 
       <br/>
@@ -30,31 +81,46 @@
         <div class="col-lg-12">
           <div class="panel panel-default">
             <div class="panel-heading">
-              DataTables Advanced Tables
+              출하 목록
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body" style="height: 500px; overflow: auto">
               <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="width: 100%;">
                 <thead>
                 <tr>
-                  <th>번호</th>
                   <th></th>
-                  <th>설비코드</th>
-                  <th>설비명</th>
-                  <th>동작여부</th>
-                  <th>가동시간</th>
-                  <th>휴식시간</th>
+                  <th>출하코드</th>
+                  <th>수주코드</th>
+                  <th>업체명</th>
+                  <th>제품명</th>
+                  <th>출하량</th>
+                  <th>납품예정일</th>
+                  <th>출하여부</th>
+                  <th>출하일</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="gradeA">
-                  <td>Gecko</td>
-                  <td>Netscape Navigator 9</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td class="center">1.8</td>
-                  <td class="center">A</td>
-                  <td class="center">A</td>
-                  <td class="center">A</td>
+                  <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                  <td>CH001</td>
+                  <td>SJ001</td>
+                  <td>ㅁㅁ회사</td>
+                  <td>양배추즙</td>
+                  <td>200BOX</td>
+                  <td>2024-06-05</td>
+                  <td>출하O</td>
+                  <td>2024-06-05</td>
+                </tr>
+                <tr class="gradeB">
+                  <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                  <td>CH002</td>
+                  <td>SJ002</td>
+                  <td>ㅇㅇ회사</td>
+                  <td>흑마늘즙</td>
+                  <td>500BOX</td>
+                  <td>2024-06-06</td>
+                  <td><button class="btn btn-danger" type="button" id="shipBtn">출하하기</button> </td>
+                  <td></td>
                 </tr>
                 </tbody>
               </table>
@@ -72,7 +138,23 @@
     <!-- /.container-fluid -->
   </div>
   <!-- /#page-wrapper -->
+</div>
 
-
-
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">설비 등록</h4>
+      </div>
+      <div class="modal-body">
+<!--        <label for="recipient-name" class="col-form-label">설비명: <input type="text" class="form-control" id="recipient-name"></label>-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">등록</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
 </div>
