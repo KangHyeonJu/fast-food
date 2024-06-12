@@ -35,12 +35,6 @@
                                 </select>
                             </h4>
                         </li>
-                    </ul>
-                    <hr style="border-color: #1ab7ea; margin: 3px">
-                    <ul class="list-inline">
-                        <li>
-                            <h4>생산품 코드 : <input name="#"></h4>
-                        </li>
                         <li style="float: right;">
                             <button class="btn btn-primary" style="margin: 5px; width: 100px;">검색</button>
                         </li>
@@ -53,7 +47,7 @@
 
             <!-- 버튼 모음 -->
             <div class="list-inline text-right">
-                <button type="button" class="btn btn-warning">캘린더</button>
+                <a class="btn btn-warning" href="/machine/calender">캘린더</a>
                 <button type="button" class="btn btn-success">엑셀 저장</button>
             </div>
             <!--버튼끝-->
@@ -73,10 +67,9 @@
                                 <thead>
                                 <tr>
                                     <th><input type="checkbox"></th>
-                                    <th>작업 계획 코드</th>
-                                    <th>생산 시작 예상일</th>
-                                    <th>생산 종료 예상일</th>
-                                    <th>생산품 코드</th>
+                                    <th>수주 코드</th>
+                                    <th>생산 시작일</th>
+                                    <th>생산 종료일</th>
                                     <th>생산품</th>
                                     <th>수량 [Box]</th>
                                 </tr>
@@ -84,77 +77,37 @@
                                 <tbody>
                                 <tr>
                                     <td><input type="checkbox"></td>
-                                    <td>PM123456</td>
+                                    <td>SJ123456</td>
                                     <td>2024-06-10 09:00</td>
                                     <td>2024-06-12 05:00</td>
-                                    <td>D20240610T0900</td>
                                     <td>양배추즙</td>
                                     <td>250</td>
                                 </tr>
                                 <tr>
                                     <td><input type="checkbox"></td>
-                                    <td>PM123456</td>
+                                    <td>SJ123456</td>
                                     <td>2024-06-10 09:00</td>
                                     <td>2024-06-12 05:00</td>
-                                    <td>D20240610T0900</td>
                                     <td>양배추즙</td>
                                     <td>250</td>
                                 </tr>
                                 <tr>
                                     <td><input type="checkbox"></td>
-                                    <td>PM123456</td>
+                                    <td>SJ123456</td>
                                     <td>2024-06-10 09:00</td>
                                     <td>2024-06-12 05:00</td>
-                                    <td>D20240610T0900</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>PM123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>D20240610T0900</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>PM123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>D20240610T0900</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>PM123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>D20240610T0900</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>PM123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>D20240610T0900</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>PM123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>D20240610T0900</td>
                                     <td>양배추즙</td>
                                     <td>250</td>
                                 </tr>
 
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>SJ123456</td>
+                                    <td>2024-06-10 09:00</td>
+                                    <td>2024-06-12 05:00</td>
+                                    <td>양배추즙</td>
+                                    <td>250</td>
+                                </tr>
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
@@ -184,8 +137,8 @@
                                     <th>공정</th>
                                     <th>생산품</th>
                                     <th>수량</th>
-                                    <th>작업 시작 예상일</th>
-                                    <th>작업 종료 예상일</th>
+                                    <th>작업 시작일</th>
+                                    <th>작업 종료일</th>
                                 </tr>
                                 </thead>
                                 <tbody>

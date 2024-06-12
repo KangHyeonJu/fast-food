@@ -37,6 +37,11 @@ public class ProductController {
         return "ProductPages/Machine/Sterilizer";
     }
 
+    @GetMapping("/sterilizer2")
+    public String sterilizer2(){
+        return "ProductPages/Machine/Sterilizer2";
+    }
+
     @GetMapping("/fillings")
     public String fillings(){
         return "ProductPages/Machine/Fillings";
@@ -60,5 +65,10 @@ public class ProductController {
     @GetMapping("/endProcess")
     public String endProcess(){
         return "ProductPages/EndProcess";
+    }
+
+    @GetMapping("/calender")
+    public String calender(){
+        return "ProductPages/Calender";
     }
 }
