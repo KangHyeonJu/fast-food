@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="header">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/main" style="color:#3333FF">FAST FOOD</a>
+    </div>
+
+    <!-- /.navbar-header -->
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+            <ul class="nav" id="side-menu">
+                <li>
+                    <a href="#"><i class="fa fa-dashboard fa-fw"></i> 수주 관리</a>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 자재 관리<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+
+                        <li>
+                            <a href="#">자재 발주 관리</a>
+                        </li>
+                        <li>
+                            <a href="#">자재 입고 관리</a>
+                        </li>
+                        <li>
+                            <a href="#">자재 출고 관리</a>
+                        </li>
+                        <li>
+                            <a href="#">자재 현황</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-table fa-fw"></i> 생산 관리<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="/machine/productPlan">작업계획 관리</a>
+                        </li>
+                        <li>
+                            <a href="#">작업 지시 관리 <span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="/machine/wash">세척</a>
+                                </li>
+                                <li>
+                                    <a href="/machine/extractors">추출기</a>
+                                </li>
+                                <li>
+                                    <a href="/machine/filters">여과기</a>
+                                </li>
+                                <li><a href="/machine/sterilizer">살균기</a></li>
+                                <li><a href="/machine/fillings">충진기</a></li>
+                                <li><a href="/machine/frezzer">냉각기</a></li>
+                                <li><a href="/machine/checker">검사</a></li>
+                                <li><a href="/machine/packing">포장</a></li>
+                            </ul>
+                            <!-- /.nav-third-level -->
+                        </li>
+                        <li>
+                            <a href="/machine/endProcess">작업실적 현황</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-edit fa-fw"></i> 출하 관리</a>
+                    <!-- /.nav-second-level -->
+                    <ul class="nav nav-second-level">
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-wrench fa-fw"></i> 현황 관리<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="#">P_시간당생산량</a>
+                        </li>
+                        <li>
+                            <a href="#">C_재공재고</a>
+                        </li>
+                        <li>
+                            <a href="#">카운트 현황</a>
+                        </li>
+                        <li>
+                            <a href="#">제품 현황</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="/shipment"><i class="fa fa-wrench fa-fw"></i> 설비 관리</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-wrench fa-fw"></i> 기준정보 관리<span class="fa arrow"></span></a>
+
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="#">품목 관리</a>
+                        </li>
+                        <li>
+                            <a href="#">공정 관리</a>
+                        </li>
+                        <li>
+                            <a href="#">라우팅 관리</a>
+                        </li>
+                        <li>
+                            <a href="#">BOM 관리</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-files-o fa-fw"></i> 시스템 관리<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="#">코드 관리</a>
+                        </li>
+                        <li>
+                            <a href="#">업체/고객 관리</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- /.sidebar-collapse -->
+    </div>
+    <!-- /.navbar-static-side -->
+</nav>
+</div>
+</html>
