@@ -34,6 +34,25 @@
 
   <!-- DataTables Responsive CSS -->
   <link href="/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+  <script>
+    $(document).ready(function() {
+      $('#dataTables-example').DataTable({
+        searching: false,
+        info:false,
+        paging: false,
+        responsive: true
+      });
+    });
+    $(document).ready(function() {
+      $('#dataTables-example2').DataTable({
+        searching: false,
+        info:false,
+        paging: false,
+        responsive: true
+      });
+    });
+  </script>
+
 
   <th:block layout:fragment="script"></th:block>
   <th:block layout:fragment="css"></th:block>

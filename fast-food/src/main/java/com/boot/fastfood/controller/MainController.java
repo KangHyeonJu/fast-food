@@ -5,22 +5,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
-    @GetMapping("/item")
-    public String mainPage(){
-        return "item";
-    }
-    @GetMapping("/item1")
-    public String maPage(){
-        return "item1";
-    }
-
     @GetMapping("/process")
-    public String rocess(){
-        return "process";
+    public String mainPage(){
+        return "system/process";
     }
     @GetMapping("/routing")
+    public String maPage(){
+        return "system/routing";
+    }
+
+    @GetMapping("/process1")
+    public String rocess(){
+        return "processs";
+    }
+    @GetMapping("/routing1")
     public String routingP(){
-        return "routing";
+        return "routingg";
     }
 
     @GetMapping("/routingAdd")
@@ -40,17 +40,23 @@ public class MainController {
 
     @GetMapping("/code")
     public String codeP(){
-        return "code";
+        return "system/code";
     }
 
     @GetMapping("/vendor")
     public String vendorP(){
-        return "vendor";
+        return "system/vendor";
     }
 
     @GetMapping("/client")
     public String clientP(){
-        return "client";
+        return "system/client";
     }
+
+    @GetMapping("/name")
+    public String cntP(){
+        return "system/name";
+    }
+
 
 }
