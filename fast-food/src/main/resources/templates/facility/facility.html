@@ -7,6 +7,12 @@
         p, select{
             font-size: 16px;
         }
+        #circle {
+            width : 25px;
+            height : 25px;
+            border-radius: 50%;
+            background-color: green;
+        }
     </style>
 </th:block>
 <div layout:fragment="content">
@@ -22,6 +28,53 @@
             </div>
             <!-- /.row -->
 
+            <div class="row" style="padding-right: 15px; display: flex; justify-content: flex-end;">
+                <!-- 버튼 모음 -->
+                <button class="btn" type="button" style="background-color: rgb(189,215,238)" data-toggle="modal" data-target="#facilityModal" id="facilityBtn">설비 등록</button>
+                <button class="btn" style="background-color: rgb(197,224,180); margin-left: 5px" type="button">엑셀파일저장</button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="facilityModal" tabindex="-1" role="dialog" aria-labelledby="facilityModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="facilityModalLabel">설비 등록</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form">
+                                <div class="form-group input-group">
+                                    <label>설비명</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="form-group input-group">
+                                    <label>생산가능량</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="form-group input-group">
+                                    <label>생산준비시간</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="form-group input-group">
+                                    <label>Cycle hour</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="form-group input-group">
+                                    <label>설비입고일</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">등록</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+
             <!-- 검색 -->
             <div class="panel panel-default">
                 <ul class="list-inline" style="margin: 15px 10px 10px 10px;">
@@ -32,11 +85,12 @@
                         <p>설비명 : <input name="#"> </p>
                     </li>
                     <li>
-                        <p>가동여부 :
+                        <p>동작여부 :
                             <select>
                                 <option>전체</option>
-                                <option>동작O</option>
-                                <option>동작X</option>
+                                <option>가동중</option>
+                                <option>대기중</option>
+                                <option>비가동</option>
                             </select>
                         </p>
                     </li>
@@ -46,12 +100,6 @@
                 </ul>
             </div>
             <!-- 검색 끝-->
-
-            <div class="row" style="padding-right: 15px; display: flex; justify-content: flex-end;">
-                <!-- 버튼 모음 -->
-                <button class="btn" type="button" style="background-color: rgb(189,215,238)" data-toggle="modal" data-target="#myModal">설비 등록</button>
-                <button class="btn" style="background-color: rgb(197,224,180); margin-left: 5px" type="button">엑셀파일저장</button>
-            </div>
 
             <br/>
 
@@ -70,19 +118,23 @@
                                     <th></th>
                                     <th>설비코드</th>
                                     <th>설비명</th>
+                                    <th>생산가능량</th>
+                                    <th>생산준비시간</th>
+                                    <th>Cycle hour</th>
+                                    <th>설비입고일</th>
                                     <th>동작여부</th>
-                                    <th>가동시간</th>
-                                    <th>휴식시간</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr class="gradeA">
                                     <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
                                     <td>SB001</td>
-                                    <td>추출기</td>
-                                    <td>O</td>
-                                    <td>20시간</td>
-                                    <td>0시간</td>
+                                    <td>즙포장기1</td>
+                                    <td>1250ea/1h</td>
+                                    <td>20min</td>
+                                    <td></td>
+                                    <th>2024-06-01</th>
+                                    <th><div id="circle"></div></th>
                                 </tr>
                                 </tbody>
                             </table>
@@ -102,21 +154,4 @@
     <!-- /#page-wrapper -->
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">설비 등록</h4>
-            </div>
-            <div class="modal-body">
-                <!--        <label for="recipient-name" class="col-form-label">설비명: <input type="text" class="form-control" id="recipient-name"></label>-->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">등록</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
+
