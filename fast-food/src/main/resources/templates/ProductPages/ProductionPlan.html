@@ -54,7 +54,6 @@
 
             <br/>
 
-
             <!-- 테이블 1 -->
             <div class="row">
                 <div class="col-lg-12">
@@ -72,42 +71,22 @@
                                     <th>생산 시작일</th>
                                     <th>생산 종료일</th>
                                     <th>생산품</th>
-                                    <th>수량 [Box]</th>
+                                    <th>생산 목표량 [Box]</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>SJ123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>SJ123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>SJ123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
-                                </tr>
-
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>SJ123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
+                                <!-- 수주만큼 반복문으로 데이터 받아옴 controller에서 받아와야함 -->
+                                <tr th:each="contract : ${contracts}">
+                                    <td><input type="checkbox" class="planCheckbox"></td>
+                                    <td th:text="${contract.ctCode}"></td>
+                                    <!-- 생산 시작일 = (납품요청일) - 1일 - (생산 소요 시간)  -->
+                                    <td th:text="${production.pmSDate}"></td>
+                                    <!-- 생산 종료일 = (납품요청일) - 1일 -->
+                                    <td th:text="${production.pmEDate}"></td>
+                                    <!-- 생산품명 = 수주테이블에서 아이템 코드가져와서 변환? -->
+                                    <td th:text="${contract.itCode}"></td>
+                                    <!-- 생산량목표량 = 수주량 -->
+                                    <td th:text="${contract.ctAmount}"></td>
                                 </tr>
                                 </tbody>
                             </table>
