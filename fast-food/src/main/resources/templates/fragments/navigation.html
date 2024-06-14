@@ -3,31 +3,43 @@
 <div th:fragment="header">
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/main" style="color:#3333FF">FAST FOOD</a>
+        <div>
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/main" style="color:#3333FF">FAST FOOD </a>
+            </div>
+            <div style="text-align: center">
+                <h4>작업자 :
+                    <select>
+                        <option>김OO</option>
+                        <option>나OO</option>
+                        <option>박OO</option>
+                        <option>이OO</option>
+                        <option>양OO</option>
+                    </select>
+                </h4>
+            </div>
         </div>
-
         <!-- /.navbar-header -->
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="/contract"><i class="fa fa-dashboard fa-fw"></i> 수주 관리</a>
+                        <a href="/contract"><i class="fa fa-bar-chart-o fa-fw"></i> 수주 관리</a>
                     <li>
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 자재 관리<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
 
                             <li>
-                                <a href="/order_plan">자재 발주 계획</a>
+                                <a href="/order_plan">자재 발주 관리</a>
                             </li>
                             <li>
-                                <a href="/order">자재 발주 관리</a>
+                                <a href="/order">자재 발주 내역</a>
                             </li>
                             <li>
                                 <a href="/material">금일 자재 입고 등록</a>

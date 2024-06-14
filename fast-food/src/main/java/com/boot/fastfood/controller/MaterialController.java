@@ -1,4 +1,4 @@
-package com.boot.fastfood.controller.materialController;
+package com.boot.fastfood.controller;
 
 
 import org.springframework.stereotype.Controller;

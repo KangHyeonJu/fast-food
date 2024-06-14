@@ -9,27 +9,23 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">자재 발주 계획</h1>
+                    <h1 class="page-header">자재 발주 관리</h1>
                 </div>
-            </div>
-            <div class="col-lg-12 text-right mb-20">
-                <button id="modalBtn" data-toggle="modal" data-target="#orderCodeModal" class="btn btn-primary">수주 코드
-                    등록
-                </button>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            수주 시 필요한 자재
+                            수주당 필요한 자재
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body" style="height: 200px; overflow: auto">
-                            <table class="table table-striped table-bordered table-hover" style="width: 100%;">
+                            <table class="table table-striped table-bordered table-hover" style="width: 100%;" id="dataTables-example2">
                                 <thead>
                                 <tr>
+                                    <th><input type="checkbox"></th>
                                     <th>수주 코드</th>
-                                    <th></th>
+                                    <th>거래처</th>
                                     <th>양배추</th>
                                     <th>흑마늘</th>
                                     <th>석류(농축액)</th>
@@ -42,14 +38,9 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>
-                                        <button class="btn btn-link order-code-btn" data-order-code="OD220604">
-                                            OD220604
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-success">계산하기</button>
-                                    </td>
+                                    <td><input type="checkbox"></td>
+                                    <td>OD220604</td>
+                                    <td>OO업체</td>
                                     <td>2300(kg)</td>
                                     <td>X</td>
                                     <td>x</td>
@@ -71,83 +62,127 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- 테이블 1 끝-->
-        </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            금일 발주량
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body" style="height: 200px; overflow: auto">
+                            <table class="table table-striped table-bordered table-hover" style="width: 100%;"
+                                   id="dataTables-example">
+                                <h4>6월 22일 발주량</h4>
+                                <thead>
+                                <tr>
+                                    <th>거래처</th>
+                                    <th>양배추</th>
+                                    <th>흑마늘</th>
+                                    <th>석류(농축액)</th>
+                                    <th>매실(농축액)</th>
+                                    <th>벌꿀</th>
+                                    <th>콜라겐</th>
+                                    <th>발주하기</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>OO업체</td>
+                                    <td>2000kg</td>
+                                    <td>x</td>
+                                    <td>x</td>
+                                    <td>x</td>
+                                    <td>x</td>
+                                    <td>200(L)</td>
+                                    <td>
+                                        <button id="saveOrderBtn" class="btn btn-success">발주하기
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
 
-        <div id="orderDetails" class="panel-body" style="height: 200px; overflow: auto; display: none;">
-            <table class="table table-striped table-bordered table-hover" style="width: 100%;">
-                <h4>6월 22일 발주량</h4>
-                <thead>
-                <tr>
-                    <th>수주코드 : <span id="orderCodeDisplay"></span></th>
-                    <th>양배추</th>
-                    <th>흑마늘</th>
-                    <th>석류(농축액)</th>
-                    <th>매실(농축액)</th>
-                    <th>벌꿀</th>
-                    <th>콜라겐</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th>발주 수량</th>
-                    <td>2000kg</td>
-                    <td>x</td>
-                    <td>x</td>
-                    <td>x</td>
-                    <td>200(L)</td>
-                    <td>x</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="modal fade" id="orderCodeModal" tabindex="-1" role="dialog" aria-labelledby="orderCodeModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="addOrderModalLabel">출고 등록</h4>
                 </div>
-                <div class="col-lg-12" style="border: 1px solid black">
-                    <ul class="list-inline">
-                        <li>
-                            <h4>수주 코드 :
-                                <input name="#">
-                            </h4>
-                        </li>
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                    <button type="button" class="btn btn-primary" id="saveOrderCodeBtn">저장</button>
-                </div>
+                <!-- /.col-lg-12 -->
             </div>
+            <!-- 테이블 2 끝-->
+        </div>
+        <div>
+            <h4>포장지는 50000개, Box는 5000개 미만일 경우 추가로 주문해주세요.</h4>
+            <h3>총 포장지 개수 : 50000개</h3>
+            <select id="papernum">
+                <option>10000(개)</option>
+                <option>20000(개)</option>
+                <option>30000(개)</option>
+                <option>40000(개)</option>
+                <option>50000(개)</option>
+                <option>60000(개)</option>
+                <option>70000(개)</option>
+                <option>80000(개)</option>
+                <option>90000(개)</option>
+                <option>100000(개)</option>
+            </select>
+            <h3>
+                <button id="PaperBtn" data-toggle="modal" data-target="#PaperBtn"
+                        class="btn btn-success">발주하기
+                </button>
+            </h3>
+        </div>
+        <div>
+            <h3>총 Box 개수 : 5000Box</h3>
+            <select id="ordernum">
+                <option>1000(Box)</option>
+                <option>2000(Box)</option>
+                <option>3000(Box)</option>
+                <option>4000(Box)</option>
+                <option>5000(Box)</option>
+                <option>6000(Box)</option>
+                <option>7000(Box)</option>
+                <option>8000(Box)</option>
+                <option>9000(Box)</option>
+                <option>10000(Box)</option>
+            </select>
+            <h3>
+                <button class="btn btn-success" id="BoxBtn">발주하기</button>
+            </h3>
         </div>
     </div>
-
 </div>
-
 <th:block layout:fragment="script">
 
     <script>
         $(document).ready(function () {
-            $('.order-code-btn').click(function () {
-                var orderCode = $(this).data('order-code');
-                var orderDetails = $('#orderDetails');
-                if (orderDetails.is(':visible') && $('#orderCodeDisplay').text() === orderCode) {
-                    orderDetails.hide();
-                } else {
-                    $('#orderCodeDisplay').text(orderCode);
-                    orderDetails.show();
+            $('#saveOrderBtn').click(function () {
+                // 경고창 띄우기
+                if (confirm('발주를 등록하시겠습니까? 발주 등록시 취소가 불가능합니다.')) {
+                    // 확인 버튼을 누르면 수행할 작업
+                    alert('등록이 완료되었습니다.');
                 }
             });
-
-            $('#saveOrderCodeBtn').click(function () {
-                var orderCode = $('#orderCodeInput').val();
-                alert('수주 코드가 저장되었습니다: ' + orderCode);
-                $('#orderCodeModal').modal('hide');
+            $('#PaperBtn').click(function () {
+                const selectedPaper = $('#papernum').val();
+                // 경고창 띄우기
+                if (confirm(selectedPaper + '를 발주하시겠습니까? 한 번 발주 등록시 취소가 불가능합니다.')) {
+                    // 확인 버튼을 누르면 수행할 작업
+                    alert('발주 등록이 완료되었습니다.');
+                }
+            });
+            $('#BoxBtn').click(function () {
+                // 선택된 Box 수량 가져오기
+                const selectedBox = $('#ordernum').val();
+                // 경고창 띄우기
+                if (confirm(selectedBox + '를 발주하시겠습니까? 한 번 발주 등록시 취소가 불가능합니다.')) {
+                    // 확인 버튼을 누르면 수행할 작업
+                    alert('발주 등록이 완료되었습니다.');
+                }
+            });
+            $('#checkall').click(function () {
+                $('input:checkbox').not(this).prop('checked', this.checked);
             });
         });
     </script>
