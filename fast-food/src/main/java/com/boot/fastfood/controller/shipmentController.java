@@ -10,4 +10,9 @@ public class shipmentController {
     public String shipmentPage(){
         return "shipment/shipment";
     }
+
+    @GetMapping("/shipCompletion")
+    public String shipCompletionPage(){
+        return "shipment/shipCompletion";
+    }
 }
