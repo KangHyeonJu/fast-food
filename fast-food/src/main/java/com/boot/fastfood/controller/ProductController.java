@@ -1,6 +1,7 @@
 package com.boot.fastfood.controller;
 
 import com.boot.fastfood.entity.Contract;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,9 +11,9 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/machine")
+@RequiredArgsConstructor
 public class ProductController {
-//    private final ContractService contractService;
-
+    //    private final ContractService contractService;
 
     @GetMapping("/productPlan")
     public String productPlan(Model model){

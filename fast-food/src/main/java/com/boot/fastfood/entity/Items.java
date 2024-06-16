@@ -24,6 +24,4 @@ public class Items {
 
     @Column(name = "itType")
     private String itType;
-
-
 }

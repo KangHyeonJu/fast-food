@@ -3,8 +3,10 @@ package com.boot.fastfood.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,10 +35,13 @@ public class Contract {
     private Date ctDate;
 
     @Column(name = "deliveryDate")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deliveryDate;
 
     @ManyToOne
     @JoinColumn(name = "emCode")
     private Employee employee;
 
+    @OneToMany(mappedBy = "contract")
+    private List<Production> productions;
 }

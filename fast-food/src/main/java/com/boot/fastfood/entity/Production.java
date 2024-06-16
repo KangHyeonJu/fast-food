@@ -27,6 +27,4 @@ public class Production {
 
     @Column(name = "pNo")
     private int pNo;
-
-
 }
