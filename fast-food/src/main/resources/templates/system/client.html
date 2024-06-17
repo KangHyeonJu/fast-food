@@ -53,22 +53,6 @@
             <!-- /.col-lg-12 -->
         </div>
 
-        <!-- 검색 패널 -->
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="form-group">
-                        <p class="fa fa-search"></p>
-                        <label>고객코드</label><input class="form-control">
-                        <label>고객명</label><input class="form-control">
-                        <label>고객분류</label><input class="form-control">
-                        <button type="button" class="btn btn-primary">검색</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /.col-lg-4 -->
-
         <!--버튼-->
         <div class="col-lg-12">
             <div class="button-container">
@@ -86,11 +70,30 @@
                 </div>
             </div>
         </div>
-        <!-- /.col-lg-12 -->
+        <!-- /버튼 -->
 
+        <br/>
 
+        <!-- 검색 패널 -->
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group" style="margin-bottom : 0">
+                        <p class="fa fa-search"></p>
+                        <label>고객코드</label><input class="form-control">
+                        <label>고객명</label><input class="form-control">
+                        <label>고객분류</label><input class="form-control">
+                        <button type="button" class="btn btn-primary">검색</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /검색 -->
+
+        <br/>
+
+        <!-- 고객 조회 테이블 -->
         <div class="container-fluid">
-            <!-- 고객 조회 테이블 -->
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
@@ -113,7 +116,7 @@
                                 <tbody>
                                 <tr th:each="client : ${clients}">
                                     <td><input type="checkbox" class="clientCheckbox"></td>
-                                    <td th:text="${client.clCode}" onclick="clientDetail()"></td>
+                                    <td th:text="${client.clCode}" onclick="clientDetail('${client.clCode}')"></td>
                                     <td th:text="${client.clName}"></td>
                                     <td th:text="${client.clType}"></td>
                                     <td th:text="${client.clPhone}"></td>
@@ -147,12 +150,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -251,10 +249,14 @@
 
 <th:block layout:fragment="script">
 <script>
+    //고객 등록
     function updateClientBtn() {
         var checkboxes = document.querySelectorAll('.clientCheckbox:checked');
-        if (checkboxes.length !== 1) {
-            alert('하나의 항목만 선택해주세요.');
+        if (checkboxes.length === 0) {
+            alert('수정할 고객을 선택해 주세요.')
+            return;
+        }else if (checkboxes.length > 1){
+            alert('하나의 항목만 선택해주세요.')
             return;
         }
         var selectedRow = checkboxes[0].closest('tr');
@@ -271,6 +273,50 @@
         document.getElementById('clName2').value = clientData.clName;
         document.getElementById('clType2').value = clientData.clType;
         document.getElementById('clPhone2').value = clientData.clPhone;
+    }
+
+    //고객 상세 조회
+    function clientDetail(clCode) {
+        // 수주 데이터를 저장할 데이터 가져와야함
+        const contracts = [
+            {}
+        ];
+
+        const filteredContracts = contracts.filter(contract => contract.clCode === clCode);
+
+        const annualSums = {};
+
+        filteredContracts.forEach(contract => {
+            const year = new Date(contract.ctDate).getFullYear();
+            if (!annualSums[year]) {
+                annualSums[year] = 0;
+            }
+            annualSums[year] += contract.orderAmount;
+        });
+
+        // 계산
+        filteredContracts.forEach(contract => {
+            const year = new Date(contract.ctDate).getFullYear();
+            contract.annualOrderAmount = (annualSums[year] / 12).toFixed(2);
+        });
+
+        // 두 번째 테이블의 tbody 요소를 가져옴
+        const tbody = document.querySelector('#dataTables-example2 tbody');
+
+        // 기존의 모든 행을 제거
+        tbody.innerHTML = '';
+
+        // 필터링된 수주 데이터를 기반으로 새로운 행을 추가
+        filteredContracts.forEach(contract => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td>${contract.orderCode}</td>
+            <td>${contract.productName}</td>
+            <td>${contract.orderAmount}</td>
+            <td>${contract.annualOrderAmount}</td>
+        `;
+            tbody.appendChild(row);
+        });
     }
 </script>
 </th:block>
