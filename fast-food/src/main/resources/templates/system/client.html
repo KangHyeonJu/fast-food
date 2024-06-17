@@ -3,9 +3,8 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout1}">
 
-
 <div layout:fragment="content">
-<style>
+    <style>
         .button-container {
             display: flex;
             justify-content: flex-end; /* 왼쪽 정렬 */
@@ -79,15 +78,11 @@
                     </button>
                 </div>
                 <div class="button-group">
-                    <button type="button" class="btn btn-primary" style="background-color: #d58512" data-toggle="modal"
-                            data-target="#modify">고객 수정
+                    <button class="btn btn-primary" style="background-color: #d58512" onclick="updateClientBtn()">고객 수정
                     </button>
                 </div>
                 <div class="button-group">
                     <button id="excel-btn" type="button" class="btn btn-primary">엑셀 저장</button>
-                </div>
-                <div class="button-group">
-                    <button type="button" class="btn btn-danger">삭제</button>
                 </div>
             </div>
         </div>
@@ -112,21 +107,17 @@
                                     <th>고객명</th>
                                     <th>고객분류</th>
                                     <th>연락처</th>
-                                    <th>납품 주소</th>
                                     <th>전체 수주량</th>
-                                    <th>비고</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td></td>
-                                    <td class="center"></td>
-                                    <td class="center"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                <tr th:each="client : ${clients}">
+                                    <td><input type="checkbox" class="clientCheckbox"></td>
+                                    <td th:text="${client.clCode}" onclick="clientDetail()"></td>
+                                    <td th:text="${client.clName}"></td>
+                                    <td th:text="${client.clType}"></td>
+                                    <td th:text="${client.clPhone}"></td>
+                                    <td th:text="${client.clAmount}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -149,18 +140,14 @@
                                    id="dataTables-example2">
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox"></th>
-                                    <th>제품코드</th>
+                                    <th>수주 코드</th>
                                     <th>제품명</th>
-                                    <th>총 수주량</th>
+                                    <th>수주량</th>
                                     <th>연간 수주량</th>
-                                    <th>비고</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -191,31 +178,36 @@
                     </button>
                     <h4 class="modal-title" id="myModalLabel">고객등록</h4>
                 </div>
-                <div class="clientgroup">
-                    <div class="client">
-                        <label class="client-title">고객명</label><input class="form-control">
+                <form class="newClient" action="client/new" role="form" method="post">
+                    <div class="clientgroup">
+                        <div class="form-group input-group">
+                            <label>고객명</label>
+                            <input class="form-control" id="clName" name="clName">
+                        </div>
+                        <div class="form-group input-group">
+                            <label>고객분류</label>
+                            <select class="form-control" id="clType" name="clType">
+                                <option value="개인">개인</option>
+                                <option value="단체">단체</option>
+                            </select>
+                        </div>
+                        <div class="form-group input-group">
+                            <label>연락처</label>
+                            <input class="form-control" id="clPhone" name="clPhone">
+                        </div>
                     </div>
-                    <div class="client">
-                        <label class="client-title">고객분류</label><input class="form-control">
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">등록</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                     </div>
-                    <div class="client">
-                        <label class="client-title">연락처</label><input class="form-control">
-                    </div>
-                    <div class="client">
-                        <label class="client-title">납품 주소</label><input class="form-control">
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">등록</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                </div>
+                </form>
             </div>
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+
 
     <!-- 고객 수정 모달창 -->
     <div class="modal fade" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -227,19 +219,27 @@
                     </button>
                     <h4 class="modal-title" id="modifyid">고객수정</h4>
                 </div>
-                <div class="clientgroup">
-                    <div class="client">
-                        <label class="client-title">연락처</label><input class="form-control">
+                <form class="updateClient" action="client/update" role="form" method="post">
+                    <input type="hidden" id="clientCode2" name="clCode">
+                    <div class="clientgroup">
+                        <div class="form-group input-group">
+                            <label>고객명</label>
+                            <input class="form-control" id="clName2" name="clName" readonly>
+                        </div>
+                        <div class="form-group input-group">
+                            <label>고객분류</label>
+                            <input class="form-control" id="clType2" name="clType" readonly>
+                        </div>
+                        <div class="form-group input-group">
+                            <label>연락처</label>
+                            <input class="form-control" id="clPhone2" name="clPhone">
+                        </div>
                     </div>
-                    <div class="client">
-                        <label class="client-title">납품 주소</label><input class="form-control">
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">수정</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                     </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">수정</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                </div>
+                </form>
             </div>
             <!-- /.modal-content -->
         </div>
@@ -248,5 +248,33 @@
     <!-- /.modal -->
 
 </div>
+
+<th:block layout:fragment="script">
+<script>
+    function updateClientBtn() {
+        var checkboxes = document.querySelectorAll('.clientCheckbox:checked');
+        if (checkboxes.length !== 1) {
+            alert('하나의 항목만 선택해주세요.');
+            return;
+        }
+        var selectedRow = checkboxes[0].closest('tr');
+        selectedClientId = selectedRow.cells[1].textContent;
+        var clientData = {
+            clName: selectedRow.cells[2].textContent,
+            clType: selectedRow.cells[3].textContent,
+            clPhone: selectedRow.cells[4].textContent
+        };
+
+        $("#modify").modal('show');
+
+        document.getElementById('clientCode2').value = selectedClientId;
+        document.getElementById('clName2').value = clientData.clName;
+        document.getElementById('clType2').value = clientData.clType;
+        document.getElementById('clPhone2').value = clientData.clPhone;
+    }
+</script>
+</th:block>
+
+
 
 </html>

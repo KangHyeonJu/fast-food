@@ -1,16 +1,16 @@
 package com.boot.fastfood.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import com.boot.fastfood.dto.ClientDto;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "clients")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Clients {
     @Id
     @Column(name = "clCode")
@@ -25,7 +25,18 @@ public class Clients {
     @Column(name = "clPhone")
     private String clPhone;
 
-    @Column(name = "clAdress")
-    private String clAdress;
+    @Column(name = "clAmount")
+    private Long clAmount;
+
+    //고객 등록
+    public static Clients createClient(ClientDto clientDto){
+        return Clients.builder()
+                .clCode(clientDto.getClCode())
+                .clName(clientDto.getClName())
+                .clType(clientDto.getClType())
+                .clPhone(clientDto.getClPhone())
+                .build();
+    }
+
 
 }

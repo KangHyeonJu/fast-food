@@ -48,11 +48,6 @@ public class MainController {
         return "system/vendor";
     }
 
-    @GetMapping("/client")
-    public String clientP(){
-        return "system/client";
-    }
-
     @GetMapping("/name")
     public String cntP(){
         return "system/name";
