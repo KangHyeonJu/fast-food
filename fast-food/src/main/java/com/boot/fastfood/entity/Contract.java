@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -13,12 +14,13 @@ import java.util.List;
 @Setter
 @Table(name = "contract")
 public class Contract {
+
     @Id
     @Column(name = "ctCode")
     private String ctCode;
 
     @ManyToOne
-    @JoinColumn(name = "clCode")
+    @JoinColumn(name = "clName")
     private Clients clients;
 
     @ManyToOne
@@ -32,16 +34,22 @@ public class Contract {
     private String deliveryPlace;
 
     @Column(name = "ctDate")
-    private Date ctDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime ctDate;
 
     @Column(name = "deliveryDate")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deliveryDate;
 
     @ManyToOne
-    @JoinColumn(name = "emCode")
+    @JoinColumn(name = "emName")
     private Employee employee;
 
     @OneToMany(mappedBy = "contract")
     private List<Production> productions;
+
+    @Column(name = "ctStatus")
+    private String ctStatus; // 수주 상태 필드새로 추가
+
+
 }

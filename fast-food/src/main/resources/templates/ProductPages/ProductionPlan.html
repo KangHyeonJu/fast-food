@@ -76,7 +76,7 @@
                                 </thead>
                                 <tbody>
                                 <!-- 수주만큼 반복문으로 데이터 받아옴 controller에서 받아와야함 -->
-                                <tr th:each="contract : ${contracts}">
+                                <tr th:each="contract : ${contract}">
                                     <td><input type="checkbox" class="planCheckbox"></td>
                                     <td th:text="${contract.ctCode}"></td>
                                     <!-- 생산 시작일 = (납품요청일) - 1일 - (생산 소요 시간)  -->

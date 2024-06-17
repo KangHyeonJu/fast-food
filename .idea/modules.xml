@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/fast-food.iml" filepath="$PROJECT_DIR$/.idea/fast-food.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fast-food.fast-food.main.iml" filepath="$PROJECT_DIR$/.idea/modules/fast-food.fast-food.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fast-food.fast-food.main~1.iml" filepath="$PROJECT_DIR$/.idea/modules/fast-food.fast-food.main~1.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fast-food.fast-food.test.iml" filepath="$PROJECT_DIR$/.idea/modules/fast-food.fast-food.test.iml" />
     </modules>
   </component>
