@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>mes - Bootstrap Admin Theme</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html" style="color:#3333FF">FAST FOOD</a>
+        </div>
+
+        <!-- /.navbar-header -->
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard fa-fw"></i> 수주 관리</a>
+                    <li>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 자재 관리<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+
+                            <li>
+                                <a href="#">자재 발주 관리</a>
+                            </li>
+                            <li>
+                                <a href="#">자재 입고 관리</a>
+                            </li>
+                            <li>
+                                <a href="#">자재 출고 관리</a>
+                            </li>
+                            <li>
+                                <a href="#">자재 현황</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-table fa-fw"></i> 생산 관리<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/machine/productPlan">작업계획 관리</a>
+                            </li>
+                            <li>
+                                <a href="#">작업 지시 관리 <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li>
+                                        <a href="/machine/wash">세척</a>
+                                    </li>
+                                    <li>
+                                        <a href="/machine/extractors">추출기</a>
+                                    </li>
+                                    <li>
+                                        <a href="/machine/filter">여과기</a>
+                                    </li>
+                                    <li><a href="/machine/sterilizer">살균기</a></li>
+                                    <li><a href="/machine/fillings">충진기</a></li>
+                                    <li><a href="/machine/frezzer">냉각기</a></li>
+                                    <li><a href="/machine/checker">검사</a></li>
+                                    <li><a href="/machine/packing">포장</a></li>
+                                </ul>
+                                <!-- /.nav-third-level -->
+                            </li>
+                            <li>
+                                <a href="/machine/endProcess">작업실적 현황</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="forms.html"><i class="fa fa-edit fa-fw"></i> 출하 관리</a>
+                        <!-- /.nav-second-level -->
+                        <ul class="nav nav-second-level">
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-wrench fa-fw"></i> 현황 관리<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="panels-wells.html">P_시간당생산량</a>
+                            </li>
+                            <li>
+                                <a href="buttons.html">C_재공재고</a>
+                            </li>
+                            <li>
+                                <a href="notifications.html">카운트 현황</a>
+                            </li>
+                            <li>
+                                <a href="notifications.html">제품 현황</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-wrench fa-fw"></i> 설비 관리</a>
+
+                        <ul class="nav nav-second-level">
+
+                            <!-- /.nav-second-level -->
+                        </ul>
+                    </li>
+                    <li class="active">
+                        <a href="#"><i class="fa fa-wrench fa-fw"></i> 기준정보 관리<span class="fa arrow"></span></a>
+
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a class="active" href="system/process.html">품목 관리</a>
+                            </li>
+                            <li>
+                                <a class="active" href="system/process.html">공정 관리</a>
+                            </li>
+                            <li>
+                                <a class="active" href="system/process.html">라우팅 관리</a>
+                            </li>
+                            <li>
+                                <a class="active" href="login.html">BOM 관리</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li class="active">
+                        <a href="#"><i class="fa fa-files-o fa-fw"></i> 시스템 관리<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a class="active" href="system/process.html">코드 관리</a>
+                            </li>
+                            <li>
+                                <a class="active" href="login.html">업체/고객 관리</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">작업 실적 현황</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+            <!-- 검색 -->
+            <div class="row">
+                <div class="col-lg-12" style="border: 1px solid black">
+                    <ul class="list-inline">
+                        <li>
+                            <h4>생산계획 코드 : <input name="#"> </h4>
+                        </li>
+                        <li class="list-inline">
+                            <h4>지시 일자 :
+                                <input type="date" id="startTime"> ~ <input type="date" id="endTime">
+                            </h4>
+                        </li>
+                        <li>
+                            <h4>생산품 코드 : <input name="#"> </h4>
+                        </li>
+                        <li>
+                            <h4>생산품 :
+                                <select>
+                                    <option>양배추즙</option>
+                                    <option>흑마늘즙</option>
+                                    <option>석류젤리스틱</option>
+                                    <option>매실젤리스틱</option>
+                                </select>
+                            </h4>
+                        </li>
+                    </ul>
+                    <hr style="border-color: #1ab7ea; margin: 3px">
+                    <ul class="list-inline">
+                        <li>
+                            <h4>작업지시 코드 <input name="#"></h4>
+                        </li>
+                        <li>
+                            <h4>공정 :
+                                <select>
+                                    <option>세척</option>
+                                    <option>추출</option>
+                                    <option>여과</option>
+                                    <option>살균</option>
+                                    <option>충진</option>
+                                    <option>냉각</option>
+                                    <option>검사</option>
+                                    <option>포장</option>
+                                </select>
+                            </h4>
+                        </li>
+                        <li style="float: right;">
+                            <button class="btn btn-primary" style="margin: 5px; width: 100px;">검색</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 검색 끝-->
+
+            <br/>
+
+            <!-- 버튼 모음 -->
+            <div class="list-inline text-right">
+                <button type="button" class="btn btn-success">엑셀 저장</button>
+            </div>
+            <!--버튼끝-->
+
+            <br/>
+
+            <!-- 테이블 1 -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            생산 계획 실적
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body" style="height: 200px; overflow: auto">
+                            <table class="table table-striped table-bordered table-hover" style="width: 100%;">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>생산 계획 코드</th>
+                                    <th>생산 시작 예상</th>
+                                    <th>생산 종료 예상</th>
+                                    <th>생산 시작 시간</th>
+                                    <th>생산 종료 시간</th>
+                                    <th>생산품 코드</th>
+                                    <th>생산품</th>
+                                    <th>생산량</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>PM123456</td>
+                                    <td class="center">2024-06-10 09:00</td>
+                                    <td class="center">2024-06-10 11:00</td>
+                                    <td class="center">2024-06-10 09:01</td>
+                                    <td class="center">2024-06-10 11:01</td>
+                                    <td class="center">p123456</td>
+                                    <td class="center">양배추즙</td>
+                                    <td class="center">1000Box</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- 테이블 1 끝-->
+
+            <br/>
+
+            <!--테이블 2 -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            공정별 실적
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body" style="height: 200px; overflow: auto">
+                            <table class="table table-striped table-bordered table-hover" style="width: 100%;">
+                                <thead>
+                                <tr>
+                                    <th>생산 계획 코드</th>
+                                    <th>작업지시코드</th>
+                                    <th>공정</th>
+                                    <th>작업 시작 예상 시간</th>
+                                    <th>작업 종료 예상 시간</th>
+                                    <th>작업 시작 시간</th>
+                                    <th>작업 종료 시간</th>
+                                    <th>생산품</th>
+                                    <th>생산량</th>
+                                    <th>불량</th>
+                                    <th>불량률</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="gradeA">
+                                    <td>PM123456</td>
+                                    <td>PC123456</td>
+                                    <td>세척</td>
+                                    <td class="center">2024-06-10 09:00</td>
+                                    <td class="center">2024-06-10 11:00</td>
+                                    <td class="center">2024-06-10 09:01</td>
+                                    <td class="center">2024-06-10 11:01</td>
+                                    <td class="center">양배추</td>
+                                    <td class="center">1000kg</td>
+                                    <td class="center">250kg</td>
+                                    <td class="center">25%</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!--테이블 2 -->
+
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+<script src="/vendor/jquery/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="/vendor/metisMenu/metisMenu.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/dist/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>
