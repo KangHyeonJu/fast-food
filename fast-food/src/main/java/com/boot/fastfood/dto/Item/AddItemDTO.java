@@ -1,4 +1,4 @@
-package com.boot.fastfood.dto;
+package com.boot.fastfood.dto.Item;
 
 import com.boot.fastfood.entity.Items;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package com.boot.fastfood.controller;
 
-import com.boot.fastfood.dto.AddItemDTO;
+import com.boot.fastfood.dto.Item.AddItemDTO;
 import com.boot.fastfood.entity.Items;
 import com.boot.fastfood.service.ItemService;
 import lombok.RequiredArgsConstructor;

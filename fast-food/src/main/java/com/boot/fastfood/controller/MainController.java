@@ -9,6 +9,10 @@ public class MainController {
     public String mainPage(){
         return "system/process";
     }
+    @GetMapping("/add")
+    public String mae(){
+        return "system/add";
+    }
 
     @GetMapping("/process1")
     public String rocess(){
@@ -27,11 +31,6 @@ public class MainController {
     @GetMapping("/code")
     public String codeP(){
         return "system/code";
-    }
-
-    @GetMapping("/vendor")
-    public String vendorP(){
-        return "system/vendor";
     }
 
     @GetMapping("/client")

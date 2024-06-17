@@ -75,11 +75,11 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="odd gradeX">
+                                <tr class="vendor" th:each="vendor : ${vendorList}" >
                                     <td>1</td>
                                     <td><input type="checkbox"></td>
-                                    <td>v10101010</td>
-                                    <td class="center">oo회사</td>
+                                    <td th:text="${vendor.vdCode}"></td>
+                                    <td class="center" th:text="${vendor.vdName}"></td>
                                     <td>mt111111</td>
                                     <td>양배추</td>
                                     <td>100000</td>
