@@ -25,7 +25,4 @@ public class Clients {
     @Column(name = "clPhone")
     private String clPhone;
 
-    @Column(name = "clAdress")
-    private String clAdress;
-
 }
