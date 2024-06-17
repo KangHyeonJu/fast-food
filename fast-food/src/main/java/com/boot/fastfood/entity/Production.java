@@ -34,7 +34,7 @@ public class Production {
     private int pNo;
 
     //생산품
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "itCode", referencedColumnName = "itCode")
     private Items itCode;
 
