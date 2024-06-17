@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -30,10 +31,10 @@ public class Contract {
     private String deliveryPlace;
 
     @Column(name = "ctDate")
-    private Date ctDate;
+    private LocalDate ctDate;
 
     @Column(name = "deliveryDate")
-    private Date deliveryDate;
+    private LocalDate deliveryDate;
 
     @ManyToOne
     @JoinColumn(name = "emCode")

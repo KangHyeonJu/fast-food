@@ -3,7 +3,9 @@ package com.boot.fastfood.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.mapping.ToOne;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -19,11 +21,13 @@ public class Shipment {
     @JoinColumn(name = "ctCode")
     private Contract contract;
 
-    @Column(name = "smDate")
-    private Date smDate;
+    private LocalDate smSchedule = contract.getDeliveryDate().minusDays(1);
 
-    @Column(name = "smStatues")
-    private int smStatues;
+    @Column(name = "smDate")
+    private LocalDate smDate;
+
+    @Column(name = "smStatues", columnDefinition = "TINYINT(0)")
+    private boolean smStatues;
 
     @ManyToOne
     @JoinColumn(name = "emCode")

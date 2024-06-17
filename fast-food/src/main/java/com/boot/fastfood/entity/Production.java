@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -20,10 +21,10 @@ public class Production {
     private Contract contract;
 
     @Column(name = "pmSDate")
-    private Date pmSDate;
+    private LocalDate pmSDate;
 
     @Column(name = "pmEDate")
-    private Date pmEDate;
+    private LocalDate pmEDate;
 
     @Column(name = "pNo")
     private int pNo;

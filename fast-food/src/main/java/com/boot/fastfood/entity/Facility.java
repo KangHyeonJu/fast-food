@@ -1,9 +1,12 @@
 package com.boot.fastfood.entity;
 
+import com.boot.fastfood.constant.FcStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -28,13 +31,10 @@ public class Facility {
     private String cycleHour;
 
     @Column(name = "fcDate")
-    private Date fcDate;
+    private LocalDate fcDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "fcStatus")
-    private String fcStatus;
-
-    @ManyToOne
-    @JoinColumn(name = "pcCode", nullable = true)
-    private Process process;
+    private FcStatus fcStatus;
 
 }
