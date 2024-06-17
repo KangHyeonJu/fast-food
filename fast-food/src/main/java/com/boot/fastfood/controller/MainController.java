@@ -9,10 +9,6 @@ public class MainController {
     public String mainPage(){
         return "system/process";
     }
-    @GetMapping("/routing")
-    public String maPage(){
-        return "system/routing";
-    }
 
     @GetMapping("/process1")
     public String rocess(){
@@ -26,16 +22,6 @@ public class MainController {
     @GetMapping("/routingAdd")
     public String routingAddP(){
         return "routingAdd";
-    }
-
-    @GetMapping("/bom")
-    public String bomP(){
-        return "bom";
-    }
-
-    @GetMapping("/bom1")
-    public String bP(){
-        return "bom1";
     }
 
     @GetMapping("/code")
