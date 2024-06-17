@@ -67,7 +67,7 @@
                                 <thead>
                                 <tr>
                                     <th><input type="checkbox"></th>
-                                    <th>수주 코드</th>
+                                    <th>생산 코드</th>
                                     <th>생산 시작일</th>
                                     <th>생산 종료일</th>
                                     <th>생산품</th>
@@ -75,18 +75,18 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <!-- 수주만큼 반복문으로 데이터 받아옴 controller에서 받아와야함 -->
-                                <tr th:each="contract : ${contracts}">
+                                <!-- 생산계획만큼 반복문으로 데이터 받아옴 controller에서 받아와야함 -->
+                                <tr th:each="production : ${productions}">
                                     <td><input type="checkbox" class="planCheckbox"></td>
-                                    <td th:text="${contract.ctCode}"></td>
+                                    <td th:text="${production.pmCode}"></td>
                                     <!-- 생산 시작일 = (납품요청일) - 1일 - (생산 소요 시간)  -->
-                                    <td th:text="${production.pmSDate}"></td>
+                                    <td th:text="${#dates.format(production.pmSDate, 'yyyy-MM-dd')}"></td>
                                     <!-- 생산 종료일 = (납품요청일) - 1일 -->
-                                    <td th:text="${production.pmEDate}"></td>
-                                    <!-- 생산품명 = 수주테이블에서 아이템 코드가져와서 변환? -->
-                                    <td th:text="${contract.itCode}"></td>
+                                    <td th:text="${#dates.format(production.pmEDate, 'yyyy-MM-dd')}"></td>
+                                    <!-- 생산품명 -->
+                                    <td th:text="${production.itName}"></td>
                                     <!-- 생산량목표량 = 수주량 -->
-                                    <td th:text="${contract.ctAmount}"></td>
+                                    <td th:text="${production.ctAmount}"></td>
                                 </tr>
                                 </tbody>
                             </table>
