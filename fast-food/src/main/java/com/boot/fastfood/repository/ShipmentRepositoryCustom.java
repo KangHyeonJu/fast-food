@@ -9,5 +9,4 @@ public interface ShipmentRepositoryCustom {
     List<Shipment> getshipCompletionList(ShipSearchDto shipSearchDto);
 
     List<Shipment> getShipmentList(ShipSearchDto shipSearchDto);
-
 }

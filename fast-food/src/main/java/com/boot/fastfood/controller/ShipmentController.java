@@ -23,7 +23,10 @@ public class ShipmentController {
         List<Shipment> shipments = shipmentService.getShipmentList(shipSearchDto);
         List<Items> items = itemsService.getAllItems();
 
+        List<Shipment> todayShips = shipmentService.getTodaySthipList();
+
         model.addAttribute("shipments", shipments);
+        model.addAttribute("todayShips", todayShips);
         model.addAttribute("shipSearchDto", shipSearchDto);
         model.addAttribute("items", items);
 
