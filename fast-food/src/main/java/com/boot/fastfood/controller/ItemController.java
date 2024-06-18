@@ -38,10 +38,13 @@ public class ItemController {
         return "system/routing";
     }
 
+    /*
     @GetMapping("/routing/{itCode}")
     public ItemListDTO item(@PathVariable String itCode) {
        Items item = itemService.findByitCode(itCode);
 
        return new ItemListDTO(item);
     }
+
+     */
 }
