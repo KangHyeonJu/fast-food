@@ -12,10 +12,9 @@ public class MainController {
     public String processPage(){
         return "system/process";
     }
-
-    @GetMapping("/routing")
-    public String maPage(){
-        return "system/routing";
+    @GetMapping("/add")
+    public String mae(){
+        return "system/add";
     }
 
     @GetMapping("/process1")
@@ -32,24 +31,14 @@ public class MainController {
         return "routingAdd";
     }
 
-    @GetMapping("/bom")
-    public String bomP(){
-        return "bom";
-    }
-
-    @GetMapping("/bom1")
-    public String bP(){
-        return "bom1";
-    }
-
     @GetMapping("/code")
     public String codeP(){
         return "system/code";
     }
 
-    @GetMapping("/vendor")
-    public String vendorP(){
-        return "system/vendor";
+    @GetMapping("/client")
+    public String clientP(){
+        return "system/client";
     }
 
     @GetMapping("/name")

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout1}">
+<div layout:fragment="content">
+
+    <form style="margin-left: 30%">
+        <input type="text" id="itName">
+        <input type="text" id="itType">
+        <input type="text" id="itCode">
+        <button id="itemCreateBtn">eee</button>
+    </form>
+
+    <div class="container mt-5">
+        <div class="button-group">
+            <button type="button" class="btn btn-primary" id="showPanelBtn">패널 표시</button>
+        </div>
+    </div>
+
+    <div class="col-lg-12 mt-3">
+        <div class="panel panel-default" id="panelshow" style="display: none;">
+            <div class="panel-body">
+                패널이 나타났습니다!
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#showPanelBtn").click(function() {
+                $("#panelshow").show();
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const createButton = document.getElementById("itemCreateBtn");
+
+            if (createButton) {
+                createButton.addEventListener("click", (event) => {
+                    fetch("/items", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            itName: document.getElementById("itName").value,
+                            itType: document.getElementById("itType").value,
+                            itCode: document.getElementById("itCode").value
+                        }),
+                    }).then(() => {
+                        alert("등록 완료되었습니다. ");
+                        location.replace("/routing");
+                    });
+                });
+            }
+        });
+    </script>
+</div>
