@@ -141,7 +141,7 @@
                       <th>고객명</th>
                       <th>제품명</th>
                       <th>출하량</th>
-<!--                      <th>출하예정일</th>-->
+                      <th>출하예정일</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -152,7 +152,7 @@
                       <td th:text="${shipment.contract.clients.clName}"></td>
                       <td th:text="${shipment.contract.items.itName}"></td>
                       <td th:text="${shipment.contract.ctAmount}"></td>
-<!--                      <td th:text="${shipment.smSchedule}"></td>-->
+                      <td th:text="${shipment.smSchedule}"></td>
                     </tr>
                     </tbody>
                   </table>
@@ -188,7 +188,6 @@
                     <th>고객명</th>
                     <th>제품명</th>
                     <th>출하량</th>
-  <!--                  <th>출하예정일</th>-->
                     <th></th>
                   </tr>
                   </thead>
@@ -199,7 +198,6 @@
                     <td th:text="${todayShip.contract.clients.clName}"></td>
                     <td th:text="${todayShip.contract.items.itName}"></td>
                     <td th:text="${todayShip.contract.ctAmount}"></td>
-  <!--                  <td th:text="${todayShip.}"></td>-->
                     <td><button class="btn btn-danger" type="button" id="shipBtn" th:smCode="${todayShip.smCode}" th:onclick="ship(this.getAttribute('smCode'))">출하하기</button> </td>
                   </tr>
                   </tbody>

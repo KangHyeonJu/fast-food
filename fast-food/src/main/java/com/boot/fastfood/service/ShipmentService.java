@@ -25,7 +25,7 @@ public class ShipmentService {
     }
 
     public List<Shipment> getTodaySthipList(){
-        LocalDate today = LocalDate.now().minusDays(1);
+        LocalDate today = LocalDate.now().plusDays(1);
 
         return shipmentRepository.findAllByContract_DeliveryDateAndSmStatues(today, false);
     }

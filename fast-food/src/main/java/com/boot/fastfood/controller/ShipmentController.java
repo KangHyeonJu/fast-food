@@ -31,21 +31,20 @@ public class ShipmentController {
         List<Shipment> shipments = shipmentService.getShipmentList(shipSearchDto);
         List<Items> items = itemsService.getAllItems();
         List<Employee> employees = employeeService.getAllEmployee();
-
         List<Shipment> todayShips = shipmentService.getTodaySthipList();
 
-        List<ShipmentDto> shipmentDtos = new ArrayList<>();
+        List<ShipmentDto> shipmentDtoList = new ArrayList<>();
 
         for(Shipment shipment : shipments){
             ShipmentDto shipmentDto = new ShipmentDto();
             shipmentDto.setSmCode(shipment.getSmCode());
             shipmentDto.setContract(shipment.getContract());
             shipmentDto.setSmSchedule(shipment.getContract().getDeliveryDate().minusDays(1));
-            shipmentDtos.add(shipmentDto);
+            shipmentDtoList.add(shipmentDto);
         }
 
 
-        model.addAttribute("shipments", shipments);
+        model.addAttribute("shipments", shipmentDtoList);
         model.addAttribute("todayShips", todayShips);
         model.addAttribute("shipSearchDto", shipSearchDto);
         model.addAttribute("items", items);
