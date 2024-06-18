@@ -15,6 +15,15 @@
             </div>
             <!-- /.row -->
 
+            <!-- 버튼 모음 -->
+            <div class="list-inline text-right">
+                <a class="btn btn-warning" href="/machine/calender">캘린더</a>
+                <button type="button" class="btn btn-success">엑셀 저장</button>
+            </div>
+            <!--버튼끝-->
+
+            <br/>
+
             <!-- 검색 -->
             <div class="row">
                 <div class="col-lg-12" style="border: 1px solid black">
@@ -45,15 +54,6 @@
 
             <br/>
 
-            <!-- 버튼 모음 -->
-            <div class="list-inline text-right">
-                <a class="btn btn-warning" href="/machine/calender">캘린더</a>
-                <button type="button" class="btn btn-success">엑셀 저장</button>
-            </div>
-            <!--버튼끝-->
-
-            <br/>
-
             <!-- 테이블 1 -->
             <div class="row">
                 <div class="col-lg-12">
@@ -67,46 +67,26 @@
                                 <thead>
                                 <tr>
                                     <th><input type="checkbox"></th>
-                                    <th>수주 코드</th>
+                                    <th>생산 코드</th>
                                     <th>생산 시작일</th>
                                     <th>생산 종료일</th>
                                     <th>생산품</th>
-                                    <th>수량 [Box]</th>
+                                    <th>생산 목표량 [Box]</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>SJ123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>SJ123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>SJ123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
-                                </tr>
-
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>SJ123456</td>
-                                    <td>2024-06-10 09:00</td>
-                                    <td>2024-06-12 05:00</td>
-                                    <td>양배추즙</td>
-                                    <td>250</td>
+                                <!-- 생산계획만큼 반복문으로 데이터 받아옴 controller에서 받아와야함 -->
+                                <tr th:each="production : ${productions}">
+                                    <td><input type="checkbox" class="planCheckbox"></td>
+                                    <td th:text="${production.pmCode}"></td>
+                                    <!-- 생산 시작일 = (납품요청일) - 1일 - (생산 소요 시간)  -->
+                                    <td th:text="${#dates.format(production.pmSDate, 'yyyy-MM-dd')}"></td>
+                                    <!-- 생산 종료일 = (납품요청일) - 1일 -->
+                                    <td th:text="${#dates.format(production.pmEDate, 'yyyy-MM-dd')}"></td>
+                                    <!-- 생산품명 -->
+                                    <td th:text="${production.itName}"></td>
+                                    <!-- 생산량목표량 = 수주량 -->
+                                    <td th:text="${production.ctAmount}"></td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -1,14 +1,28 @@
 package com.boot.fastfood.controller;
 
+import com.boot.fastfood.dto.ProductionDto;
+import com.boot.fastfood.entity.Contract;
+import com.boot.fastfood.entity.Production;
+import com.boot.fastfood.repository.ProductionRepository;
+import com.boot.fastfood.service.ProductionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/machine")
+@RequiredArgsConstructor
 public class ProductController {
+    private final ProductionService productionService;
+
     @GetMapping("/productPlan")
-    public String productPlan(){
+    public String productPlan(Model model){
+        List<ProductionDto> productions = productionService.getAllProductions();
+        model.addAttribute("productions", productions);
         return "ProductPages/ProductionPlan";
     }
 
