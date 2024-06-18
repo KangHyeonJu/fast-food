@@ -9,18 +9,20 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+@Embeddable
 @Table(name = "routing")
+//@IdClass(RoutingId.class)
 public class Routing {
-    @EmbeddedId
-    private RoutingId id;
+//    @EmbeddedId
+//    private RoutingId id;
 
     @ManyToOne
-    @MapsId("itCode")
+    @Id
     @JoinColumn(name = "itCode")
     private Items items;
 
     @ManyToOne
-    @MapsId("pcCode")
+    @Id
     @JoinColumn(name = "pcCode")
     private Process process;
 
