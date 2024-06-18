@@ -5,10 +5,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
+    @GetMapping("/main")
+    public String mainPage(){return "main/main";}
+
     @GetMapping("/process")
-    public String mainPage(){
+    public String processPage(){
         return "system/process";
     }
+
     @GetMapping("/routing")
     public String maPage(){
         return "system/routing";
