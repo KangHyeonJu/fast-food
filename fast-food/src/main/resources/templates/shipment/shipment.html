@@ -72,7 +72,7 @@
           <p>작업자 :
             <select id="emCode">
               <option value="null">선택</option>
-              <th:block th:each="employee, staus: ${employees}">
+              <th:block th:each="employee : ${employees}">
                 <option th:text="${employee.emName}" th:value="${employee.emCode}"></option>
               </th:block>
 
@@ -107,7 +107,7 @@
                   <p>제품명 :
                   <select th:field="*{itName}">
                     <option value="">전체</option>
-                    <th:block th:each="item, staus: ${items}">
+                    <th:block th:each="item : ${items}">
                       <option th:text="${item.itName}" th:value="${item.itName}"></option>
                     </th:block>
                   </select>
@@ -145,7 +145,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="shipment, staus: ${shipments}">
+                    <tr th:each="shipment : ${shipments}">
                       <td><input class="form-check-input" type="checkbox" value=""></td>
                       <td th:text="${shipment.smCode}"></td>
                       <td th:text="${shipment.contract.ctCode}"></td>
@@ -192,7 +192,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="todayShip, staus: ${todayShips}">
+                  <tr th:each="todayShip : ${todayShips}">
                     <td th:text="${todayShip.smCode}"></td>
                     <td th:text="${todayShip.contract.ctCode}"></td>
                     <td th:text="${todayShip.contract.clients.clName}"></td>

@@ -33,4 +33,8 @@ public class FacilityService {
         facility.setFcStatus(FcStatus.STOP);
         facilityRepository.save(facility);
     }
+
+    public List<Facility> getAllFacility(){
+        return facilityRepository.findAll();
+    }
 }
