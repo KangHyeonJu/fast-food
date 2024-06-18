@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -29,11 +30,11 @@ public class ContractService {
     public void saveContract(ContractDto contractDto) {
         System.out.println("111111111");
         // 고객 정보 설정
-        Clients client = clientsRepository.findByClName("OO업체");
+        Clients client = clientsRepository.findByClName("강현주");
         System.out.println("222222222");
 
         // 제품 정보 설정 (A1 코드로 고정된 제품 가져오기)
-        Items item = itemsRepository.findByItCode("A1");
+        Items item = itemsRepository.findByItCode("it001");
         System.out.println("3333333" + item);
 
         if (item != null) {
@@ -57,7 +58,7 @@ public class ContractService {
             contract.setCtCode(ctCode);
             contract.setCtAmount(contractDto.getCtAmount());
             contract.setDeliveryPlace(contractDto.getDeliveryPlace());
-            contract.setCtDate(currentDateTime);
+            contract.setCtDate(LocalDate.now());
             contract.setDeliveryDate(contractDto.getDeliveryDate());
             contract.setCtStatus("생산중");
 
