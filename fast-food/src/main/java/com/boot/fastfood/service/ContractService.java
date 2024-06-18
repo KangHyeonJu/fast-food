@@ -28,27 +28,20 @@ public class ContractService {
     private final EmployeeRepository employeeRepository;
 
     public void saveContract(ContractDto contractDto) {
-        System.out.println("111111111");
         // 고객 정보 설정
-        Clients client = clientsRepository.findByClName("강현주");
-        System.out.println("222222222");
+        Clients client = clientsRepository.findByClName(contractDto.getClName());
 
         // 제품 정보 설정 (A1 코드로 고정된 제품 가져오기)
-        Items item = itemsRepository.findByItCode("it001");
-        System.out.println("3333333" + item);
+        Items item = itemsRepository.findByItCode("");
 
         if (item != null) {
-            System.out.println("들어오나?");
             // 담당자 정보 설정
-            Employee employee = employeeRepository.findByEmName("김OO");
-            System.out.println("1111111111111"+employee.getEmName());
+            Employee employee = employeeRepository.findByEmName(contractDto.getEmName());
 
             // 현재 시간을 기준으로 문자열 생성
             LocalDateTime currentTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
             String ctCode = "OD" + currentTime.format(formatter);
-
-            LocalDateTime currentDateTime = LocalDateTime.now();
 
             // 수주 객체 생성 및 필드 설정
             Contract contract = new Contract();
