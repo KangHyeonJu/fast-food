@@ -82,9 +82,11 @@ public class ContractService {
         // 제품의 재고량
         int itStock = item.getItStock();
 
-        // pNo 계산: ctAmount - itStock
-        int ctAmount = contract.getCtAmount();
-        int pNo = ctAmount - itStock;
+        // pmAmount 계산: ctAmount - itStock
+        int pmAmount = contract.getCtAmount() - itStock ;
+        if (pmAmount < 0){
+            pmAmount = 0;
+        }
 
         // Production 엔티티에 수주 정보 및 생산 일정 설정 후 저장
         production.setContract(contract);
@@ -92,7 +94,7 @@ public class ContractService {
         production.setItName(item);
         production.setPmSDate(Date.from(productionStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
         production.setPmEDate(Date.from(productionEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        production.setPNo(pNo);
+        production.setPmAmount(pmAmount);
         // 생산량 등 다른 필요한 정보 설정
 
         productionRepository.save(production);
