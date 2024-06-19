@@ -12,6 +12,7 @@ import java.util.Date;
 public class ContractDto {
     private String ctCode;
     private String clName;
+    private String itName;
     private int ctAmount;
     private String deliveryPlace;
     @DateTimeFormat(pattern = "yyyy-MM-dd")

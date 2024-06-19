@@ -36,10 +36,10 @@ public class Production {
 
     //생산품
     @ManyToOne
-    @JoinColumn(name = "itCode", referencedColumnName = "itCode")
-    private Items itCode;
+    @JoinColumn(name = "itName", referencedColumnName = "itName")
+    private Items itName;
 
     //생산목표량
-    @Column(name = "ctAmount")
-    private int ctAmount;
+    @Column(name = "pmAmount")
+    private int pmAmount;
 }

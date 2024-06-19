@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout1}">
+
+<div layout:fragment="content">
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: flex-end; /* 왼쪽 정렬 */
+            margin-bottom: 10px;
+        }
+
+        .button-container button {
+            margin-left: 10px; /* 버튼 사이의 간격 조정 */
+        }
+
+        #excel-btn {
+            background-color: #2b542c;
+        }
+
+        .form-group label {
+            margin-right: 10px;
+        }
+
+        .form-control {
+            width: 150px;
+            margin-right: 10px;
+            display: inline-block;
+        }
+
+        .clientgroup {
+            margin: 10px;
+        }
+
+        .client {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .client-title {
+            margin-right: 10px;
+        }
+    </style>
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">직원 관리</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+
+        <!--버튼-->
+        <div class="col-lg-12">
+            <div class="button-container">
+                <div class="button-group">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_modal">직원
+                        등록
+                    </button>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-danger" id="deleteBtn" onclick="deleteEmployeeBtn()">직원 삭제</button>
+                </div>
+                <div class="button-group">
+                    <button id="excel-btn" type="button" class="btn btn-primary">엑셀 저장</button>
+                </div>
+            </div>
+        </div>
+        <!-- /버튼 -->
+
+        <br/>
+
+        <!-- 검색 패널 -->
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group" style="margin-bottom : 0">
+                        <p class="fa fa-search"></p>
+                        <label>직원코드</label><input class="form-control">
+                        <label>직원명</label><input class="form-control">
+                        <button type="button" class="btn btn-primary">검색</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /검색 -->
+
+        <br/>
+
+        <div class="container-fluid">
+
+        <!-- 직원 조회 테이블 -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            직원 목록
+                        </div>
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover"
+                                   id="dataTables-example">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>직원코드</th>
+                                    <th>직원명</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="employee : ${employee}" th:if="${employee.emCon == 0}">
+                                    <td><input type="checkbox" class="employeeCheckbox"></td>
+                                    <td th:text="${employee.emCode}"></td>
+                                    <td th:text="${employee.emName}"></td>
+                                    <input type="hidden" class="employeeCon" th:value="${employee.emCon}"/>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+
+    <!-- 직원 등록 모달창 -->
+    <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">직원등록</h4>
+                </div>
+                <form class="newEmployee" action="employee/new" role="form" method="post">
+                    <div class="clientgroup">
+                        <div class="form-group input-group">
+                            <label>직원명</label>
+                            <input class="form-control" id="emName" name="emName">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">등록</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+    <!-- 직원 수정 모달창 -->
+<!--    <div class="modal fade" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"-->
+<!--         aria-hidden="true">-->
+<!--        <div class="modal-dialog">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;-->
+<!--                    </button>-->
+<!--                    <h4 class="modal-title" id="modifyid">고객수정</h4>-->
+<!--                </div>-->
+<!--                <form class="updateClient" action="client/update" role="form" method="post">-->
+<!--                    <input type="hidden" id="clientCode2" name="clCode">-->
+<!--                    <div class="clientgroup">-->
+<!--                        <div class="form-group input-group">-->
+<!--                            <label>고객명</label>-->
+<!--                            <input class="form-control" id="clName2" name="clName" readonly>-->
+<!--                        </div>-->
+<!--                        <div class="form-group input-group">-->
+<!--                            <label>고객분류</label>-->
+<!--                            <input class="form-control" id="clType2" name="clType" readonly>-->
+<!--                        </div>-->
+<!--                        <div class="form-group input-group">-->
+<!--                            <label>연락처</label>-->
+<!--                            <input class="form-control" id="clPhone2" name="clPhone">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="submit" class="btn btn-primary">수정</button>-->
+<!--                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; /.modal-content &ndash;&gt;-->
+<!--        </div>-->
+<!--        &lt;!&ndash; /.modal-dialog &ndash;&gt;-->
+<!--    </div>-->
+    <!-- /.modal -->
+
+</div>
+
+<th:block layout:fragment="script">
+    <script>
+        function deleteEmployeeBtn() {
+            const checkboxes = document.querySelectorAll('.employeeCheckbox:checked');
+            if (checkboxes.length === 0) {
+                alert('삭제할 직원을 선택해 주세요.');
+                return;
+            }
+
+            var employeeArr = [];
+            var url = "/employee/delete";
+
+            checkboxes.forEach(checkbox => {
+                const checkedEmCode = checkbox.closest('tr').querySelector('td:nth-child(2)').innerText;
+                employeeArr.push(checkedEmCode);
+            });
+
+            console.log(employeeArr);
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: JSON.stringify(employeeArr),
+                contentType: "application/json; charset=UTF-8",
+                cache: false,
+                success: function () {
+                    alert("직원 삭제 완료");
+                    window.location.reload();
+                },
+                error: function (request, error) {
+                    alert("삭제 오류");
+                }
+            });
+        }
+    </script>
+</th:block>

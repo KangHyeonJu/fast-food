@@ -1,9 +1,6 @@
 package com.boot.fastfood.controller;
 
 import com.boot.fastfood.dto.ProductionDto;
-import com.boot.fastfood.entity.Contract;
-import com.boot.fastfood.entity.Production;
-import com.boot.fastfood.repository.ProductionRepository;
 import com.boot.fastfood.service.ProductionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,66 +20,68 @@ public class ProductController {
     public String productPlan(Model model){
         List<ProductionDto> productions = productionService.getAllProductions();
         model.addAttribute("productions", productions);
-        return "ProductPages/ProductionPlan";
+        return "productionPlan";
     }
 
     @GetMapping("/wash")
     public String wash(){
-        return "ProductPages/Machine/Wash";
+        return "wash";
     }
 
     @GetMapping("/extractors")
     public String extractors(){
-        return "ProductPages/Machine/Extractors";
+        return "extractors";
     }
 
     @GetMapping("/extractors2")
     public String extractors2(){
-        return "ProductPages/Machine/Extractors2";
+        return "extractors2";
     }
 
     @GetMapping("/filters")
     public String filters(){
-        return "ProductPages/Machine/Filters";
+        return "filters";
     }
 
     @GetMapping("/sterilizer")
     public String sterilizer(){
-        return "ProductPages/Machine/Sterilizer";
+        return "sterilizer";
     }
 
     @GetMapping("/sterilizer2")
     public String sterilizer2(){
-        return "ProductPages/Machine/Sterilizer2";
+        return "sterilizer2";
     }
 
     @GetMapping("/fillings")
     public String fillings(){
-        return "ProductPages/Machine/Fillings";
+        return "fillings";
     }
 
     @GetMapping("/frezzer")
     public String frezzer(){
-        return "ProductPages/Machine/Frezzer";
+        return "frezzer";
     }
 
     @GetMapping("/checker")
     public String checker(){
-        return "ProductPages/Machine/Checker";
+        return "checker";
     }
 
     @GetMapping("/packing")
     public String packing(){
-        return "ProductPages/Machine/Packing";
+        return "packing";
     }
 
     @GetMapping("/endProcess")
     public String endProcess(){
-        return "ProductPages/EndProcess";
+        return "endProcess";
     }
 
     @GetMapping("/calender")
     public String calender(){
-        return "ProductPages/Calender";
+        return "calender";
     }
+
+
 }
