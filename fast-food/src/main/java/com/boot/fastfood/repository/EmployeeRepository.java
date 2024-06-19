@@ -4,6 +4,5 @@ import com.boot.fastfood.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
-
-    Employee findByEmName(String 김OO);
+    Employee findByEmCode(String emCode);
 }

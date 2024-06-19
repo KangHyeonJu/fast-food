@@ -36,10 +36,11 @@ public class ShipmentRepositoryCustomImpl implements ShipmentRepositoryCustom{
     }
 
     private BooleanExpression searchByItName(String itName){
+        System.out.println(itName);
         if(itName == null){
             return null;
         }
-        return shipment.contract.items.itName.like(itName);
+        return shipment.contract.items.itName.like("%" +itName + "%");
     }
 
     @Override

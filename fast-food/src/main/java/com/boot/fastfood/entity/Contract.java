@@ -37,8 +37,8 @@ public class Contract {
     private LocalDate ctDate;
 
     @Column(name = "deliveryDate")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date deliveryDate;
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate deliveryDate;
 
     @ManyToOne
     @JoinColumn(name = "emName")

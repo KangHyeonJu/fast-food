@@ -12,9 +12,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "routing")
+//@IdClass(RoutingId.class)
 public class Routing {
-    @EmbeddedId
-    private RoutingId id;
+//    @EmbeddedId
+//    private RoutingId id;
 
 //    @ManyToOne
 //    @MapsId("itCode")
