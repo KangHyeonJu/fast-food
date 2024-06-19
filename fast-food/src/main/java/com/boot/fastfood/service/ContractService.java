@@ -1,6 +1,8 @@
 package com.boot.fastfood.service;
 
 import com.boot.fastfood.dto.ContractDto;
+import com.boot.fastfood.dto.ContractSearchDto;
+import com.boot.fastfood.dto.ShipSearchDto;
 import com.boot.fastfood.entity.*;
 import com.boot.fastfood.repository.*;
 import jakarta.transaction.Transactional;
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -84,7 +87,7 @@ public class ContractService {
 
         // pNo 계산: ctAmount - itStock
         int ctAmount = contract.getCtAmount();
-        int pNo = ctAmount - itStock;
+        int pmAmount = ctAmount - itStock;
 
         // Production 엔티티에 수주 정보 및 생산 일정 설정 후 저장
         production.setContract(contract);
@@ -92,10 +95,13 @@ public class ContractService {
         production.setItName(item);
         production.setPmSDate(Date.from(productionStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
         production.setPmEDate(Date.from(productionEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        production.setPNo(pNo);
+        production.setPmAmount(pmAmount);
         // 생산량 등 다른 필요한 정보 설정
 
         productionRepository.save(production);
     }
 
+    public List<Contract> searchContracts(ContractSearchDto searchDto) {
+        return contractRepository.searchContracts(searchDto);
+    }
 }

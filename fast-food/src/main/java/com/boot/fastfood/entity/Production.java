@@ -42,4 +42,7 @@ public class Production {
     //생산목표량
     @Column(name = "ctAmount")
     private int ctAmount;
+
+    public void setPmAmount(int pmAmount) {
+    }
 }
