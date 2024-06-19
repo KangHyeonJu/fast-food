@@ -30,14 +30,14 @@ public class ShipmentService {
         return shipmentRepository.findAllByContract_DeliveryDateAndSmStatues(today, false);
     }
 
-    public void shipRegistration(String smCode, String emCode){
+    public void shipRegistration(String smCode, String emName){
         Shipment shipment = shipmentRepository.findBySmCode(smCode);
-        Employee employee = employeeRepository.findByEmCode(emCode);
+        Employee employee = employeeRepository.findByEmName(emName);
         shipment.setSmDate(LocalDate.now());
         shipment.setSmStatues(true);
         shipment.setEmployee(employee);
 
-        System.out.println("emCode: " + emCode);
+        System.out.println("emName: " + emName);
         System.out.println("emName: " + employee.getEmName());
 
 

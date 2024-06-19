@@ -30,7 +30,7 @@ public class ShipmentController {
     public String shipmentPage(ShipSearchDto shipSearchDto, Model model){
         List<Shipment> shipments = shipmentService.getShipmentList(shipSearchDto);
         List<Items> items = itemsService.getAllItems();
-        List<Employee> employees = employeeService.getAllEmployee();
+        List<Employee> employees = employeeService.getAllEmployees();
         List<Shipment> todayShips = shipmentService.getTodaySthipList();
 
         List<ShipmentDto> shipmentDtoList = new ArrayList<>();
@@ -54,10 +54,10 @@ public class ShipmentController {
     }
 
     //출하등록
-    @PostMapping("/shipment/{smCode}/{emCode}")
-    public String shipRegistration(@PathVariable String smCode, @PathVariable String emCode){
+    @PostMapping("/shipment/{smCode}/{emName}")
+    public String shipRegistration(@PathVariable String smCode, @PathVariable String emName){
         try {
-            shipmentService.shipRegistration(smCode, emCode);
+            shipmentService.shipRegistration(smCode, emName);
             return "redirect:/shipment";
         }catch (Exception e){
             return "redirect:/shipment";

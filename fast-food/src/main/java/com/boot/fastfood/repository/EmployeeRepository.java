@@ -9,6 +9,4 @@ public interface EmployeeRepository extends JpaRepository<Employee,String> {
     Optional<Employee> findByEmCode(String emCode);
 
     Employee findByEmName(String emName);
-
-    Employee findByEmCode(String emCode);
 }
