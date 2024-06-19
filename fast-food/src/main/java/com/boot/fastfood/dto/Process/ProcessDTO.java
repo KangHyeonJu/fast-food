@@ -6,27 +6,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProcessListDTO {
+public class ProcessDTO {
 
-    List<ProcessDTO> process = new ArrayList<>();
+    private String pcCode;
+    private String pcName;
+    private String pcCnt;
 
-    public void addProcess(ProcessDTO process) {
-        this.process.add(process);
-    }
-
-    /*
-    public ProcessListDTO(Process process) {
+    public ProcessDTO(Process process) {
         this.pcCode = process.getPcCode();
         this.pcName = process.getPcName();
         this.pcCnt = process.getPcCnt();
     }
-
-     */
 }

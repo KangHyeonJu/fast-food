@@ -9,12 +9,10 @@ import com.boot.fastfood.repository.ProcessRepository;
 import com.boot.fastfood.repository.RoutingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.boot.fastfood.entity.QRoutingId.routingId;
-import static org.hibernate.internal.util.collections.ArrayHelper.forEach;
 
 @Service
 @RequiredArgsConstructor
@@ -24,31 +22,47 @@ public class RoutingService {
     private final ItemRepository itemRepository;
     private final ProcessRepository processRepository;
 
-    public Routing save(AddRoutingDTO dto) {
+    @Transactional
+    public List<Routing> save(AddRoutingDTO dto) {
 
-        Items item = itemRepository.findById(dto.getItCode())
-                .orElseThrow(() -> new IllegalArgumentException("not found : " + dto.getItCode()));
+        List<Routing> dtoList = new ArrayList<>();
+        int i = 0;
+        for(String pcCode : dto.getPcCode()) {
+            i++;
+            Routing routing = new Routing();
+            Process process = processRepository.findById(pcCode)
+                    .orElseThrow(() -> new IllegalArgumentException("not found : " + pcCode));
+            Items items = itemRepository.findById(dto.getItCode())
+                    .orElseThrow(() -> new IllegalArgumentException("not found : " + dto.getItCode()));
+            routing.setItems(items);
+            routing.setProcess(process);
+            routing.setSequence(i);
+            dtoList.add(routing);
 
-        Process process = processRepository.findById(dto.getPcCode())
-                        .orElseThrow(() -> new IllegalArgumentException("not found : " + dto.getPcCode()));
-
-        Routing routing = Routing.builder()
-                .items(item)
-                .process(process)
-                .sequence(dto.getSequence())
-                        .build();
-
-        return routingRepository.save(routing);
+        }
+        return routingRepository.saveAll(dtoList);
     }
 
     public List<Routing> findByid(String itCode) {
-        List<Routing> routing = routingRepository.findByItCode(itCode);
-
-        return routing;
-               // .orElseThrow(() -> new IllegalArgumentException("not found : " + itCode));
+        List<Routing> routingList = routingRepository.findByItems_ItCode(itCode);
+        return routingList;
     }
 
+    public List<Routing> findByPcCode(String itCode) {
+        return routingRepository.findByItems_ItCode(itCode);
+    }
 
+    @Transactional
+    public void delete(String itCode) {
+        List<Routing> routingList = routingRepository.findByItems_ItCode(itCode);
 
+        for(Routing routing : routingList) {
+            routingRepository.delete(routing);
+        }
+    }
+
+    public List<Routing> findAll() {
+        return routingRepository.findAll();
+    }
 
 }

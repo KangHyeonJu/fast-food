@@ -12,13 +12,11 @@ import com.boot.fastfood.entity.Process;
 @NoArgsConstructor
 public class AddProcessDTO {
 
-    private String pcCode;
     private String pcName;
     private String pcCnt;
 
     public Process toEntity() {
         return Process.builder()
-                .pcCode(pcCode)
                 .pcName(pcName)
                 .pcCnt(pcCnt)
                 .build();

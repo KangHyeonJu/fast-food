@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.boot.fastfood.entity.Process;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -16,10 +18,21 @@ public class ProcessService {
     private final ProcessRepository processRepository;
 
     public Process save(AddProcessDTO dto) {
-        return processRepository.save(dto.toEntity());
+
+        Process process = dto.toEntity();
+
+        String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
+        process.setPcCode("PC" + nowTime);
+
+        return processRepository.save(process);
     }
 
     public List<Process> findAll() {
         return processRepository.findAll();
+    }
+
+    public Process findById(String pcCode) {
+        return processRepository.findById(pcCode)
+                .orElseThrow(() -> new IllegalArgumentException("not found : " + pcCode));
     }
 }

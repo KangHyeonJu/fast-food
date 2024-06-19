@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -20,7 +22,12 @@ public class ItemService {
     };
 
     public Items save(AddItemDTO dto) {
-        return itemRepository.save(dto.toEntity());
+        Items items = dto.toEntity();
+
+        String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
+        items.setItCode("IT" + nowTime);
+
+        return itemRepository.save(items);
     }
 
     public List<Items> findAll() {

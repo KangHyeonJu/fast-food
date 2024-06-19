@@ -10,21 +10,21 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 @Table(name = "routing")
 public class Routing {
-    @EmbeddedId
-    private RoutingId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "routing_id")
+    private Long id;
 
-//    @ManyToOne
-//    @MapsId("itCode")
-//    @JoinColumn(name = "itCode")
-//    private Items items;
-//
-//    @ManyToOne
-//    @MapsId("pcCode")
-//    @JoinColumn(name = "pcCode")
-//    private Process process;
+    @ManyToOne
+    @JoinColumn(name = "itCode")
+    private Items items;
+
+    @ManyToOne
+    @JoinColumn(name = "pcCode")
+    private Process process;
 
     @Column(name = "sequence")
     private int sequence;
@@ -32,13 +32,10 @@ public class Routing {
 
     @Builder
     public Routing(Items items, Process process, int sequence) {
-        //this.id.setItems(items);
-        //this.id.setProcess(process);
-        this.id = new RoutingId(items, process);
+        this.items = items;
+        this.process = process;
         this.sequence = sequence;
     }
-
-
 /*
     public void setRoutingId(Items items, Process process) {
         id.setItems(items);

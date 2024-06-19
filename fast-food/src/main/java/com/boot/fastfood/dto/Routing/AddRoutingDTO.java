@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,7 +17,8 @@ import lombok.Setter;
 public class AddRoutingDTO {
 
     private String itCode;
-    private String pcCode;
+    //private String pcCode;
+    private List<String> pcCode;
     private int sequence;
 
 }

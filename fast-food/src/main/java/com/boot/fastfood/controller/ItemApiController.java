@@ -23,18 +23,4 @@ public class ItemApiController {
     }
 
 
-/*
-    @GetMapping("/routing/{itCode}")
-    public ResponseEntity<Items> item(@PathVariable String itCode) {
-        Items item = itemService.findByitCode(itCode);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(item);
-    }
-
-
- */
-
-
-
 }

@@ -5,18 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
-    @GetMapping("/process")
-    public String mainPage(){
-        return "system/process";
-    }
     @GetMapping("/add")
     public String mae(){
         return "system/add";
-    }
-
-    @GetMapping("/process1")
-    public String rocess(){
-        return "processs";
     }
     @GetMapping("/routing1")
     public String routingP(){

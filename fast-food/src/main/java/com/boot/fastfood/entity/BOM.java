@@ -10,16 +10,16 @@ import java.io.Serializable;
 @Getter @Setter
 @Table(name = "bom")
 public class BOM {
-    @EmbeddedId
-    private BOMId id;
+    @Id
+    @Column(name="bom_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
-    @MapsId("itCode")
     @JoinColumn(name = "itCode")
     private Items items;
 
     @ManyToOne
-    @MapsId("mtCode")
     @JoinColumn(name = "mtCode")
     private Materials materials;
 
