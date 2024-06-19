@@ -1,21 +1,17 @@
 package com.boot.fastfood.service;
 
 import com.boot.fastfood.dto.ContractDto;
-import com.boot.fastfood.entity.Clients;
-import com.boot.fastfood.entity.Contract;
-import com.boot.fastfood.entity.Employee;
-import com.boot.fastfood.entity.Items;
-import com.boot.fastfood.repository.ClientsRepository;
-import com.boot.fastfood.repository.ContractRepository;
-import com.boot.fastfood.repository.EmployeeRepository;
-import com.boot.fastfood.repository.ItemsRepository;
+import com.boot.fastfood.entity.*;
+import com.boot.fastfood.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Service
 @Transactional
@@ -27,6 +23,7 @@ public class ContractService {
     private final ClientsRepository clientsRepository;
     private final EmployeeRepository employeeRepository;
 
+    private final ProductionRepository productionRepository;
     public void saveContract(ContractDto contractDto) {
         // 고객 정보 설정
         Clients client = clientsRepository.findByClName(contractDto.getClName());
@@ -60,8 +57,45 @@ public class ContractService {
             System.out.println("마지막ㅇㅇㅇ");
             contractRepository.save(contract);
             System.out.println("수주가 저장되었습니다.");
+
+            Production production = new Production();
+            registerContractAndProduction(contract, production);
         } else {
             throw new IllegalArgumentException("제품 정보를 찾을 수 없습니다: A1");
         }
     }
+
+    public void registerContractAndProduction(Contract contract, Production production) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        String pmCode = "PM" + currentTime.format(formatter);
+
+        // 생산 시작일 계산 (수주일로부터 2일 후)
+        LocalDate productionStartDate = contract.getCtDate().plusDays(2);
+        //생산 종료일 계산(납품일로부터 1일 전)
+        LocalDate deliveryDate = contract.getDeliveryDate();
+        LocalDate productionEndDate = deliveryDate.minusDays(1);
+
+        // 제품 정보 설정
+        Items item = contract.getItems();
+
+        // 제품의 재고량
+        int itStock = item.getItStock();
+
+        // pNo 계산: ctAmount - itStock
+        int ctAmount = contract.getCtAmount();
+        int pNo = ctAmount - itStock;
+
+        // Production 엔티티에 수주 정보 및 생산 일정 설정 후 저장
+        production.setContract(contract);
+        production.setPmCode(pmCode);
+        production.setItName(item);
+        production.setPmSDate(Date.from(productionStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        production.setPmEDate(Date.from(productionEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        production.setPNo(pNo);
+        // 생산량 등 다른 필요한 정보 설정
+
+        productionRepository.save(production);
+    }
+
 }
