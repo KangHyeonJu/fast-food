@@ -18,11 +18,11 @@ public class Contract {
     private String ctCode;
 
     @ManyToOne
-    @JoinColumn(name = "clName")
+    @JoinColumn(name = "clCode")
     private Clients clients;
 
     @ManyToOne
-    @JoinColumn(name = "itName")
+    @JoinColumn(name = "itCode")
     private Items items;
 
     @Column(name = "ctAmount")
@@ -38,7 +38,7 @@ public class Contract {
     private LocalDate deliveryDate;
 
     @ManyToOne
-    @JoinColumn(name = "emName")
+    @JoinColumn(name = "emCode")
     private Employee employee;
 
     @OneToMany(mappedBy = "contract")

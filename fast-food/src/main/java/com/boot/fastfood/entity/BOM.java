@@ -23,6 +23,6 @@ public class BOM {
     private Materials materials;
 
     @Column(name = "mtAmount")
-    private int mtAmount;
+    private float mtAmount;
 }
 

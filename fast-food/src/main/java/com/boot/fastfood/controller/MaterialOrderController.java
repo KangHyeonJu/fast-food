@@ -36,7 +36,7 @@ public class MaterialOrderController {
 
             Production production = productionRepository.findByContract(contract);
 //            materialOrderDto.setAmount(production.getCtAmount() * contract.getItems().getItEA);
-            materialOrderDto.setAmount(production.getCtAmount() * 30);
+            materialOrderDto.setAmount(production.getPmAmount());
 
             List<BOM> bomList = bomService.getItemByBom(contract.getItems());
             materialOrderDto.setBomList(bomList);

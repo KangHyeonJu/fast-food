@@ -29,7 +29,7 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td th:each="bom : ${contract.bomList}" th:text="${bom.mtAmount} * ${contract.amount}"></td>
+                                    <td th:each="bom : ${contract.bomList}" th:text="${(bom.mtAmount*contract.amount -0.1)+(1 - (bom.mtAmount*contract.amount -0.1)%1)}"></td>
                                 </tr>
                                 </tbody>
                             </table>

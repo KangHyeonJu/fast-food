@@ -11,6 +11,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
+
 
 @Service
 @Transactional
@@ -50,7 +53,7 @@ public class ContractService {
             contract.setDeliveryPlace(contractDto.getDeliveryPlace());
             contract.setCtDate(LocalDate.now());
             contract.setDeliveryDate(contractDto.getDeliveryDate());
-            contract.setCtStatus("생산중");
+            contract.setCtStatus("준비중");
 
             // 저장
             System.out.println("마지막ㅇㅇㅇ");
@@ -97,6 +100,10 @@ public class ContractService {
         // 생산량 등 다른 필요한 정보 설정
 
         productionRepository.save(production);
+    }
+
+    public List<Contract> getAllContract(){
+        return contractRepository.findByCtStatus("준비중");
     }
 
 }
