@@ -40,6 +40,6 @@ public class Production {
     private Items itName;
 
     //생산목표량
-    @Column(name = "ctAmount")
-    private int ctAmount;
+    @Column(name = "pmAmount")
+    private int pmAmount;
 }

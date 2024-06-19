@@ -70,11 +70,12 @@ public class ContractService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         String pmCode = "PM" + currentTime.format(formatter);
 
-        // 생산 시작일 계산 (수주일로부터 2일 후)
-        LocalDate productionStartDate = contract.getCtDate().plusDays(2);
         //생산 종료일 계산(납품일로부터 1일 전)
         LocalDate deliveryDate = contract.getDeliveryDate();
         LocalDate productionEndDate = deliveryDate.minusDays(1);
+
+        // 생산 시작일 계산 (생산종료일로 부터  2일전) - 수정해야함 임시 값
+        LocalDate productionStartDate = productionEndDate.minusDays(2);
 
         // 제품 정보 설정
         Items item = contract.getItems();
@@ -84,7 +85,10 @@ public class ContractService {
 
         // pNo 계산: ctAmount - itStock
         int ctAmount = contract.getCtAmount();
-        int pNo = ctAmount - itStock;
+        int pmAmount = ctAmount - itStock;
+        if (pmAmount < 0){
+            pmAmount =0;
+        }
 
         // Production 엔티티에 수주 정보 및 생산 일정 설정 후 저장
         production.setContract(contract);
@@ -92,7 +96,7 @@ public class ContractService {
         production.setItName(item);
         production.setPmSDate(Date.from(productionStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
         production.setPmEDate(Date.from(productionEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        production.setPNo(pNo);
+        production.setPmAmount(pmAmount);
         // 생산량 등 다른 필요한 정보 설정
 
         productionRepository.save(production);

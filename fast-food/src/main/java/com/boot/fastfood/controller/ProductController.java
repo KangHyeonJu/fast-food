@@ -20,67 +20,67 @@ public class ProductController {
     public String productPlan(Model model){
         List<ProductionDto> productions = productionService.getAllProductions();
         model.addAttribute("productions", productions);
-        return "productionPlan";
+        return "ProductPages/productionPlan";
     }
 
     @GetMapping("/wash")
     public String wash(){
-        return "wash";
+        return "ProductPages/Machine/wash";
     }
 
     @GetMapping("/extractors")
     public String extractors(){
-        return "extractors";
+        return "ProductPages/Machine/extractors";
     }
 
     @GetMapping("/extractors2")
     public String extractors2(){
-        return "extractors2";
+        return "ProductPages/Machine/extractors2";
     }
 
     @GetMapping("/filters")
     public String filters(){
-        return "filters";
+        return "ProductPages/Machine/filters";
     }
 
     @GetMapping("/sterilizer")
     public String sterilizer(){
-        return "sterilizer";
+        return "ProductPages/Machine/sterilizer";
     }
 
     @GetMapping("/sterilizer2")
     public String sterilizer2(){
-        return "sterilizer2";
+        return "ProductPages/Machine/sterilizer2";
     }
 
     @GetMapping("/fillings")
     public String fillings(){
-        return "fillings";
+        return "ProductPages/Machine/fillings";
     }
 
     @GetMapping("/frezzer")
     public String frezzer(){
-        return "frezzer";
+        return "ProductPages/Machine/frezzer";
     }
 
     @GetMapping("/checker")
     public String checker(){
-        return "checker";
+        return "ProductPages/Machine/checker";
     }
 
     @GetMapping("/packing")
     public String packing(){
-        return "packing";
+        return "ProductPages/Machine/packing";
     }
 
     @GetMapping("/endProcess")
     public String endProcess(){
-        return "endProcess";
+        return "ProductPages/endProcess";
     }
 
     @GetMapping("/calender")
     public String calender(){
-        return "calender";
+        return "ProductPages/calender";
     }
 
 

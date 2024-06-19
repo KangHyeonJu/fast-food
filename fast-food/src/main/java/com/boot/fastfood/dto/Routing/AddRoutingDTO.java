@@ -2,7 +2,6 @@ package com.boot.fastfood.dto.Routing;
 
 import com.boot.fastfood.entity.Items;
 import com.boot.fastfood.entity.Process;
-import com.boot.fastfood.entity.Routing;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
