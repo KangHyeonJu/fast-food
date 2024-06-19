@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -14,9 +15,9 @@ public class ContractDto {
     private int ctAmount;
     private String deliveryPlace;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date ctDate;
+    private LocalDate ctDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date deliveryDate;
+    private LocalDate deliveryDate;
     private String emName;
     private String ctStatus;
 

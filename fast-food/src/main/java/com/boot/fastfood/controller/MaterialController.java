@@ -24,8 +24,5 @@ public class MaterialController {
     public String Material(){
         return "material/Material";
     }
-    @GetMapping("/order_plan")
-    public String order_plan(){
-        return "material/Order_plan";
-    }
+
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 @Transactional
@@ -62,5 +63,9 @@ public class ContractService {
         } else {
             throw new IllegalArgumentException("제품 정보를 찾을 수 없습니다: A1");
         }
+    }
+
+    public List<Contract> getAllContract(){
+        return contractRepository.findByCtStatus("");
     }
 }
