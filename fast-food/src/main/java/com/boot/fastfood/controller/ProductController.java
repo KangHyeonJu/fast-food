@@ -20,7 +20,7 @@ public class ProductController {
     public String productPlan(Model model){
         List<ProductionDto> productions = productionService.getAllProductions();
         model.addAttribute("productions", productions);
-        return "productionPlan";
+        return "ProductPages/productionPlan";
     }
 
     @GetMapping("/wash")
@@ -80,7 +80,7 @@ public class ProductController {
 
     @GetMapping("/calender")
     public String calender(){
-        return "calender";
+        return "ProductPages/calender";
     }
 
 
