@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
-    Employee findByEmName(String 김OO);
+
+    Employee findByEmName(String emName);
 }

@@ -31,12 +31,13 @@ public class ContractService {
         // 고객 정보 설정
         Clients client = clientsRepository.findByClName(contractDto.getClName());
 
-        // 제품 정보 설정 (A1 코드로 고정된 제품 가져오기)
-        Items item = itemsRepository.findByItCode("");
+        // 제품 정보 설정
+        Items item = itemsRepository.findByItName(contractDto.getItName());
+        //작업자 정보 설정
+        Employee employee = employeeRepository.findByEmName(contractDto.getEmName());
 
         if (item != null) {
-            // 담당자 정보 설정
-            Employee employee = employeeRepository.findByEmName(contractDto.getEmName());
+            // 작업자 정보 설정
 
             // 현재 시간을 기준으로 문자열 생성
             LocalDateTime currentTime = LocalDateTime.now();
