@@ -161,17 +161,17 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="facilitys, staus: ${facility}">
+                                    <tr th:each="facilitys : ${facility}">
                                         <td><input class="form-check-input" type="checkbox" value=""></td>
                                         <td th:text="${facilitys.fcCode}"></td>
                                         <td th:text="${facilitys.fcName}"></td>
                                         <td th:text="${facilitys.fcCapa}"></td>
                                         <td th:text="${facilitys.fcPreTime}"></td>
                                         <td th:text="${facilitys.cycleHour}"></td>
-                                        <th th:text="${facilitys.fcDate}"></th>
-                                        <th th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).WORK}"><div id="circle_green"></div></th>
-                                        <th th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).STANDBY}"><div id="circle_yellow"></div></th>
-                                        <th th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).STOP}"><div id="circle_red"></div></th>
+                                        <td th:text="${facilitys.fcDate}"></td>
+                                        <td th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).WORK}"><div id="circle_green"></div></td>
+                                        <td th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).STANDBY}"><div id="circle_yellow"></div></td>
+                                        <td th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).STOP}"><div id="circle_red"></div></td>
                                     </tr>
                                     </tbody>
                                 </table>
