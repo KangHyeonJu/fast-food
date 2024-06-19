@@ -33,7 +33,7 @@ public class ContractService {
         System.out.println("222222222");
 
         // 제품 정보 설정 (A1 코드로 고정된 제품 가져오기)
-        Items item = itemsRepository.findByItCode("A1");
+        Items item = itemsRepository.findByItName("양배추즙");
         System.out.println("3333333" + item);
 
         if (item != null) {

@@ -24,7 +24,7 @@ public class Contract {
     private Clients clients;
 
     @ManyToOne
-    @JoinColumn(name = "itCode")
+    @JoinColumn(name = "itName")
     private Items items;
 
     @Column(name = "ctAmount")
