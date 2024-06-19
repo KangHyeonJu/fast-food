@@ -66,6 +66,6 @@ public class ContractService {
     }
 
     public List<Contract> getAllContract(){
-        return contractRepository.findByCtStatus("");
+        return contractRepository.findByCtStatus("준비중");
     }
 }
