@@ -29,6 +29,6 @@ public class WorksController {
         // 오늘 날짜 추가
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         model.addAttribute("today", today);
-        return "ProductPages/WorkList";
+        return "workList";
     }
 }
