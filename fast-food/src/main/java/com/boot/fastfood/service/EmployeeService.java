@@ -34,4 +34,8 @@ public class EmployeeService {
         }
     }
 
+    public List<Employee> findAll() {
+        return employeeRepository.findAll();
+    }
+
 }

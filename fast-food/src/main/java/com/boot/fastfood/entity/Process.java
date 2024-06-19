@@ -1,14 +1,15 @@
 package com.boot.fastfood.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "process")
 public class Process {
     @Id
@@ -24,5 +25,11 @@ public class Process {
     @OneToMany(mappedBy = "fcCode")
     private List<Facility> facilities;
 
+    @Builder
+    public Process(String pcCode, String pcName, String pcCnt) {
+        this.pcCode = pcCode;
+        this.pcName = pcName;
+        this.pcCnt = pcCnt;
+    }
 
 }

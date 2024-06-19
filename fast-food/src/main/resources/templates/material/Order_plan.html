@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout1}">
+
+<div layout:fragment="content">
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">자재 발주 관리</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            수주당 필요한 자재
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body" style="height: 200px; overflow: auto">
+                            <table class="table table-striped table-bordered table-hover" style="width: 100%;" id="dataTables-example2">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>수주 코드</th>
+                                    <th>거래처</th>
+                                    <th>양배추</th>
+                                    <th>흑마늘</th>
+                                    <th>석류(농축액)</th>
+                                    <th>매실(농축액)</th>
+                                    <th>벌꿀</th>
+                                    <th>콜라겐</th>
+                                    <th>포장지</th>
+                                    <th>Box</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>OD220604</td>
+                                    <td>OO업체</td>
+                                    <td>2300(kg)</td>
+                                    <td>X</td>
+                                    <td>x</td>
+                                    <td>x</td>
+                                    <td>1150(L)</td>
+                                    <td>x</td>
+                                    <td>10500(개)</td>
+                                    <td>350(Box)</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- 테이블 1 끝-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            금일 발주량
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body" style="height: 200px; overflow: auto">
+                            <table class="table table-striped table-bordered table-hover" style="width: 100%;"
+                                   id="dataTables-example">
+                                <h4>6월 22일 발주량</h4>
+                                <thead>
+                                <tr>
+                                    <th>거래처</th>
+                                    <th>양배추</th>
+                                    <th>흑마늘</th>
+                                    <th>석류(농축액)</th>
+                                    <th>매실(농축액)</th>
+                                    <th>벌꿀</th>
+                                    <th>콜라겐</th>
+                                    <th>발주하기</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>OO업체</td>
+                                    <td>2000kg</td>
+                                    <td>x</td>
+                                    <td>x</td>
+                                    <td>x</td>
+                                    <td>x</td>
+                                    <td>200(L)</td>
+                                    <td>
+                                        <button id="saveOrderBtn" class="btn btn-success">발주하기
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- 테이블 2 끝-->
+        </div>
+        <div>
+            <h4>포장지는 50000개, Box는 5000개 미만일 경우 추가로 주문해주세요.</h4>
+            <h3>총 포장지 개수 : 50000개</h3>
+            <select id="papernum">
+                <option>10000(개)</option>
+                <option>20000(개)</option>
+                <option>30000(개)</option>
+                <option>40000(개)</option>
+                <option>50000(개)</option>
+                <option>60000(개)</option>
+                <option>70000(개)</option>
+                <option>80000(개)</option>
+                <option>90000(개)</option>
+                <option>100000(개)</option>
+            </select>
+            <h3>
+                <button id="PaperBtn" data-toggle="modal" data-target="#PaperBtn"
+                        class="btn btn-success">발주하기
+                </button>
+            </h3>
+        </div>
+        <div>
+            <h3>총 Box 개수 : 5000Box</h3>
+            <select id="ordernum">
+                <option>1000(Box)</option>
+                <option>2000(Box)</option>
+                <option>3000(Box)</option>
+                <option>4000(Box)</option>
+                <option>5000(Box)</option>
+                <option>6000(Box)</option>
+                <option>7000(Box)</option>
+                <option>8000(Box)</option>
+                <option>9000(Box)</option>
+                <option>10000(Box)</option>
+            </select>
+            <h3>
+                <button class="btn btn-success" id="BoxBtn">발주하기</button>
+            </h3>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="script">
+
+    <script>
+        $(document).ready(function () {
+            $('#saveOrderBtn').click(function () {
+                // 경고창 띄우기
+                if (confirm('발주를 등록하시겠습니까? 발주 등록시 취소가 불가능합니다.')) {
+                    // 확인 버튼을 누르면 수행할 작업
+                    alert('등록이 완료되었습니다.');
+                }
+            });
+            $('#PaperBtn').click(function () {
+                const selectedPaper = $('#papernum').val();
+                // 경고창 띄우기
+                if (confirm(selectedPaper + '를 발주하시겠습니까? 한 번 발주 등록시 취소가 불가능합니다.')) {
+                    // 확인 버튼을 누르면 수행할 작업
+                    alert('발주 등록이 완료되었습니다.');
+                }
+            });
+            $('#BoxBtn').click(function () {
+                // 선택된 Box 수량 가져오기
+                const selectedBox = $('#ordernum').val();
+                // 경고창 띄우기
+                if (confirm(selectedBox + '를 발주하시겠습니까? 한 번 발주 등록시 취소가 불가능합니다.')) {
+                    // 확인 버튼을 누르면 수행할 작업
+                    alert('발주 등록이 완료되었습니다.');
+                }
+            });
+            $('#checkall').click(function () {
+                $('input:checkbox').not(this).prop('checked', this.checked);
+            });
+        });
+    </script>
+</th:block>
+
+</html>

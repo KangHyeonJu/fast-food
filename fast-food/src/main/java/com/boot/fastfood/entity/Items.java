@@ -4,12 +4,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "items")
 public class Items {
     @Id
@@ -24,4 +25,12 @@ public class Items {
 
     @Column(name = "itType")
     private String itType;
+
+
+    @Builder
+    public Items(String itCode, String itName, String itType) {
+        this.itCode = itCode;
+        this.itName = itName;
+        this.itType = itType;
+    }
 }

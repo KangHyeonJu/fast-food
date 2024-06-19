@@ -27,13 +27,13 @@ public class ProductionService {
     //생산 계획에 완제품코드로 완제품 이름 가져오기
     private ProductionDto convertToDto(Production production) {
         ProductionDto dto = new ProductionDto();
-//        dto.setCtCode(production.getContract().getCtCode());
+        dto.setCtCode(production.getContract().getCtCode());
         dto.setPmCode(production.getPmCode());
         dto.setPmSDate(production.getPmSDate());
         dto.setPmEDate(production.getPmEDate());
         dto.setCtAmount(production.getCtAmount());
-        dto.setItCode(production.getItCode().getItCode());
-        dto.setItName(production.getItCode().getItName());
+//        dto.setItCode(production.getItName().getItCode());
+        dto.setItName(production.getItName().getItName());
         return dto;
     }
 }
