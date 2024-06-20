@@ -1,14 +1,10 @@
 package com.boot.fastfood.controller;
 
 import com.boot.fastfood.dto.Bom.AddBomDTO;
-import com.boot.fastfood.dto.Process.ProcessDTO;
-import com.boot.fastfood.dto.Process.ProcessListDTO;
-import com.boot.fastfood.dto.Routing.AddRoutingDTO;
+import com.boot.fastfood.dto.Materials.MaterialsDTO;
+import com.boot.fastfood.dto.Materials.MaterialsListDTO;
 import com.boot.fastfood.entity.BOM;
 import com.boot.fastfood.entity.Materials;
-import com.boot.fastfood.entity.Process;
-import com.boot.fastfood.entity.Routing;
-import com.boot.fastfood.repository.BomRepository;
 import com.boot.fastfood.service.BomService;
 import com.boot.fastfood.service.MaterialsService;
 import lombok.RequiredArgsConstructor;
@@ -49,19 +45,18 @@ public class BomApiController {
     public ResponseEntity<?> item(@PathVariable String itCode) {
 
         List<BOM> bomList = bomService.findByid(itCode);
-        ProcessListDTO listDTO = new ProcessListDTO();
+        MaterialsListDTO listDTO = new MaterialsListDTO();
         for(BOM bom : bomList) {
             String mtCode = bom.getMaterials().getMtCode();
             Materials materials = materialsService.findById(mtCode);
-            ProcessDTO dto = new ProcessDTO();
-            dto.setPcCode(materials.getMtCode());
-            dto.setPcName(materials.getMtName());
+            MaterialsDTO dto = new MaterialsDTO();
+            dto.setMtCode(materials.getMtCode());
+            dto.setMtName(materials.getMtName());
             listDTO.addProcess(dto);
         }
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(listDTO);
     }
-
 
 }

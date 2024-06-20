@@ -51,10 +51,8 @@ public class BomService {
     public void delete(String itCode) {
         List<BOM> routingList = bomRepository.findByItems_ItCode(itCode);
 
-        for(BOM bom : routingList) {
-            bomRepository.delete(bom);
+        bomRepository.deleteAll(routingList);
         }
     }
 
-}
 

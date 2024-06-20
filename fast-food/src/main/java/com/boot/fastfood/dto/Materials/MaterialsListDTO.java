@@ -1,23 +1,21 @@
 package com.boot.fastfood.dto.Materials;
 
-import com.boot.fastfood.entity.Materials;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class MaterialsListDTO {
 
-    private String mtCode;
-    private String mtName;
+    List<MaterialsDTO> materials = new ArrayList<>();
 
-    public MaterialsListDTO(Materials materials) {
-        this.mtCode = materials.getMtCode();
-        this.mtName = materials.getMtName();
+    public void addProcess(MaterialsDTO materialsDTO) {
+        this.materials.add(materialsDTO);
     }
-
 }

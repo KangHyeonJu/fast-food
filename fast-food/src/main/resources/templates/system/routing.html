@@ -166,7 +166,7 @@
                                 <tbody>
                                 <tr class="processList" th:each="process : ${processList}">
                                     <td>1</td>
-                                    <td><input type="checkbox" id="checkBox" th:value="${process.pcCode}"></td>
+                                    <td><input type="checkbox" class="checkbox" id="checkBox" th:value="${process.pcCode}"></td>
                                     <td th:text="${process.pcCode}"></td>
                                     <td class="center" th:text="${process.pcName}"></td>
                                     <td class="center" th:text="${process.pcCnt}"></td>
@@ -296,7 +296,6 @@
 
 <th:block layout:fragment="script">
     <script>
-        console.log("dddddddd");
         $(document).ready(function() {
             // "품목코드" 셀을 클릭했을 때 이벤트 리스너 추가
             $(".itemList").on("click", function() {
@@ -332,22 +331,32 @@
                         }
                 });
             });
+            let selectCheck = [];
 
-        });
+            $("#checkbox").change(function() {
 
-        //라우팅 등록
-        document.addEventListener("DOMContentLoaded", () => {
-            const routingAddBtn = document.getElementById("routingAddBtn");
-            if (routingAddBtn) {
-                routingAddBtn.addEventListener("click", (event) => {
-                    //var itCode = document.getElementById("showPanel").value
-                    var itCode = $("#hiddenItCode").val();
-                    let selectCheck = [];
-                    $("#checkBox:checked").each(function(index){
-                        var value = $(this).val();
-                        selectCheck.push(value);
-                    })
-                    //selectCheck.forEach((pcCode, index) => {
+                var value = $(this).val();
+                console.log(value);
+                if($(value).is(":checked")) {
+                    selectCheck.push(value)
+                }
+                console.log(selectCheck);
+            })
+
+            //document.addEventListener("DOMContentLoaded", () => {
+                const routingAddBtn = document.getElementById("routingAddBtn");
+                if (routingAddBtn) {
+                    routingAddBtn.addEventListener("click", (event) => {
+                        //var itCode = document.getElementById("showPanel").value
+                        var itCode = $("#hiddenItCode").val();
+
+
+                        $("#checkBox:checked").each(function(index){
+                            var value = $(this).val();
+                            selectCheck.push(value);
+                        })
+
+
                         fetch("/routing", {
                             method: "POST",
                             headers: {
@@ -362,10 +371,51 @@
                             location.replace("/routing");
 
                         });
+
+                        //})
+                    })
+                }
+            })
+      //  });
+
+            /*
+        //라우팅 등록
+        document.addEventListener("DOMContentLoaded", () => {
+            const routingAddBtn = document.getElementById("routingAddBtn");
+            if (routingAddBtn) {
+                routingAddBtn.addEventListener("click", (event) => {
+                    //var itCode = document.getElementById("showPanel").value
+                    var itCode = $("#hiddenItCode").val();
+
+
+                    $("#checkBox:checked").each(function(index){
+                        var value = $(this).val();
+                        selectCheck.push(value);
+                    })
+
+
+                    fetch("/routing", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            itCode : itCode,
+                            pcCode : selectCheck
+                        }),
+                    }).then(() => {
+                        alert("등록 완료되었습니다. ");
+                        location.replace("/routing");
+
+                    });
+
                     //})
                 })
             }
         })
+
+             */
+
 
         //품목 등록
         document.addEventListener("DOMContentLoaded", () => {
