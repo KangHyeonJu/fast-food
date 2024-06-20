@@ -25,4 +25,13 @@ public class Warehousing {
     @ManyToOne
     @JoinColumn(name = "emName")
     private Employee employee;
+
+    @ManyToOne
+    @JoinColumn(name = "vdName")
+    private Vendor vendor;
+
+    @ManyToOne
+    @JoinColumn(name = "mtCode")
+    private Materials materials;
+
 }

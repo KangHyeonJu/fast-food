@@ -2,6 +2,7 @@ package com.boot.fastfood.controller;
 
 
 import com.boot.fastfood.entity.*;
+import com.boot.fastfood.repository.EmployeeRepository;
 import com.boot.fastfood.repository.MaterialRepository;
 import com.boot.fastfood.repository.OrdersRepository;
 import com.boot.fastfood.repository.WarehousingRepository;
@@ -9,6 +10,7 @@ import com.boot.fastfood.service.EmployeeService;
 import com.boot.fastfood.service.MaterialService;
 import com.boot.fastfood.service.VendorService;
 import com.boot.fastfood.service.WarehousingService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +28,25 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
+@RequiredArgsConstructor
 public class MaterialController {
-    @Autowired
-    private VendorService vendorService;
-    @Autowired
-    private MaterialService materialService;
 
-    @Autowired
-    private WarehousingService warehousingService;
+    private final VendorService vendorService;
 
-    @Autowired
-    private OrdersRepository ordersRepository;
+    private final MaterialService materialService;
 
-    @Autowired
-    private WarehousingRepository warehousingRepository;
-    @Autowired
-    private EmployeeService employeeService;
+
+    private final WarehousingService warehousingService;
+
+
+    private final OrdersRepository ordersRepository;
+
+
+    private final WarehousingRepository warehousingRepository;
+
+    private final EmployeeService employeeService;
+
+    private final EmployeeRepository employeeRepository;
 
 
     //자재관리
@@ -53,13 +58,79 @@ public class MaterialController {
     @GetMapping("/warehousing")
     public String Warehousing(Model model) {
 
+        List<Materials> materials = materialService.findAll();
+        model.addAttribute("materials", materials);
+
+        List<Employee> employees = employeeService.findAll();
+        model.addAttribute("employees", employees);
+
+        List<Warehousing> warehousings = warehousingService.findAll();
+        model.addAttribute("warehousings", warehousings);
+
+        List<Orders> orders = ordersRepository.findAll();
+        model.addAttribute("orders", orders);
+
+        List<Vendor> vendors = vendorService.findAll();
+        model.addAttribute("vendors", vendors);
+
         return "material/Warehousing";
     }
+
+    @GetMapping("/searchWarehousing")
+    public String searchWarehousing(
+            @RequestParam(required = false, name = "odCode") String odCode,
+            @RequestParam(required = false, name = "vdName") String vdName,
+            @RequestParam(required = false, name = "whDate") LocalDate whDate,
+            @RequestParam(required = false, name = "mtName") String mtName,
+            @RequestParam(required = false, name = "emName") String emName,
+            Model model) {
+
+        List<Warehousing> warehousings = warehousingService.findAll();
+
+        // 필터링 조건에 따라 검색 처리
+        if (odCode != null && !odCode.isEmpty()) {
+            warehousings = warehousings.stream()
+                    .filter(wh -> wh.getOrders().getOdCode().contains(odCode))
+                    .collect(Collectors.toList());
+        }
+
+        if (vdName != null && !vdName.isEmpty()) {
+            warehousings = warehousings.stream()
+                    .filter(wh -> wh.getVendor().getVdName().contains(vdName))
+                    .collect(Collectors.toList());
+        }
+
+        if (whDate != null) {
+            warehousings = warehousings.stream()
+                    .filter(wh -> wh.getWhDate().equals(whDate))
+                    .collect(Collectors.toList());
+        }
+
+        if (mtName != null && !mtName.isEmpty()) {
+            warehousings = warehousings.stream()
+                    .filter(wh -> wh.getMaterials().getMtName().contains(mtName))
+                    .collect(Collectors.toList());
+        }
+
+        if (emName != null && !emName.isEmpty()) {
+            warehousings = warehousings.stream()
+                    .filter(wh -> wh.getEmployee().getEmName().contains(emName))
+                    .collect(Collectors.toList());
+        }
+
+        model.addAttribute("warehousings", warehousings);
+        model.addAttribute("materials", materialService.findAll());
+        model.addAttribute("employees", employeeService.findAll());
+
+        return "material/Warehousing";  // HTML 템플릿 파일 이름
+    }
+
 
     @GetMapping("/release")
     public String Release() {
         return "material/Release";
     }
+
     @GetMapping("/material")
     public String getMaterialPage(Model model) {
 
@@ -85,16 +156,17 @@ public class MaterialController {
         List<Employee> employees = employeeService.findAll();
         model.addAttribute("employees", employees);
 
+
         return "material/Material";  // HTML 템플릿 파일 이름
     }
+
     @PostMapping("/material")
-    public String updateWhStatus(@RequestParam("odCode") String odCode, @RequestParam("emName") String emName) {
+    public String updateWhStatus(@RequestParam("odCode") String odCode, @RequestParam("emName") String emName,
+                                 @RequestParam("mtCode") String mtCode, @RequestParam("vdCode") String vdCode){
         Orders order = ordersRepository.findByOdCode(odCode);
-        System.out.println("11111111"+odCode);
         if (order != null) {
             order.setWhStatus(1);
             ordersRepository.save(order);
-            System.out.println("222222222");
             LocalDateTime currentTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
             String whCode = "OD" + currentTime.format(formatter);
@@ -104,15 +176,37 @@ public class MaterialController {
             warehousing.setWhDate(LocalDate.now());
             warehousing.setWhCode(whCode);
 
-            Optional<Employee> employeeOptional = employeeService.findByEmName(emName);
 
+//            Optional<Employee> employeeOptional = employeeService.findByEmName(emName);
 
-            if (employeeOptional.isPresent()) {
-                warehousing.setEmployee(employeeOptional.get());
-                warehousingRepository.save(warehousing);
+            Employee employee = employeeRepository.findByEmName(emName);
+
+            warehousing.setEmployee(employee);
+
+//            if (employeeOptional.isPresent()) {
+//                warehousing.setEmployee(employeeOptional.get());
+//            } else {
+//                throw new IllegalArgumentException(emName);
+//            }
+
+            Optional<Vendor> VendorOptional = vendorService.findByVdCode(vdCode);
+
+            if (VendorOptional.isPresent()) {
+                warehousing.setVendor(VendorOptional.get());
             } else {
-                throw new IllegalArgumentException(emName);
+                throw new IllegalArgumentException(vdCode);
             }
+
+            Optional<Materials> MaterialsOptional = materialService.findByMtCode(mtCode);
+
+            if (MaterialsOptional.isPresent()) {
+                warehousing.setMaterials(MaterialsOptional.get());
+            } else {
+                throw new IllegalArgumentException(mtCode);
+            }
+
+            warehousingRepository.save(warehousing);
+
         }
         return "redirect:/material";
     }
