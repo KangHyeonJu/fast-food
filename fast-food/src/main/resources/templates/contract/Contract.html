@@ -41,6 +41,7 @@
                                 <li>
                                     <h4>제품명 :
                                         <select name="itName">
+                                            <option value="">전체</option>
                                             <option th:each="item : ${items}" th:value="${item.itName}"
                                                     th:text="${item.itName}"></option>
                                         </select>

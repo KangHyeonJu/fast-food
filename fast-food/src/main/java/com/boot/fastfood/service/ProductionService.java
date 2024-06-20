@@ -31,7 +31,7 @@ public class ProductionService {
         dto.setPmCode(production.getPmCode());
         dto.setPmSDate(production.getPmSDate());
         dto.setPmEDate(production.getPmEDate());
-        dto.setCtAmount(production.getCtAmount());
+        dto.setPmAmount(production.getPmAmount());
 //        dto.setItCode(production.getItName().getItCode());
         dto.setItName(production.getItName().getItName());
         return dto;

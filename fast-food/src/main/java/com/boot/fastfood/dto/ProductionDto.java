@@ -14,5 +14,5 @@ public class ProductionDto {
     private int pNo;
     private String itCode;
     private String itName;
-    private int ctAmount;
+    private int pmAmount;
 }
