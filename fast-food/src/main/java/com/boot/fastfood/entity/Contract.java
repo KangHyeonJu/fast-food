@@ -1,5 +1,6 @@
 package com.boot.fastfood.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,10 +18,12 @@ public class Contract {
     @Column(name = "ctCode")
     private String ctCode;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "clCode")
     private Clients clients;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "itCode")
     private Items items;
@@ -37,10 +40,12 @@ public class Contract {
     @Column(name = "deliveryDate")
     private LocalDate deliveryDate;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "emCode")
     private Employee employee;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "contract")
     private List<Production> productions;
 

@@ -1,5 +1,6 @@
 package com.boot.fastfood.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,8 +20,13 @@ public class Materials {
     @Column(name = "mtStock")
     private int mtStock;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "vdCode")
     private Vendor vendor;
+
+    private int mtMin;
+
+    private int mtMax;
 
 }

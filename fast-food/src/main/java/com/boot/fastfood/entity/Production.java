@@ -23,12 +23,10 @@ public class Production {
     private Contract contract;
 
     @Column(name = "pmSDate")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date pmSDate;
+    private LocalDate pmSDate;
 
     @Column(name = "pmEDate")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date pmEDate;
+    private LocalDate pmEDate;
 
     //실생산량
     @Column(name = "pNo")
@@ -36,7 +34,7 @@ public class Production {
 
     //생산품
     @ManyToOne
-    @JoinColumn(name = "itName", referencedColumnName = "itName")
+    @JoinColumn(name = "itCode")
     private Items itName;
 
     //생산목표량

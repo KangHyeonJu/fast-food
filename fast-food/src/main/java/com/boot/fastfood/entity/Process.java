@@ -22,8 +22,9 @@ public class Process {
     @Column(name = "pcCnt")
     private String pcCnt;
 
-    @OneToMany(mappedBy = "fcCode")
-    private List<Facility> facilities;
+    @ManyToOne
+    @JoinColumn(name = "fcCode")
+    private Facility facility;
 
     @Builder
     public Process(String pcCode, String pcName, String pcCnt) {

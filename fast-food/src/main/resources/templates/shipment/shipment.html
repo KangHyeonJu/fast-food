@@ -7,7 +7,7 @@
     p, select{
       font-size: 16px;
     }
-    </style>
+  </style>
 </th:block>
 <th:block layout:fragment="script">
   <script>
@@ -34,7 +34,7 @@
 
       console.log("emName: " + emName);
 
-      if(emCode === "null"){
+      if(emName === "null"){
         alert('작업자를 선택하세요.');
       }else if(confirm('출하등록시 취소가 불가능합니다.\n출하하시겠습니까?')){
         fetch('/shipment/'+ smCode + '/' + emName, {
@@ -51,7 +51,7 @@
           }
         }).catch(error => {
           console.error('error: ', error);
-          alert('출하 등록 중 오류가 발생했습니다.');
+          alert('출하등록 중 오류가 발생했습니다.');
         });
       }
     }
@@ -70,7 +70,7 @@
 
         <div style="float: left; margin-left: 18px">
           <p>작업자 :
-            <select id="emCode">
+            <select id="emName">
               <option value="null">선택</option>
               <th:block th:each="employee : ${employees}">
                 <option th:text="${employee.emName}" th:value="${employee.emName}"></option>

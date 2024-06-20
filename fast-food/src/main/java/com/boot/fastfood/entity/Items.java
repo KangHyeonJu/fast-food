@@ -26,6 +26,7 @@ public class Items {
     @Column(name = "itType")
     private String itType;
 
+    private int itEa;
 
     @Builder
     public Items(String itCode, String itName, String itType) {

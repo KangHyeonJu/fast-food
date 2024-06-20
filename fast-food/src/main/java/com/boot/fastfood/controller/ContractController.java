@@ -49,7 +49,7 @@ public class ContractController {
         List<Items> items = itemService.findAll();
         model.addAttribute("items", items);
 
-        List<Employee> employees = employeeService.findAll();
+        List<Employee> employees = employeeService.getAllEmployees();
         model.addAttribute("employee", employees);
 
         return "contract/Contract";

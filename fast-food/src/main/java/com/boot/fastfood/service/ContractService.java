@@ -94,8 +94,8 @@ public class ContractService {
         production.setContract(contract);
         production.setPmCode(pmCode);
         production.setItName(item);
-        production.setPmSDate(Date.from(productionStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        production.setPmEDate(Date.from(productionEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        production.setPmSDate(productionStartDate);
+        production.setPmEDate(productionEndDate);
         production.setPmAmount(pmAmount);
         // 생산량 등 다른 필요한 정보 설정
 

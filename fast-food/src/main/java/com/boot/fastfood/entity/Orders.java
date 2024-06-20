@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -24,14 +25,10 @@ public class Orders {
     private Materials materials;
 
     @Column(name = "odDate")
-    private Date odDate;
+    private LocalDate odDate;
 
     @Column(name = "odAmount")
     private int odAmount;
-
-    @ManyToOne
-    @JoinColumn(name = "vdCocd")
-    private Vendor vendor;
 
     @ManyToOne
     @JoinColumn(name = "emCode")

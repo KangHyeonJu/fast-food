@@ -3,14 +3,15 @@ package com.boot.fastfood.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter @Setter
 public class ProductionDto {
     private String pmCode;
     private String ctCode;
-    private Date pmSDate;
-    private Date pmEDate;
+    private LocalDate pmSDate;
+    private LocalDate pmEDate;
     private int pNo;
     private String itCode;
     private String itName;
