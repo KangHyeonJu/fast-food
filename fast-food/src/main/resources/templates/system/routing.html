@@ -1,22 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout1}">
 <div layout:fragment="content">
-    <th:block layout:fragment="script">
-        <script>
-            $(document).ready(function(){
-                // 모달을 띄울 버튼을 클릭했을 때
-                $("#modalTriggerButton").click(function(){
-                    $("#itemCreate").modal('show');
-                });
-            });
-            $(document).ready(function(){
-                // 모달을 띄울 버튼을 클릭했을 때
-                $("#modalTriggerButton").click(function(){
-                    $("#process").modal('show');
-                });
-            });
-        </script>
-    </th:block>
     <style>
         .button-container {
             display: flex;
@@ -114,17 +98,17 @@
                                     <th width="20%">품목코드</th>
                                     <th width="20%">품목명</th>
                                     <th width="20%">품목분류</th>
-                                    <th width="20%">비고</th>
+                                    <th width="20%">개수</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr class="itemList" th:each="item : ${itemList}">
-                                    <td></td>
+                                    <td id="number"></td>
                                     <td><input type="checkbox"></td>
                                     <td th:text="${item.itCode}" id="showPanel" th:value="${item.itCode}"></td>
                                     <td class="center" th:text="${item.itName}" ></td>
                                     <td class="center" th:text="${item.itType}"></td>
-                                    <td>  </td>
+                                    <td class="center" th:text="${item.itCnt}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -217,97 +201,142 @@
         <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
-<div class="modal fade" id="itemCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">품목 등록</h4>
-            </div>
-            <div class="modal-body">
-                <div class="item group">
-                    <div class="item">
-                        <label class="item-title">품목명</label><input class="form-control" id="itName">
-                    </div>
-                    <div class="item">
-                        <label class="item-title">품목분류</label>
-                        <select class="form-control" id="itType">
-                            <option value="즙">즙</option>
-                            <option value="젤리스틱">젤리스틱</option>
-                        </select>
-                    </div>
+    <div class="modal fade" id="itemCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">품목 등록</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="item group">
+                        <div class="item">
+                            <label class="item-title">품목명</label><input class="form-control" id="itName">
+                        </div>
+                        <div class="item">
+                            <label class="item-title">품목분류</label>
+                            <select class="form-control" id="itType">
+                                <option value="즙">즙</option>
+                                <option value="젤리스틱">젤리스틱</option>
+                            </select>
+                        </div>
+                        <div class="item">
+                            <label class="item-title">개수<input class="form-control" id="itCnt"></label>
+                        </div>
 
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="itemCreateBtn">등록</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="itemCreateBtn">등록</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-content -->
+        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+    <!-- /.modal -->
 
-<div class="modal fade" id="process" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="Label">공정 등록</h4>
-            </div>
-            <div class="modal-body">
-                <div class="item group">
-                    <div class="item">
-                        <label class="item-title">공정명</label><input class="form-control" id="pcName" >
-                    </div>
-                    <div class="item">
-                        <label class="item-title">공정내용</label><input class="form-control" id="pcCnt">
-                    </div>
-                    <div class="item">
-                        <label class="item-title">설비</label>
-                        <select class="form-control" id="facility">
-                            <option value="추출기">추출기</option>
-                            <option value="여과기">여과기</option>
-                            <option value="포장기">포장기</option>
-                            <option value="살균기">살균기</option>
-                            <option value="혼합기">혼합기</option>
-                            <option value="충진기">충진기</option>
-                            <option value="금속검출기">금속검출기</option>
-                            <option value="설비없음">설비없음</option>
-                    </select>
-                    </div>
+    <div class="modal fade" id="process" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="Label">공정 등록</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="item group">
+                        <div class="item">
+                            <label class="item-title">공정명</label><input class="form-control" id="pcName" >
+                        </div>
+                        <div class="item">
+                            <label class="item-title">공정내용</label><input class="form-control" id="pcCnt">
+                        </div>
+                        <div class="item">
+                            <label class="item-title">설비</label>
+                            <select class="form-control" id="facility">
+                                <option value="추출기">추출기</option>
+                                <option value="여과기">여과기</option>
+                                <option value="포장기">포장기</option>
+                                <option value="살균기">살균기</option>
+                                <option value="혼합기">혼합기</option>
+                                <option value="충진기">충진기</option>
+                                <option value="금속검출기">금속검출기</option>
+                                <option value="설비없음">설비없음</option>
+                            </select>
+                        </div>
 
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="processBtn">등록</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="processBtn">등록</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-content -->
+        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+    <!-- /.modal -->
 </div>
 <!-- /#wrapper -->
 
 <th:block layout:fragment="script">
     <script>
         $(document).ready(function() {
-            // "품목코드" 셀을 클릭했을 때 이벤트 리스너 추가
+            var le = $(".item").length
+            for(i=1; i<le.length; i++) {
+
+                $("#number").html(i);
+            }
+
+            // 품목을 클릭했을 때 라우팅 목록 출력됨
             $(".itemList").on("click", function() {
                 var itCode = $(this).find("#showPanel").text().trim();
-                let selectCheck = [];
-                $("#checkBox:checked").each(function(index){
-                    var value = $(this).val();
-                    selectCheck.push(value);
-                })
-
                 $("#hiddenItCode").val(itCode);
+               getRouting(itCode)
+            });
+            <!--품목 클릭 이벤트 끝-->
 
+            let selectCheck = [];
+
+            <!--체크박스를 누른 순서로 배열 입력-->
+            document.querySelectorAll("#checkBox").forEach(checkbox => {
+                checkbox.addEventListener("click", (event) => {
+                    const value = event.target.value;
+                    <!--체크되어 있는 값 비동기 db저장-->
+                    var itCode = $("#hiddenItCode").val();
+                    if (event.target.checked) {
+                        selectCheck.push(value);
+                        fetch("/routing", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                itCode : itCode,
+                                pcCode : selectCheck
+                            }),
+                        }).then(() => {
+                            getRouting(itCode)
+                        });
+                    } else {
+                        <!--체크박스 해제할 때 db삭제-->
+                        const index = selectCheck.indexOf(value);
+                        if (index > -1) {
+                            selectCheck.splice(index, 1);
+                        }
+                        fetch("/routing/" + itCode + "/" + value, {
+                            method:"DELETE",
+                        }).then(() => {
+                            getRouting(itCode)
+                        })
+                    }
+                });
+            });
+
+            //실시간 db출력하는 함수
+            function getRouting(itCode) {
                 $.ajax({
                     url: "/routing/" + itCode,
                     method: "GET",
@@ -323,102 +352,15 @@
                                 "</tr>";
                         });
                         $("#itemInfo").html(tableContent);
-                        // 패널을 보여줌
                         $("#panelshow").show();
                     },
-                        error: function () {
-                            alert("품목 정보를 불러오는 데 실패했습니다.");
-                        }
+                    error: function () {
+                        alert("품목 정보를 불러오는 데 실패했습니다.");
+                    }
                 });
-            });
-            let selectCheck = [];
-
-            $("#checkbox").change(function() {
-
-                var value = $(this).val();
-                console.log(value);
-                if($(value).is(":checked")) {
-                    selectCheck.push(value)
-                }
-                console.log(selectCheck);
-            })
-
-            //document.addEventListener("DOMContentLoaded", () => {
-                const routingAddBtn = document.getElementById("routingAddBtn");
-                if (routingAddBtn) {
-                    routingAddBtn.addEventListener("click", (event) => {
-                        //var itCode = document.getElementById("showPanel").value
-                        var itCode = $("#hiddenItCode").val();
-
-
-                        $("#checkBox:checked").each(function(index){
-                            var value = $(this).val();
-                            selectCheck.push(value);
-                        })
-
-
-                        fetch("/routing", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                itCode : itCode,
-                                pcCode : selectCheck
-                            }),
-                        }).then(() => {
-                            alert("등록 완료되었습니다. ");
-                            location.replace("/routing");
-
-                        });
-
-                        //})
-                    })
-                }
-            })
-      //  });
-
-            /*
-        //라우팅 등록
-        document.addEventListener("DOMContentLoaded", () => {
-            const routingAddBtn = document.getElementById("routingAddBtn");
-            if (routingAddBtn) {
-                routingAddBtn.addEventListener("click", (event) => {
-                    //var itCode = document.getElementById("showPanel").value
-                    var itCode = $("#hiddenItCode").val();
-
-
-                    $("#checkBox:checked").each(function(index){
-                        var value = $(this).val();
-                        selectCheck.push(value);
-                    })
-
-
-                    fetch("/routing", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            itCode : itCode,
-                            pcCode : selectCheck
-                        }),
-                    }).then(() => {
-                        alert("등록 완료되었습니다. ");
-                        location.replace("/routing");
-
-                    });
-
-                    //})
-                })
             }
-        })
 
-             */
-
-
-        //품목 등록
-        document.addEventListener("DOMContentLoaded", () => {
+            //품목 등록
             const createButton = document.getElementById("itemCreateBtn");
             if (createButton) {
                 createButton.addEventListener("click", (event) => {
@@ -429,7 +371,8 @@
                         },
                         body: JSON.stringify({
                             itName: document.getElementById("itName").value,
-                            itType: document.getElementById("itType").value
+                            itType: document.getElementById("itType").value,
+                            itCnt: document.getElementById("itCnt").value
                         }),
                     }).then(() => {
                         alert("등록 완료되었습니다. ");
@@ -437,13 +380,11 @@
                     });
                 });
             }
-        });
-        //공정 등록
-        document.addEventListener("DOMContentLoaded", () => {
-            const createButton = document.getElementById("processBtn");
 
-            if (createButton) {
-                createButton.addEventListener("click", (event) => {
+            //공정 등록
+            const processButton = document.getElementById("processBtn");
+            if (processButton) {
+                processButton.addEventListener("click", (event) => {
                     fetch("/addProcess", {
                         method: "POST",
                         headers: {
@@ -451,7 +392,8 @@
                         },
                         body: JSON.stringify({
                             pcName: document.getElementById("pcName").value,
-                            pcCnt: document.getElementById("pcCnt").value
+                            pcCnt: document.getElementById("pcCnt").value,
+                            fcName : document.getElementById("facility").value
                         }),
                     }).then(() => {
                         alert("등록 완료되었습니다. ");
@@ -459,7 +401,9 @@
                     });
                 });
             }
-        });
+
+        })
+        <!--문서 시작 끝-->
     </script>
 
 </th:block>

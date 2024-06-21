@@ -14,11 +14,13 @@ public class AddItemDTO {
 
     private String itName;
     private String itType;
+    private Long itCnt;
 
     public Items toEntity() {
         return Items.builder()
                 .itName(itName)
                 .itType(itType)
+                .itCnt(itCnt)
                 .build();
     }
 }

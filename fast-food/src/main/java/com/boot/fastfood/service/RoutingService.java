@@ -1,6 +1,7 @@
 package com.boot.fastfood.service;
 
 import com.boot.fastfood.dto.Routing.AddRoutingDTO;
+import com.boot.fastfood.dto.Routing.DeleteRoutingDTO;
 import com.boot.fastfood.entity.Items;
 import com.boot.fastfood.entity.Process;
 import com.boot.fastfood.entity.Routing;
@@ -56,9 +57,14 @@ public class RoutingService {
     public void delete(String itCode) {
         List<Routing> routingList = routingRepository.findByItems_ItCode(itCode);
 
-        for(Routing routing : routingList) {
-            routingRepository.delete(routing);
-        }
+        routingRepository.deleteAll(routingList);
+    }
+
+    @Transactional
+    public void deleteById(String itCode, String pcCode) {
+        Routing routing = routingRepository.findByItCodeAndPcCode(itCode, pcCode);
+
+        routingRepository.delete(routing);
     }
 
     public List<Routing> findAll() {

@@ -1,20 +1,15 @@
-package com.boot.fastfood.dto.Bom;
+package com.boot.fastfood.dto.Routing;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddBomDTO {
-
+public class DeleteRoutingDTO {
     private String itCode;
-    private List<String> mtCode;
-
-
+    private String pcCode;
 }

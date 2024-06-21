@@ -26,5 +26,9 @@ public class BOM {
     @Column(name = "mtAmount")
     private int mtAmount;
 
+    public void update(int mtAmount) {
+        this.mtAmount = mtAmount;
+    }
+
 }
 

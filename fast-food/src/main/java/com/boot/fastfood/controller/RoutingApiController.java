@@ -3,6 +3,7 @@ package com.boot.fastfood.controller;
 import com.boot.fastfood.dto.Process.ProcessDTO;
 import com.boot.fastfood.dto.Process.ProcessListDTO;
 import com.boot.fastfood.dto.Routing.AddRoutingDTO;
+import com.boot.fastfood.dto.Routing.DeleteRoutingDTO;
 import com.boot.fastfood.entity.Process;
 import com.boot.fastfood.entity.Routing;
 import com.boot.fastfood.service.ItemService;
@@ -58,5 +59,10 @@ public class RoutingApiController {
                 .body(listDTO);
     }
 
+    @DeleteMapping("/routing/{itCode}/{pcCode}")
+    public ResponseEntity<?> deleteRouting(@PathVariable String itCode, @PathVariable String pcCode) {
+        routingService.deleteById(itCode, pcCode);
 
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

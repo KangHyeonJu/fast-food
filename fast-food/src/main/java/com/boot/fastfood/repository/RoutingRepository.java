@@ -18,5 +18,10 @@ public interface RoutingRepository extends JpaRepository<Routing, Long> {
 
     List<Routing> findByItems_ItCode(String itCode);
 
+    Routing findByProcess_pcCode(String pcCode);
+
+    @Query("SELECT r FROM Routing r WHERE r.items.itCode = :itCode AND r.process.pcCode = :pcCode")
+    Routing findByItCodeAndPcCode(@Param("itCode") String itCode, @Param("pcCode") String pcCode);
+
 }
 

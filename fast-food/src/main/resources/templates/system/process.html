@@ -3,16 +3,6 @@
 
 
 <div layout:fragment="content">
-    <th:block layout:fragment="script">
-        <script>
-            $(document).ready(function(){
-                // 모달을 띄울 버튼을 클릭했을 때
-                $("#modalTriggerButton").click(function(){
-                    $("#itemCreate").modal('show');
-                });
-            });
-        </script>
-    </th:block>
     <style>
         .button-container {
             display: flex;
@@ -107,7 +97,7 @@
                                     <th width="20%">품목코드</th>
                                     <th width="20%">품목명</th>
                                     <th width="20%">품목분류</th>
-                                    <th width="20%">비고</th>
+                                    <th width="20%">개수</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -117,6 +107,7 @@
                                     <td th:text="${item.itCode}" id="showPanel" th:value="${item.itCode}"></td>
                                     <td class="center" th:text="${item.itName}" ></td>
                                     <td class="center" th:text="${item.itType}"></td>
+                                    <td class="center" th:text="${item.itCnt}"></td>
                                     <td>  </td>
                                 </tr>
                                 </tbody>
@@ -146,8 +137,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="materialsList" th:each="materials : ${materialsList}">
-                                    <td>1</td>
+                                <tr class="materialsList" th:each="materials, iterStat : ${materialsList}">
+                                    <td class="number" th:text="${iterStat.index + 1}"></td>
                                     <td><input type="checkbox" class="checkbox" id="checkBox" th:value="${materials.mtCode}"></td>
                                     <td th:text="${materials.mtCode}" id="mtCode"></td>
                                     <td class="center" th:text="${materials.mtName}" id="mtName"></td>
@@ -169,10 +160,7 @@
                                                 <th width="1%"> </th>
                                                 <th width="15%">자재코드</th>
                                                 <th width="15%">자재명</th>
-                                                <th width="15%">자재분류</th>
-                                                <th width="15%">자재규격</th>
-                                                <th width="15%">기준단위</th>
-                                                <th width="15%">비고</th>
+                                                <th width="15%">자재 투입량</th>
                                             </tr>
                                             </thead>
                                             <tbody id="itemInfo">
@@ -217,6 +205,10 @@
                                 <option value="즙">즙</option>
                                 <option value="젤리스틱">젤리스틱</option>
                             </select>
+
+                        </div>
+                        <div class="item">
+                            <label class="item-title">개수<input class="form-control" id="itCnt"></label>
                         </div>
 
                     </div>
@@ -236,54 +228,134 @@
 <th:block layout:fragment="script">
     <script>
         $(document).ready(function() {
-            // "품목코드" 셀을 클릭했을 때 이벤트 리스너 추가
+            // 테이블의 각 <tr>에 번호 부여
+            $('#dataTables-example tbody tr').each(function(index) {
+                $(this).find('td:first').text(index + 1); // 첫 번째 <td>에 번호 추가
+            });
+            // 품목을 클릭했을 때 bom 목록 출력됨
             $(".itemList").on("click", function() {
                 var itCode = $(this).find("#showPanel").text().trim();
-                /*
-                let selectCheck = [];
-                $("#checkBox:checked").each(function(index){
-                    var value = $(this).val();
-                    selectCheck.push(value);
-                })
-
-                 */
                 $("#hiddenItCode").val(itCode);
-                $("#panelshow").show();
+                getBOM(itCode);
+            });
+            //itemList 클릭 이벤트 끝
 
+            let selectCheck = [];
+
+            <!--체크박스를 누른 순서로 배열 입력-->
+            document.querySelectorAll("#checkBox").forEach(checkbox => {
+                checkbox.addEventListener("click", (event) => {
+                    const value = event.target.value;
+                    <!--체크되어 있는 값 비동기 db저장-->
+                    var itCode = $("#hiddenItCode").val();
+                    if (event.target.checked) {
+                        selectCheck.push(value);
+                        fetch("/bom", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                itCode : itCode,
+                                mtCode : selectCheck
+                            }),
+                        }).then(() => {
+                            getBOM(itCode);
+                        });
+                    } else {
+                        <!--체크박스 해제할 때 db삭제-->
+                        const index = selectCheck.indexOf(value);
+                        if (index > -1) {
+                            selectCheck.splice(index, 1);
+                        }
+                        fetch("/bom/" + itCode + "/" + value, {
+                            method:"DELETE",
+                        }).then(() => {
+                            getBOM(itCode)
+                        })
+                    }
+
+                });
+            });
+
+
+            var itCode = $("#hiddenItCode").val();
+            $("#itemInfo tr").each(function() {
+                var mtCode = $(this).find(".mtCode").text().trim();
+                var mtAmount = $(this).find(".input_text").val();
+
+                if (mtCode && mtAmount) {
+                    $(mtAmount).change()
+                    fetch("/bom/" + itCode + "/" + mtCode, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ mtAmount: parseInt(mtAmount) })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("Network response was not ok");
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            alert("등록 완료");
+                        })
+                        .catch(error => {
+                            alert("품목 정보를 불러오는 데 실패했습니다.");
+                        });
+                }
+            });
+
+            //$(document).on("click", "#bomAddBtn", function() {
+                var itCode = $("#hiddenItCode").val();
+                $("#itemInfo tr").each(function() {
+                    var mtCode = $(this).find(".mtCode").text().trim();
+                    var mtAmount = $(this).find(".input_text").val();
+                    console.log(mtCode);
+                    console.log(mtAmount);
+
+                    if (mtCode && mtAmount) {
+                        fetch("/bom/" + itCode + "/" + mtCode, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ mtAmount: parseInt(mtAmount) })
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error("Network response was not ok");
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                alert("등록 완료");
+                            })
+                            .catch(error => {
+                                alert("품목 정보를 불러오는 데 실패했습니다.");
+                            });
+                    }
+                });
+            //})
+
+            //실시간 db출력하는 함수
+            function getBOM(itCode) {
                 $.ajax({
                     url: "/bom/" + itCode,
                     method: "GET",
                     success: function (data) {
                         var tableContent = "";
-                        let select = [];
-                        data.materials.forEach(function(item, index) {
+                        data.bom.forEach(function(item, index) {
                             tableContent += "<tr>" +
                                 "<td>" + (index + 1) + "</td>" +
                                 "<td>" + " " + "</td>" +
                                 "<td>" + item.mtCode + "</td>" +
                                 "<td>" + item.mtName + "</td>" +
-                                "<td>" + " " + "</td>" +
-                                "<td>" + " " + "</td>" +
-                                "<td>" + " " + "</td>" +
-                                "<td>" + " " + "</td>" +
+                                "<td>" + "<input style='border:0; background-color: #fafafa' value='" +item.mtAmount+ "'>"   + "</td>" +
                                 "</tr>";
-                            $(".materialsList #checkBox").each(function() {
-                                if($(this).val()==item.mtCode) {
-                                    $(this).prop("checked", true);
-                                  //  select.push($(this))
-                                } else {
-                                    $(this).prop("checked", false);
-                                }
-                            })
                         });
-                        /*
-                        select.forEach((data) => {
-                            if(data.mtCode == item.mtCode) {
-                                $("#checkBox").prop("checked", true);
-                            }
-                        })
-
-                         */
                         $("#itemInfo").html(tableContent);
                         // 패널을 보여줌
                         $("#panelshow").show();
@@ -292,92 +364,36 @@
                         alert("품목 정보를 불러오는 데 실패했습니다.");
                     }
                 });
-            });
-        });
-
-        /*
-        $("#checkBox").change(function() {
-            //if($("#checkBox").is(":checked")) {
-               if($(this).is(":checked")) {
-                var check = $(this).val();
-                fetch("/materials/" + check, {
-                    method : "GET"
-                }).then(
-                    response => response.json())
-                    .then(
-                        data => {
-                            var tableContent = "";
-                            tableContent += "<tr>" +
-                                "<td>" + " " + "</td>" +
-                                "<td>" + " " + "</td>" +
-                                "<td>" + data.mtCode + "</td>" +
-                                "<td>" + data.mtName + "</td>" +
-                                "<td>" + " " + "</td>" +
-                                "<td>" + " " + "</td>" +
-                                "<td>" + " " + "</td>" +
-                                "<td>" + " " + "</td>" +
-                                "</tr>";
-                            $("#itemInfo").append(tableContent);
-                        })
             }
-        })
 
-         */
-
-        //품목 등록
-        document.addEventListener("DOMContentLoaded", () => {
+            //품목 등록
             const createButton = document.getElementById("itemCreateBtn");
             if (createButton) {
                 createButton.addEventListener("click", (event) => {
                     fetch("/items", {
                         method: "POST",
                         headers: {
-
-                        },
-                        body: JSON.stringify({
-                            itName: document.getElementById("itName").value,
-                            itType: document.getElementById("itType").value
-                        }),
-                    }).then(() => {
-                        alert("등록 완료되었습니다. ");
-                        location.replace("/routing");
-                    });
-                });
-            }
-        });
-
-
-
-        //bom 등록
-        document.addEventListener("DOMContentLoaded", () => {
-            const bomAddBtn = document.getElementById("bomAddBtn");
-            if (bomAddBtn) {
-                bomAddBtn.addEventListener("click", (event) => {
-                    //var itCode = document.getElementById("showPanel").value
-                    var itCode = $("#hiddenItCode").val();
-                    let selectCheck = [];
-                    $("#checkBox:checked").each(function(index){
-                        var value = $(this).val();
-                        selectCheck.push(value);
-                    })
-                    //selectCheck.forEach((pcCode, index) => {
-                    fetch("/bom", {
-                        method: "POST",
-                        headers: {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            itCode : itCode,
-                            mtCode : selectCheck
+                            itName: document.getElementById("itName").value,
+                            itType: document.getElementById("itType").value,
+                            itCnt: document.getElementById("itCnt").value
                         }),
                     }).then(() => {
                         alert("등록 완료되었습니다. ");
                         location.replace("/process");
                     });
-                    //})
-                })
+                });
             }
-        })
+
+        });
+        //실행 이벤트 끝
+
+
+
+
+
     </script>
 </th:block>
 </div>

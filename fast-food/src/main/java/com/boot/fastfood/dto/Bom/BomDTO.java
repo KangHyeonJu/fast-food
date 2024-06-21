@@ -5,16 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddBomDTO {
+public class BomDTO {
 
-    private String itCode;
-    private List<String> mtCode;
-
-
+    private String mtCode;
+    private String mtName;
+    private int mtAmount;
 }

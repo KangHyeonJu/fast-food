@@ -26,11 +26,15 @@ public class Items {
     @Column(name = "itType")
     private String itType;
 
+    @Column(name="itCnt")
+    private Long itCnt;
+
 
     @Builder
-    public Items(String itCode, String itName, String itType) {
+    public Items(String itCode, String itName, String itType, Long itCnt) {
         this.itCode = itCode;
         this.itName = itName;
         this.itType = itType;
+        this.itCnt = itCnt;
     }
 }
