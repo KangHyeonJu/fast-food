@@ -34,5 +34,10 @@ public class Orders {
     @JoinColumn(name = "emCode")
     private Employee employee;
 
+//    @Column(name = "odDueDate")
+//    private LocalDate odDueDate;
+//
+//    @Column(name = "odStatus", columnDefinition = "TINYINT(0)")
+//    private boolean odStatus;
 
 }

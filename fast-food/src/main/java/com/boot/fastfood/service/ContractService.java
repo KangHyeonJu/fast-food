@@ -41,7 +41,7 @@ public class ContractService {
             // 현재 시간을 기준으로 문자열 생성
             LocalDateTime currentTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-            String ctCode = "OD" + currentTime.format(formatter);
+            String ctCode = "CT" + currentTime.format(formatter);
 
             // 수주 객체 생성 및 필드 설정
             Contract contract = new Contract();

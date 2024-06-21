@@ -18,12 +18,10 @@ public class Contract {
     @Column(name = "ctCode")
     private String ctCode;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "clCode")
     private Clients clients;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "itCode")
     private Items items;
@@ -40,17 +38,13 @@ public class Contract {
     @Column(name = "deliveryDate")
     private LocalDate deliveryDate;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "emCode")
     private Employee employee;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "contract")
     private List<Production> productions;
 
     @Column(name = "ctStatus")
     private String ctStatus; // 수주 상태 필드새로 추가
-
-
 }

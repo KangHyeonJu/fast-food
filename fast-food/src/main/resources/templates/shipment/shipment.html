@@ -75,7 +75,6 @@
               <th:block th:each="employee : ${employees}">
                 <option th:text="${employee.emName}" th:value="${employee.emName}"></option>
               </th:block>
-
             </select>
           </p>
         </div>
@@ -90,7 +89,7 @@
 
         <br/>
         <!-- 검색 -->
-        <form th:action="@{'/shipment'}" role="form" method="get" th:object="${shipments}">
+        <form th:action="@{'/shipment'}" role="form" method="get">
           <th:block th:object="${shipSearchDto}">
             <div class="panel panel-default">
               <ul class="list-inline" style="margin: 15px 10px 10px 10px;">
