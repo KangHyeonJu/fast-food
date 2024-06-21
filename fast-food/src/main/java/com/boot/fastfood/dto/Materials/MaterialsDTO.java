@@ -19,5 +19,4 @@ public class MaterialsDTO {
         this.mtCode = materials.getMtCode();
         this.mtName = materials.getMtName();
     }
-
 }

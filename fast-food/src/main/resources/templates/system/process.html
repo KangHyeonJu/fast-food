@@ -228,10 +228,6 @@
 <th:block layout:fragment="script">
     <script>
         $(document).ready(function() {
-            // 테이블의 각 <tr>에 번호 부여
-            $('#dataTables-example tbody tr').each(function(index) {
-                $(this).find('td:first').text(index + 1); // 첫 번째 <td>에 번호 추가
-            });
             // 품목을 클릭했을 때 bom 목록 출력됨
             $(".itemList").on("click", function() {
                 var itCode = $(this).find("#showPanel").text().trim();
@@ -279,67 +275,6 @@
             });
 
 
-            var itCode = $("#hiddenItCode").val();
-            $("#itemInfo tr").each(function() {
-                var mtCode = $(this).find(".mtCode").text().trim();
-                var mtAmount = $(this).find(".input_text").val();
-
-                if (mtCode && mtAmount) {
-                    $(mtAmount).change()
-                    fetch("/bom/" + itCode + "/" + mtCode, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ mtAmount: parseInt(mtAmount) })
-                    })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error("Network response was not ok");
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            alert("등록 완료");
-                        })
-                        .catch(error => {
-                            alert("품목 정보를 불러오는 데 실패했습니다.");
-                        });
-                }
-            });
-
-            //$(document).on("click", "#bomAddBtn", function() {
-                var itCode = $("#hiddenItCode").val();
-                $("#itemInfo tr").each(function() {
-                    var mtCode = $(this).find(".mtCode").text().trim();
-                    var mtAmount = $(this).find(".input_text").val();
-                    console.log(mtCode);
-                    console.log(mtAmount);
-
-                    if (mtCode && mtAmount) {
-                        fetch("/bom/" + itCode + "/" + mtCode, {
-                            method: "PUT",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({ mtAmount: parseInt(mtAmount) })
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error("Network response was not ok");
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                alert("등록 완료");
-                            })
-                            .catch(error => {
-                                alert("품목 정보를 불러오는 데 실패했습니다.");
-                            });
-                    }
-                });
-            //})
-
             //실시간 db출력하는 함수
             function getBOM(itCode) {
                 $.ajax({
@@ -347,13 +282,13 @@
                     method: "GET",
                     success: function (data) {
                         var tableContent = "";
-                        data.bom.forEach(function(item, index) {
+                        data.materials.forEach(function(item, index) {
                             tableContent += "<tr>" +
                                 "<td>" + (index + 1) + "</td>" +
                                 "<td>" + " " + "</td>" +
-                                "<td>" + item.mtCode + "</td>" +
+                                "<td class='mtCodeList'>" + item.mtCode + "</td>" +
                                 "<td>" + item.mtName + "</td>" +
-                                "<td>" + "<input style='border:0; background-color: #fafafa' value='" +item.mtAmount+ "'>"   + "</td>" +
+                                "<td>" + "<input id='mtAmount' style='border:0; background-color: #fafafa'>"   + "</td>" +
                                 "</tr>";
                         });
                         $("#itemInfo").html(tableContent);
@@ -386,6 +321,42 @@
                     });
                 });
             }
+
+
+
+            $(document).on("click", "#bomAddBtn", function() {
+                var itCode = $("#hiddenItCode").val();
+                $("#itemInfo tr").each(function() {
+                    var mtCode = $(this).find(".mtCodeList").text().trim();
+                    var mtAmount = $(this).find("#mtAmount").val();
+                    console.log(mtCode);
+                    console.log(mtAmount);
+                    console.log(itCode);
+                    if (mtCode && mtAmount) {
+                        fetch("/bom/" + itCode + "/" + mtCode, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ mtAmount: parseInt(mtAmount) })
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error("Network response was not ok");
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                alert("등록 완료");
+                            })
+                            .catch(error => {
+                                alert("품목 정보를 불러오는 데 실패했습니다.");
+                            });
+                    }
+                });
+            })
+
+
 
         });
         //실행 이벤트 끝

@@ -3,6 +3,7 @@ package com.boot.fastfood.service;
 import com.boot.fastfood.dto.Item.AddItemDTO;
 import com.boot.fastfood.entity.Items;
 import com.boot.fastfood.repository.ItemRepository;
+import com.boot.fastfood.repository.RoutingRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ import java.util.List;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final RoutingRepository routingRepository;
+
+
     public Items findByitCode(String itCode) {
         return itemRepository.findById(itCode)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + itCode));
@@ -32,5 +36,9 @@ public class ItemService {
 
     public List<Items> findAll() {
         return itemRepository.findAll();
+    }
+
+    public void deleteById(String itCode) {
+        itemRepository.deleteById(itCode);
     }
 }

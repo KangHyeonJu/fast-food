@@ -29,7 +29,6 @@ public class Items {
     @Column(name="itCnt")
     private Long itCnt;
 
-
     @Builder
     public Items(String itCode, String itName, String itType, Long itCnt) {
         this.itCode = itCode;
