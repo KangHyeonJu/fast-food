@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -266,7 +267,47 @@ public class MaterialController {
 
         return "redirect:/release";
     }
+    @GetMapping("/searchRelease")
+    public String searchRelease(
+            @RequestParam(required = false, name = "rsDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate rsDate,
+            @RequestParam(required = false, name = "mtName") String mtName,
+            @RequestParam(required = false, name = "wkCode") String wkCode,
+            @RequestParam(required = false, name = "emName") String emName,
+            Model model) {
 
+        List<Releases> releases = releasesService.findAll();
+
+        // 필터링 조건에 따라 검색 처리
+        if (rsDate != null) {
+            releases = releases.stream()
+                    .filter(release -> release.getRsDate().equals(rsDate))
+                    .collect(Collectors.toList());
+        }
+
+        if (mtName != null && !mtName.isEmpty()) {
+            releases = releases.stream()
+                    .filter(release -> release.getMaterials().getMtName().contains(mtName))
+                    .collect(Collectors.toList());
+        }
+
+        if (wkCode != null && !wkCode.isEmpty()) {
+            releases = releases.stream()
+                    .filter(release -> release.getWorks().getWkCode().contains(wkCode))
+                    .collect(Collectors.toList());
+        }
+
+        if (emName != null && !emName.isEmpty()) {
+            releases = releases.stream()
+                    .filter(release -> release.getEmployee().getEmName().contains(emName))
+                    .collect(Collectors.toList());
+        }
+
+        model.addAttribute("releases", releases);
+        model.addAttribute("materials", materialService.findAll());
+        model.addAttribute("employees", employeeService.findAll());
+
+        return "material/Release";  // HTML 템플릿 파일 이름
+    }
 
     @GetMapping("/order_plan")
     public String order_plan() {

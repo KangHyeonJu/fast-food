@@ -8,6 +8,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">자재 출고 관리</h1>
+                    <h5>(단위 kg,L,개 기준)</h5>
                 </div>
                 <div class="col-lg-12 text-right mb-20">
                     <button class="btn btn-success">엑셀 저장 버튼</button>
@@ -16,33 +17,35 @@
                 <!-- 검색 -->
                 <div class="row">
                     <div class="col-lg-12" style="border: 1px solid black">
-                        <ul class="list-inline">
-                            <li>
-                                <h4>출고일 : <input type="date"></h4>
-                            </li>
-                            <li>
-                                <h4>원자재명 :
-                                    <select name="mtName">
-                                        <option value="">전체</option>
-                                        <option th:each="material : ${materials}" th:value="${material.mtName}"
-                                                th:text="${material.mtName}"></option>
-                                    </select>
-                                </h4>
-                            </li>
-                            <li>
-                                <h4>작업지시 코드 : <input name="#"></h4>
-                            </li>
-                            <li>
-                                <h4>작업자 :
-                                    <select>
-                                        <option>김OO</option>
-                                        <option>이OO</option>
-                                        <option>양OO</option>
-                                    </select>
-                                </h4>
-                            </li>
-                            <button class="btn btn-primary" style="float: right">조회</button>
-                        </ul>
+                        <form th:action="@{/searchRelease}" method="get">
+                            <ul class="list-inline">
+                                <li>
+                                    <h4>출고일 : <input type="date" name="rsDate"></h4>
+                                </li>
+                                <li>
+                                    <h4>원자재명 :
+                                        <select name="mtName">
+                                            <option value="">전체</option>
+                                            <option th:each="material : ${materials}" th:value="${material.mtName}"
+                                                    th:text="${material.mtName}"></option>
+                                        </select>
+                                    </h4>
+                                </li>
+                                <li>
+                                    <h4>작업지시 코드 : <input name="wkCode"></h4>
+                                </li>
+                                <li>
+                                    <h4> 작업자 :
+                                        <select name="emName">
+                                            <option value="">전체</option>
+                                            <option th:each="employee : ${employees}" th:value="${employee.emName}"
+                                                    th:text="${employee.emName}"></option>
+                                        </select>
+                                    </h4>
+                                </li>
+                                <button class="btn btn-primary" type="submit" style="float: right">조회</button>
+                            </ul>
+                        </form>
                     </div>
                 </div>
                 <!-- 검색 끝-->
@@ -97,24 +100,22 @@
                 <ul class="list-inline">
                     <li>
                         <h4>원자재 :
-                            <select>
-                                <option>양배추</option>
-                                <option>흑마늘</option>
-                                <option>석류</option>
-                                <option>매실</option>
-                                <option>벌꿀</option>
-                                <option>콜라겐</option>
-                                <option>포장지</option>
-                                <option>Box</option>
+                            <select name="mtName" id="mtNameSelect" onchange="updateStock()">
+                                <option value="">전체</option>
+                                <option th:each="material : ${materials}"
+                                        th:value="${material.mtName}"
+                                        th:data-stock="${material.mtStock}"
+                                        th:text="${material.mtName}"></option>
                             </select>
                         </h4>
                     </li>
                     <li>
-                        <h4>재고 : 500kg</h4>
+                        <h4>재고 : <span id="stockValue"></span></h4>
                     </li>
                 </ul>
             </div>
         </div>
+
     </div>
     <!-- /#page-wrapper -->
     <div class="modal fade" id="addOrderModal" tabindex="-1" role="dialog" aria-labelledby="addOrderModalLabel" aria-hidden="true">
@@ -179,6 +180,17 @@
                 });
             });
         });
+        function updateStock() {
+            var select = document.getElementById("mtNameSelect");
+            var stock = select.options[select.selectedIndex].getAttribute("data-stock");
+            var stockValueElement = document.getElementById("stockValue");
+
+            if (stock !== null && stock !== "") {
+                stockValueElement.textContent = stock;
+            } else {
+                stockValueElement.textContent = "N/A";
+            }
+        }
     </script>
 </th:block>
 
