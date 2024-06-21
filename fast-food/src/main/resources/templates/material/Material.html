@@ -45,34 +45,31 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body" style="height: 200px; overflow: auto">
-                            <div class="panel-body" style="height: 200px; overflow: auto">
-                                <table class="table table-striped table-bordered table-hover" style="width: 100%;"
-                                       id="dataTables-example2">
-                                    <thead>
-                                    <tr>
-                                        <th>발주 코드</th>
-                                        <th>입고 예정일</th>
-                                        <th>거래처</th>
-                                        <th>원자재명</th>
-                                        <th>입고량</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="order : ${orders}" th:if="${order.whStatus == 0}">
-                                        <td th:text="${order.odCode}"></td>
-                                        <td th:text="${order.odDueDate}"></td>
-                                        <td th:text="${order.materials.vendor.vdName}"></td>
-                                        <td th:text="${order.materials.mtName}"></td>
-                                        <td th:text="${order.odAmount}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.panel-body -->
+                            <table class="table table-striped table-bordered table-hover" style="width: 100%;"
+                                   id="dataTables-example2">
+                                <thead>
+                                <tr>
+                                    <th>발주 코드</th>
+                                    <th>입고 예정일</th>
+                                    <th>거래처</th>
+                                    <th>원자재명</th>
+                                    <th>입고량</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="order : ${orders}" th:if="${order.whStatus == 0}">
+                                    <td th:text="${order.odCode}"></td>
+                                    <td th:text="${order.odDueDate}"></td>
+                                    <td th:text="${order.materials.vendor.vdName}"></td>
+                                    <td th:text="${order.materials.mtName}"></td>
+                                    <td th:text="${order.odAmount}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <!-- /.panel -->
+                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.col-lg-12 -->
+                    <!-- /.panel -->
                 </div>
                 <!-- 테이블 1 끝-->
             </div>
@@ -96,7 +93,7 @@
                                                style="width: 100%;"
                                                id="dataTables-example">
                                             작업자 : <select id="emName">
-                                            <option value="none">전체</option>
+                                            <option value="">전체</option>
                                             <option th:each="employee : ${employees}" th:value="${employee.emName}"
                                                     th:text="${employee.emName}"></option>
                                         </select>
@@ -124,20 +121,13 @@
                                                                th:value="${todayOrder.odCode}"/>
                                                         <input type="hidden" name="emName"
                                                                th:value="${todayOrder.employee.emName}"/>
-                                                        <form method="post" th:action="@{/material}">
-                                                            <input type="hidden" name="odCode"
-                                                                   th:value="${todayOrder.odCode}"/>
-                                                            <input type="hidden" name="emName"
-                                                                   th:value="${todayOrder.employee.emName}"/>
-                                                            <input type="hidden" name="vdCode"
-                                                                   th:value="${todayOrder.materials.vendor.vdCode}"/>
-                                                            <input type="hidden" name="mtCode"
-                                                                   th:value="${todayOrder.materials.mtCode}"/>
-                                                            <button type="button" class="btn btn-success"
-                                                                    th:id="'saveOrderBtn-' + ${orderIndex.index}">등록하기
-                                                            </button>
-                                                        </form>
-
+                                                        <input type="hidden" name="vdCode"
+                                                               th:value="${todayOrder.materials.vendor.vdCode}"/>
+                                                        <input type="hidden" name="mtCode"
+                                                               th:value="${todayOrder.materials.mtCode}"/>
+                                                        <button type="button" class="btn btn-success"
+                                                                th:id="'saveOrderBtn-' + ${orderIndex.index}">등록하기
+                                                        </button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -161,7 +151,6 @@
     <script>
         $(document).ready(function () {
             $('#saveWorkerBtn').click(function () {
-                // Save worker logic here
                 $('#registerModal').modal('hide');
             });
 
@@ -174,6 +163,12 @@
                 var mtCode = $(this).closest('form').find('input[name=mtCode]').val();
 
                 if (confirm('정말 등록하시겠습니까? 자재 입고 등록시 취소가 불가능합니다.')) {
+
+                    if (emName === ""){
+                        alert("작업자를 선택해주세요");
+                        return;
+                    }
+
                     $.ajax({
                         type: 'POST',
                         url: '/material',

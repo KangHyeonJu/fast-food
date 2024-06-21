@@ -2,14 +2,9 @@ package com.boot.fastfood.controller;
 
 
 import com.boot.fastfood.entity.*;
-import com.boot.fastfood.repository.EmployeeRepository;
-import com.boot.fastfood.repository.MaterialRepository;
-import com.boot.fastfood.repository.OrdersRepository;
-import com.boot.fastfood.repository.WarehousingRepository;
-import com.boot.fastfood.service.EmployeeService;
-import com.boot.fastfood.service.MaterialService;
-import com.boot.fastfood.service.VendorService;
-import com.boot.fastfood.service.WarehousingService;
+import com.boot.fastfood.entity.QReleases;
+import com.boot.fastfood.repository.*;
+import com.boot.fastfood.service.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,22 +26,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MaterialController {
 
-    private final VendorService vendorService;
-
-    private final MaterialService materialService;
-
-
     private final WarehousingService warehousingService;
-
-
-    private final OrdersRepository ordersRepository;
-
-
     private final WarehousingRepository warehousingRepository;
 
     private final EmployeeService employeeService;
-
     private final EmployeeRepository employeeRepository;
+
+    private  final WorksService worksService;
+
+    private final ReleasesService releasesService;
+
+    private final OrdersRepository ordersRepository;
+
+    private final MaterialService materialService;
+    private final MaterialRepository materialRepository;
+
+    private final VendorService vendorService;
+
 
 
     //자재관리
@@ -125,12 +121,6 @@ public class MaterialController {
         return "material/Warehousing";  // HTML 템플릿 파일 이름
     }
 
-
-    @GetMapping("/release")
-    public String Release() {
-        return "material/Release";
-    }
-
     @GetMapping("/material")
     public String getMaterialPage(Model model) {
 
@@ -146,9 +136,10 @@ public class MaterialController {
         List<Vendor> vendors = vendorService.findAll();
         model.addAttribute("vendors", vendors);
 
-        // 모든 주문 목록을 가져와서 모델에 추가
-        List<Orders> orders = ordersRepository.findAll();
-        model.addAttribute("orders", orders);
+        LocalDate today = LocalDate.now();
+        List<Orders> futureOrders = ordersRepository.findByOdDueDateGreaterThanEqual(today);
+        model.addAttribute("orders", futureOrders);
+
 
         List<Orders> todayOrders = ordersRepository.findByOdDueDate(LocalDate.now());
         model.addAttribute("todayOrders", todayOrders);
@@ -164,6 +155,7 @@ public class MaterialController {
     public String updateWhStatus(@RequestParam("odCode") String odCode, @RequestParam("emName") String emName,
                                  @RequestParam("mtCode") String mtCode, @RequestParam("vdCode") String vdCode){
         Orders order = ordersRepository.findByOdCode(odCode);
+        Materials materials = materialRepository.findByMtCode(mtCode);
         if (order != null) {
             order.setWhStatus(1);
             ordersRepository.save(order);
@@ -176,18 +168,9 @@ public class MaterialController {
             warehousing.setWhDate(LocalDate.now());
             warehousing.setWhCode(whCode);
 
-
-//            Optional<Employee> employeeOptional = employeeService.findByEmName(emName);
-
             Employee employee = employeeRepository.findByEmName(emName);
 
             warehousing.setEmployee(employee);
-
-//            if (employeeOptional.isPresent()) {
-//                warehousing.setEmployee(employeeOptional.get());
-//            } else {
-//                throw new IllegalArgumentException(emName);
-//            }
 
             Optional<Vendor> VendorOptional = vendorService.findByVdCode(vdCode);
 
@@ -201,12 +184,15 @@ public class MaterialController {
 
             if (MaterialsOptional.isPresent()) {
                 warehousing.setMaterials(MaterialsOptional.get());
+                warehousingRepository.save(warehousing);
             } else {
                 throw new IllegalArgumentException(mtCode);
             }
 
-            warehousingRepository.save(warehousing);
-
+            int addedStock = order.getOdAmount();
+            int currentStock = materials.getMtStock();
+            materials.setMtStock(currentStock + addedStock);
+            materialRepository.save(materials);
         }
         return "redirect:/material";
     }
@@ -246,6 +232,39 @@ public class MaterialController {
         model.addAttribute("employees", employees);
 
         return "material/Material";
+    }
+
+    @GetMapping("/release")
+    public String Release(Model model) {
+
+        List<Materials> materials = materialService.findAll();
+        model.addAttribute("materials", materials);
+
+        List<Works> works = worksService.findAll();
+        model.addAttribute("works", works);
+
+        List<Releases> releases = releasesService.findAll();
+        model.addAttribute("releases", releases);
+
+        List<Employee> employees = employeeService.findAll();
+        model.addAttribute("employees", employees);
+
+        return "material/Release";
+    }
+    @PostMapping("/release/save")
+    public String saveRelease(
+            @RequestParam("wkCode") String wkCode,
+            @RequestParam("emCode") String emCode,
+            Model model) {
+        try {
+            releasesService.saveRelease(wkCode, emCode);
+            System.out.println("11111111111111" + emCode);
+            model.addAttribute("successMessage", "자재 출고가 성공적으로 등록되었습니다.");
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+
+        return "redirect:/release";
     }
 
 

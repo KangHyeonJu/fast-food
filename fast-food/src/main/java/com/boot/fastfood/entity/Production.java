@@ -43,4 +43,5 @@ public class Production {
     @Column(name = "pmAmount")
     private int pmAmount;
 
+
 }

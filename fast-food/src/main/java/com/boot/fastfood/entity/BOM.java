@@ -10,21 +10,18 @@ import java.io.Serializable;
 @Getter @Setter
 @Table(name = "bom")
 public class BOM {
-    @EmbeddedId
-    private BOMId id;
+    @Id
+    @Column(name = "bomCode")
+    private String bomCode;
 
     @ManyToOne
-    @MapsId("itCode")
     @JoinColumn(name = "itCode")
     private Items items;
 
     @ManyToOne
-    @MapsId("mtCode")
     @JoinColumn(name = "mtCode")
     private Materials materials;
 
     @Column(name = "mtAmount")
-    private int mtAmount;
-
+    private float mtAmount;
 }
-
