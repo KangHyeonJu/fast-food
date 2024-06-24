@@ -25,6 +25,7 @@ public class BomApiController {
     private final BomService bomService;
     private final MaterialsService materialsService;
 
+    //bom 등록
     @PostMapping("/bom")
     public ResponseEntity<?> saveRouting(@RequestBody AddBomDTO dto) {
 
@@ -41,6 +42,7 @@ public class BomApiController {
                 .body(bom);
     }
 
+    //bom 투입량 등록
     @PutMapping("/bom/{itCode}/{mtCode}")
     public ResponseEntity<?> bomInputAdd(@PathVariable String itCode, @PathVariable String mtCode,
                                          @RequestBody UpdateMaterialsDTO mtAmount) {
@@ -50,9 +52,9 @@ public class BomApiController {
                 .body(bom);
     }
 
+    //bom 조회
     @GetMapping("/bom/{itCode}")
     public ResponseEntity<?> item(@PathVariable String itCode) {
-
 
         List<BOM> bomList = bomService.findByid(itCode);
         MaterialsListDTO listDTO = new MaterialsListDTO();
@@ -62,8 +64,11 @@ public class BomApiController {
             MaterialsDTO dto = new MaterialsDTO();
             dto.setMtCode(materials.getMtCode());
             dto.setMtName(materials.getMtName());
+            dto.setMtAmount(bom.getMtAmount());
             listDTO.addProcess(dto);
         }
+        //bom에서 투입량, 코드 조회
+        //mt에서 이름 조회
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(listDTO);
@@ -85,6 +90,7 @@ public class BomApiController {
                 .body(listDTO);*/
     }
 
+    //bom 삭제
     @DeleteMapping("/bom/{itCode}/{mtCode}")
     public ResponseEntity<?> deleteRouting(@PathVariable String itCode, @PathVariable String mtCode) {
         bomService.deleteById(itCode, mtCode);

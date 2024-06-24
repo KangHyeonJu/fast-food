@@ -1,5 +1,6 @@
 package com.boot.fastfood.dto.Process;
 
+import com.boot.fastfood.entity.Facility;
 import com.boot.fastfood.entity.Process;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,8 @@ public class ProcessDTO {
     private String pcCode;
     private String pcName;
     private String pcCnt;
+    private String fcCode;
+    private String fcName;
 
     public ProcessDTO(Process process) {
         this.pcCode = process.getPcCode();

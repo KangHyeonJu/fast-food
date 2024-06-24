@@ -1,23 +1,24 @@
 package com.boot.fastfood.dto.Materials;
 
 import com.boot.fastfood.entity.Materials;
+import com.boot.fastfood.entity.Process;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MaterialsDTO {
+public class AddMaterialsDTO {
 
-    private String mtCode;
     private String mtName;
-    private int mtAmount;
 
-    public MaterialsDTO(Materials materials) {
-        this.mtCode = materials.getMtCode();
-        this.mtName = materials.getMtName();
+    public Materials toEntity() {
+        return Materials.builder()
+                .mtName(mtName)
+                .build();
     }
 }

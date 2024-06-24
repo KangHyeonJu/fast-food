@@ -15,7 +15,7 @@ public class AddProcessDTO {
 
     private String pcName;
     private String pcCnt;
-    private String fcName;
+    private String fcCode;
 
     public Process toEntity() {
         return Process.builder()

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 public class ItemApiController {
@@ -28,6 +30,20 @@ public class ItemApiController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+    @GetMapping("/itemSearch")
+    public ResponseEntity<?> itemSearch(@RequestParam(required = false, name = "itCode") String itCode,
+                                        @RequestParam(required = false, name="itName") String itName,
+                                        @RequestParam(required = false, name="itType") String itType) {
+        List<Items> items = itemService.search(itCode, itName, itType);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(items);
+    }
+
+
+
 
 
 }

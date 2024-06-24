@@ -50,10 +50,14 @@
                 <div class="panel-body">
                     <div class="form-group">
                         <p class="fa fa-search"></p>
-                        <label>품목코드</label><input class="form-control" >
-                        <label>품목명</label><input class="form-control" >
-                        <label>품목분류</label><input class="form-control">
-                        <button type="button" class="btn btn-primary">검색</button>
+                        <label>품목코드</label><input class="form-control" id="itCodeSearch" >
+                        <label>품목명</label><input class="form-control" id="itNameSearch">
+                        <label>품목분류</label>
+                        <select class="form-control" id="itTypeSearch">
+                            <option value="즙">즙</option>
+                            <option value="젤리스틱">젤리스틱</option>
+                        </select>
+                        <button type="button" class="btn btn-primary" id="itemSearchBtn">검색</button>
                     </div>
                 </div>
             </div>
@@ -68,9 +72,6 @@
                 </div>
                 <div  class="button-group">
                     <button id="excel-btn" type="button" class="btn btn-primary">엑셀 저장</button>
-                </div>
-                <div class="button-group">
-                    <button type="button" class="btn btn-danger" id="itemDeleteBtn">삭제</button>
                 </div>
             </div>
         </div>
@@ -93,7 +94,6 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th width="5%">번호</th>
                                     <th width="2%"> </th>
                                     <th width="20%">품목코드</th>
                                     <th width="20%">품목명</th>
@@ -103,7 +103,6 @@
                                 </thead>
                                 <tbody>
                                 <tr class="itemList" th:each="item : ${itemList}">
-                                    <td id="number"></td>
                                     <td><input type="checkbox" id="itemCheck" th:value="${item.itCode}"></td>
                                     <td th:text="${item.itCode}" id="showPanel" th:value="${item.itCode}"></td>
                                     <td class="center" th:text="${item.itName}" ></td>
@@ -119,7 +118,7 @@
                                             <p class="fa fa-search"></p>
                                             <label>공정코드</label><input class="form-control" >
                                             <label>공정명</label><input class="form-control" >
-                                            <label>공정분류</label><input class="form-control" >
+                                            <label>공정내용</label><input class="form-control" >
                                             <button type="button" class="btn btn-primary">검색</button>
                                         </div>
                                     </div>
@@ -131,30 +130,25 @@
                                     <div  class="button-group">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#process">공정 등록</button>
                                     </div>
-                                    <div class="button-group">
-                                        <button type="button" class="btn btn-danger">공정 삭제</button>
-                                    </div>
                                 </div>
                             </div>
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th width="5%">번호</th>
                                     <th width="2%"> </th>
                                     <th width="20%">공정코드</th>
                                     <th width="20%">공정명</th>
                                     <th width="20%">공정분류</th>
-                                    <th width="20%">비고</th>
+                                    <th width="20%">설비</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="processList">
                                 <tr class="processList" th:each="process : ${processList}">
-                                    <td>1</td>
                                     <td><input type="checkbox" class="checkbox" id="checkBox" th:value="${process.pcCode}"></td>
                                     <td th:text="${process.pcCode}"></td>
                                     <td class="center" th:text="${process.pcName}"></td>
                                     <td class="center" th:text="${process.pcCnt}"></td>
-                                    <td>  </td>
+                                    <td></td>
                                 </tr>
                                 </tbody>
 
@@ -172,7 +166,7 @@
                                                 <th width="20%">공정코드</th>
                                                 <th width="20%">공정명</th>
                                                 <th width="20%">공정분류</th>
-                                                <th width="20%">비고</th>
+                                                <th width="20%">설비</th>
                                             </tr>
                                             </thead>
                                             <tbody id="itemInfo">
@@ -218,7 +212,7 @@
                             </select>
                         </div>
                         <div class="item">
-                            <label class="item-title">개수<input class="form-control" id="itCnt"></label>
+                            <label class="item-title"> Box 당 개수<input class="form-control" id="itCnt" type="number"></label>
                         </div>
 
                     </div>
@@ -251,15 +245,8 @@
                         </div>
                         <div class="item">
                             <label class="item-title">설비</label>
-                            <select class="form-control" id="facility">
-                                <option value="추출기">추출기</option>
-                                <option value="여과기">여과기</option>
-                                <option value="포장기">포장기</option>
-                                <option value="살균기">살균기</option>
-                                <option value="혼합기">혼합기</option>
-                                <option value="충진기">충진기</option>
-                                <option value="금속검출기">금속검출기</option>
-                                <option value="설비없음">설비없음</option>
+                            <select class="form-control" id="facility" >
+                                <option th:each="facility : ${facilityList}" th:text="${facility.fcName}" th:value="${facility.fcCode}"></option>
                             </select>
                         </div>
 
@@ -291,23 +278,6 @@
             <!--품목 클릭 이벤트 끝-->
 
             let selectCheck = []; //공정 체크
-            /*
-            let itemCheck = []; //품목 체크
-
-            $("#itemCheck:checked").each(function() {
-                    itemCheck.push($(this).val());
-                }
-            );
-            $("#itemDeleteBtn").on("click", function() {
-                var itCode = $("#hiddenItCode").val();
-                fetch("/items" + itemCheck, {
-                    method:"DELETE",
-                }).then(() => {
-                    alert("품목이 삭제되었습니다. ")
-                })
-            });
-
-             */
 
             <!--체크박스를 누른 순서로 배열 입력-->
             document.querySelectorAll("#checkBox").forEach(checkbox => {
@@ -353,6 +323,7 @@
                     method: "GET",
                     success: function (data) {
                         var tableContent = "";
+                        //var pcCodes = data.process.map(item => item.pcCode); // 서버에서 받은 공정 코드 리스트
                         data.process.forEach(function(item, index) {
                             tableContent += "<tr>" +
                                 "<td>" + (index + 1) + "</td>" +
@@ -361,9 +332,19 @@
                                 "<td>" + item.pcCnt + "</td>" +
                                 "<td>" + " " + "</td>" +
                                 "</tr>";
+
                         });
                         $("#itemInfo").html(tableContent);
                         $("#panelshow").show();
+                        /*
+                        $("#processList .checkbox").each(function() {
+                            var pc = $(this).val();
+                            if(pcCodes.includes(pc)) {
+                                $(this).prop("checked", true);
+                            }
+                        })
+
+                         */
                     },
                     error: function () {
                         alert("품목 정보를 불러오는 데 실패했습니다.");
@@ -375,15 +356,23 @@
             const createButton = document.getElementById("itemCreateBtn");
             if (createButton) {
                 createButton.addEventListener("click", (event) => {
+                    var itName = document.getElementById("itName").value;
+                    var itType = document.getElementById("itType").value;
+                    var itCnt = document.getElementById("itCnt").value;
+
+                    if(!itName || !itCnt || !itType) {
+                        alert("모두 입력해주세요. ");
+                        return;
+                    }
                     fetch("/items", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            itName: document.getElementById("itName").value,
-                            itType: document.getElementById("itType").value,
-                            itCnt: document.getElementById("itCnt").value
+                            itName: itName,
+                            itType: itType,
+                            itCnt: itCnt
                         }),
                     }).then(() => {
                         alert("등록 완료되었습니다. ");
@@ -396,24 +385,58 @@
             const processButton = document.getElementById("processBtn");
             if (processButton) {
                 processButton.addEventListener("click", (event) => {
+                    var pcName= document.getElementById("pcName").value;
+                    var pcCnt= document.getElementById("pcCnt").value;
+                    var fcCode= document.getElementById("facility").value
+
+                    if(!pcName || !pcCnt || !fcCode) {
+                        alert("모두 입력해주세요. ");
+                        return;
+                    }
+
                     fetch("/addProcess", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            pcName: document.getElementById("pcName").value,
-                            pcCnt: document.getElementById("pcCnt").value,
-                            fcName : document.getElementById("facility").value
+                            pcName: pcName,
+                            pcCnt: pcCnt,
+                            fcCode : fcCode
                         }),
                     }).then(() => {
+                        console.log(document.getElementById("facility").value)
                         alert("등록 완료되었습니다. ");
                         location.replace("/routing");
                     });
                 });
             }
 
+            /*
+            $("#itemSearchBtn").on("click", function() {
+                console.log( $("#itCodeSearch").val());
+                    var itCode= $("#itCodeSearch").val();
+                    var itName= $("#itNameSearch").val();
+                    var itType= $("#itTypeSearch").val();
+                    console.log(itCode);
+                    console.log(itName);
+                    console.log(itType);
+                fetch("/itemSearch?itCode=" + itCode + "&itName=" + itName + "&itType=" + itType, {
+                    method:"GET",
+                }).then(response => {
+                    return response.json();
+                }).then(function(data) {
+                    $("#itemCheck").val(data.itCode);
+                    $("#showPanel").val(data.itName);
+                    console.log(data.itCode);
+                    console.log(data.itName);
+                })
+            })
+
+             */
+
         })
+
         <!--문서 시작 끝-->
     </script>
 

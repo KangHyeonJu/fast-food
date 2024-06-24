@@ -5,12 +5,14 @@ import com.boot.fastfood.entity.Items;
 import com.boot.fastfood.repository.ItemRepository;
 import com.boot.fastfood.repository.RoutingRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,50 @@ public class ItemService {
         return itemRepository.findById(itCode)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + itCode));
     };
+
+
+    public List<Items> findByItType(String itType) {
+        return itemRepository.findByItType(itType);
+    }
+
+    /*
+    public List<Items> searchItem(String itCode, String itName, String itType) {
+        return  itemRepository.findItems(itCode, itName, itType);
+    }
+
+     */
+
+    public List<Items> search(String itCode, String itName, String itType) {
+        List<Items> items = new ArrayList<>();
+        try{
+            if(itCode!=null & itName!=null &itType!=null) {
+                items = itemRepository.findItems(itCode, itName, itType);
+            } else if(itCode!=null & itName!=null) {
+                items = itemRepository.findByItCodeAndItName(itCode, itName);
+            } else if(itCode!=null & itType!=null) {
+                items = itemRepository.findByItCodeAndItType(itCode, itType);
+            } else if(itName!=null & itType!=null) {
+                items = itemRepository.findByItTypeAndItName(itType, itName);
+            } else if(itCode!=null) {
+                items = itemRepository.findByItCode(itCode);
+            } else if(itName!=null) {
+                items = itemRepository.findByItName(itName);
+            } else if(itType!=null) {
+                items = itemRepository.findByItType(itType);
+            } else if(itCode==null & itName==null&itType==null) {
+                items = itemRepository.findAll();
+            }
+            System.out.println(items);
+            if(items.isEmpty()) {
+
+            }
+        } catch (EmptyResultDataAccessException e) {
+            // 조회 결과가 없을 경우 처리
+            System.out.println("조회된 결과가 없습니다. ");
+            // 예를 들어, 빈 리스트를 반환하거나 다른 예외 처리 로직을 추가할 수 있습니다.
+        }
+        return items;
+    }
 
     public Items save(AddItemDTO dto) {
         Items items = dto.toEntity();

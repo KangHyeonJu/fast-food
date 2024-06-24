@@ -26,7 +26,7 @@ public class ProcessService {
         String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
         process.setPcCode("PC" + nowTime);
 
-        Facility facility = facilityService.findByFcName(dto.getFcName());
+        Facility facility = facilityService.findByFcCode(dto.getFcCode());
         process.setFacilities(facility);
 
         return processRepository.save(process);

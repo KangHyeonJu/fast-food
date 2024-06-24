@@ -1,12 +1,13 @@
 package com.boot.fastfood.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "materials")
 public class Materials {
     @Id
@@ -23,4 +24,10 @@ public class Materials {
     @JoinColumn(name = "vdCode")
     private Vendor vendor;
 
+
+    @Builder
+    public Materials(String mtCode, String mtName) {
+        this.mtCode = mtCode;
+        this.mtName = mtName;
+    }
 }

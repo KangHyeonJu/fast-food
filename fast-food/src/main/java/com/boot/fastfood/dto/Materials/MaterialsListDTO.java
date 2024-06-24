@@ -14,6 +14,7 @@ import java.util.List;
 public class MaterialsListDTO {
 
     List<MaterialsDTO> materials = new ArrayList<>();
+    //int mtAmount;
 
     public void addProcess(MaterialsDTO materialsDTO) {
         this.materials.add(materialsDTO);
