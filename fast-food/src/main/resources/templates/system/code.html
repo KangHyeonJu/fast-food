@@ -140,7 +140,37 @@
 
 <th:block layout:fragment="script">
     <script>
+        function deleteCodeBtn(){
+            var checkboxes = document.querySelectorAll('.clientCheckbox:checked');
 
+            var selectedRow = checkboxes[0].closest('tr');
+            var codeId = selectedRow.cells[1].textContent;
+
+            if (checkboxes.length === 0) {
+                alert('삭제할 코드를 선택해 주세요.')
+                return;
+            }else if (checkboxes.length > 1){
+                alert('하나의 항목만 선택해주세요.')
+                return;
+            }else (confirm('코드를 삭제하시겠습니까?')){
+                fetch('/code/delete/' + codeId, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": 'application/json',
+                    },
+                }).then(response => {
+                    if(response.ok){
+                        alert('삭제되었습니다.');
+                        window.location.href = '/shipment';
+                    }else {
+                        alert('삭제에 실패했습니다.');
+                    }
+                }).catch(error => {
+                    console.error('error: ', error);
+                    alert('삭제 중 오류가 발생했습니다.');
+                });
+            }
+        }
     </script>
 </th:block>
 

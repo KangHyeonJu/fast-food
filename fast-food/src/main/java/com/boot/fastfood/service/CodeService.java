@@ -19,7 +19,11 @@ public class CodeService {
     }
 
     public List<Codes> getAllCodes(){
-        return codesRepository.findAll();
+        return codesRepository.findBycState(false);
+    }
+
+    public Codes findByCNo(Long cno){
+        return codesRepository.findBycNo(cno);
     }
 
 

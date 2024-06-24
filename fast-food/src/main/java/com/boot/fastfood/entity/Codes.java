@@ -23,10 +23,13 @@ public class Codes {
     @Column(name = "cName")
     private String cName;
 
+    @Column(name = "cState", columnDefinition = "TINYINT(0)")
+    private boolean cState;
     public static Codes createCode(CodesDto codesDto){
         return Codes.builder()
                 .cCode(codesDto.getCCode())
                 .cName(codesDto.getCName())
+                .cState(false)
                 .build();
     }
 
