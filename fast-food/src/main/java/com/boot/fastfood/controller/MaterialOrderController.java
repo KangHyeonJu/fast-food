@@ -101,9 +101,9 @@ public class MaterialOrderController {
         String boxNum = (String)paramMap.get("boxNum");
 
         Materials box = materialRepository.findByMtName("Box");
-        List<Orders> orders = ordersRepository.findByOdDateAndMaterials(LocalDate.now(), box);
+        Orders orders = ordersRepository.findByOdDateAndMaterials(LocalDate.now(), box);
 
-        if (orders.isEmpty()){
+        if (orders != null){
             materialService.orderBox(emName, Integer.parseInt(boxNum));
             redirectAttributes.addFlashAttribute("message", "발주등록되었습니다.");
         }else {
@@ -114,11 +114,20 @@ public class MaterialOrderController {
 
     //포장지 발주
     @PostMapping("/order_plan/wrap")
-    public String orderWrap(@RequestBody Map<String, Object> paramMap){
+    public String orderWrap(@RequestBody Map<String, Object> paramMap, RedirectAttributes redirectAttributes){
         String emName = (String)paramMap.get("emName");
         String wrapNum = (String)paramMap.get("wrapNum");
 
-        materialService.orderWrap(emName, Integer.parseInt(wrapNum));
+        Materials wrap = materialRepository.findByMtName("포장지");
+        Orders orders = ordersRepository.findByOdDateAndMaterials(LocalDate.now(), wrap);
+
+        if (orders != null){
+            materialService.orderWrap(emName, Integer.parseInt(wrapNum));
+            redirectAttributes.addFlashAttribute("message", "발주등록되었습니다.");
+        }else {
+            redirectAttributes.addFlashAttribute("message", "오늘 발주내역이 있습니다.");
+        }
+
 
         return "redirect:/order_plan";
     }

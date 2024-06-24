@@ -46,7 +46,7 @@ public class CodeController {
     public String deleteCode(@PathVariable Long codeId){
         Codes codes = codeService.findByCNo(codeId);
         codes.setCState(true);
-        
+
         codeService.saveCode(codes);
 
         return "redirect:/code";
