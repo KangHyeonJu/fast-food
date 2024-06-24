@@ -108,7 +108,7 @@
                                     <td th:text="${item.itCode}" id="showPanel" th:value="${item.itCode}"></td>
                                     <td class="center" th:text="${item.itName}" ></td>
                                     <td class="center" th:text="${item.itType}"></td>
-                                    <td class="center" th:text="${item.itCnt}"></td>
+                                    <td class="center" th:text="${item.itEa}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -218,7 +218,7 @@
                             </select>
                         </div>
                         <div class="item">
-                            <label class="item-title">개수<input class="form-control" id="itCnt"></label>
+                            <label class="item-title">개수<input class="form-control" id="itEa"></label>
                         </div>
 
                     </div>
@@ -383,7 +383,7 @@
                         body: JSON.stringify({
                             itName: document.getElementById("itName").value,
                             itType: document.getElementById("itType").value,
-                            itCnt: document.getElementById("itCnt").value
+                            itEa: document.getElementById("itEa").value
                         }),
                     }).then(() => {
                         alert("등록 완료되었습니다. ");

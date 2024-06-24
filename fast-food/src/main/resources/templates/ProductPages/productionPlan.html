@@ -80,9 +80,9 @@
                                     <td><input type="checkbox" class="planCheckbox"></td>
                                     <td th:text="${production.pmCode}"></td>
                                     <!-- 생산 시작일 = (납품요청일) - 1일 - (생산 소요 시간)  -->
-                                    <td th:text="${#dates.format(production.pmSDate, 'yyyy-MM-dd')}"></td>
+                                    <td th:text="${production.pmSDate}"></td>
                                     <!-- 생산 종료일 = (납품요청일) - 1일 -->
-                                    <td th:text="${#dates.format(production.pmEDate, 'yyyy-MM-dd')}"></td>
+                                    <td th:text="${production.pmEDate}"></td>
                                     <!-- 생산품명 -->
                                     <td th:text="${production.itName}"></td>
                                     <!-- 생산량목표량 = 수주량 -->
@@ -126,8 +126,8 @@
                                     <td th:text="${work.wkCode}"></td>
                                     <td>공정</td>
                                     <td th:text="${work.pmAmount}"></td>
-                                    <td th:text="${#dates.format(work.sDate, 'yyyy-MM-dd')}"></td>
-                                    <td th:text="${#dates.format(work.eDate, 'yyyy-MM-dd')}"></td>
+                                    <td th:text="${#dates.format(work.sDate, 'yyyy-MM-dd HH:mm')}"></td>
+                                    <td th:text="${#dates.format(work.eDate, 'yyyy-MM-dd HH:mm')}"></td>
                                 </tr>
                                 </tbody>
                             </table>

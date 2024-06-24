@@ -73,23 +73,39 @@ public class ContractService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         String pmCode = "PM" + currentTime.format(formatter);
 
-        //생산 종료일 계산(납품일로부터 1일 전)
-        LocalDate deliveryDate = contract.getDeliveryDate();
-        LocalDate productionEndDate = deliveryDate.minusDays(1);
-
-        // 생산 시작일 계산 (생산종료일로 부터  2일전) - 수정해야함 임시 값
-        LocalDate productionStartDate = productionEndDate.minusDays(2);
-
         // 제품 정보 설정
         Items item = contract.getItems();
 
         // 제품의 재고량
         int itStock = item.getItStock();
 
+        // 제품의 타입
+        String itType = item.getItType();
+
         // pmAmount 계산: ctAmount - itStock
-        int pmAmount = contract.getCtAmount() - itStock ;
+        int pmAmount = contract.getCtAmount() * item.getItEa() - itStock;
         if (pmAmount < 0){
             pmAmount = 0;
+        }
+
+        //생산 종료일 계산(납품일로부터 1일 전)
+        LocalDate deliveryDate = contract.getDeliveryDate();
+        LocalDate productionEndDate = deliveryDate.minusDays(1);
+
+        // 생산 시작일 계산
+        LocalDate productionStartDate = null;
+        if (itType.equals("즙")){
+            if (pmAmount <= 10000){
+                productionStartDate = productionEndDate.minusDays(3);
+            }else {
+                productionStartDate = productionEndDate.minusDays( 3+ 2L *(int)Math.ceil((pmAmount-10000)/10000.0));
+            }
+        }else if (itType.equals("젤리스틱")){
+            if (pmAmount <= 8000){
+                productionStartDate = productionEndDate.minusDays(2);
+            }else {
+                productionStartDate = productionEndDate.minusDays( 2+ (int)Math.ceil((pmAmount-8000)/12000.0));
+            }
         }
 
         // Production 엔티티에 수주 정보 및 생산 일정 설정 후 저장
