@@ -3,44 +3,39 @@
       layout:decorate="~{layout/layout1}">
 
 <div layout:fragment="content">
-
-
     <div id="page-wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">입고 예정 자재</h1>
+                    <h1 class="page-header">입고 예정 자재<h5>(단위 kg,L기준)</h5></h1>
                 </div>
             </div>
+            <!--검색-->
             <div class="row">
                 <div class="col-lg-12" style="border: 1px solid black">
-                    <ul class="list-inline">
-                        <li>
-                            <h4>발주 코드 : <input name="#"></h4>
-                        </li>
-                        <li>
-                            <h4>원자재명 :
-                                <select>
-                                    <option>양배추</option>
-                                    <option>흑마늘</option>
-                                    <option>석류</option>
-                                    <option>매실</option>
-                                    <option>벌꿀</option>
-                                    <option>콜라겐</option>
-                                    <option>포장지</option>
-                                    <option>Box</option>
-                                </select>
-                            </h4>
-                        </li>
-                        <li>
-                            <h4>입고 예정일 : <input type="date"></h4>
-                        </li>
-                        <button class="btn btn-primary" style="float: right">조회
-                        </button>
-                    </ul>
+                    <form th:action="@{/searchMaterial}" method="get">
+                        <ul class="list-inline">
+                            <li>
+                                <h4>발주 코드 : <input type="text" name="odCode"></h4>
+                            </li>
+                            <li>
+                                <h4>원자재명 :
+                                    <select name="mtName">
+                                        <option value="">전체</option>
+                                        <option th:each="material : ${materials}" th:value="${material.mtName}"
+                                                th:text="${material.mtName}"></option>
+                                    </select>
+                                </h4>
+                            </li>
+                            <li>
+                                <h4>입고 예정일 : <input type="date" name="odDueDate"></h4>
+                            </li>
+                            <button class="btn btn-primary" style="float: right" type="submit">조회</button>
+                        </ul>
+                    </form>
                 </div>
             </div>
-            <!-- /.row -->
+            <!--검색 끝-->
             <!-- 테이블 1 -->
             <div class="row">
                 <div class="col-lg-12">
@@ -55,91 +50,98 @@
                                 <thead>
                                 <tr>
                                     <th>발주 코드</th>
-                                    <th>입고 코드</th>
                                     <th>입고 예정일</th>
                                     <th>거래처</th>
                                     <th>원자재명</th>
-                                    <th>유통기한</th>
                                     <th>입고량</th>
-                                    <th>입고단위</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>OD220605</td>
-                                    <td>입고코드...</td>
-                                    <td>2022/06/08</td>
-                                    <td>OO업체</td>
-                                    <td>흑마늘</td>
-                                    <td>2023/06/15</td>
-                                    <td>1200</td>
-                                    <td>kg</td>
+                                <tr th:each="order : ${orders}" th:if="${order.whStatus == 0}">
+                                    <td th:text="${order.odCode}"></td>
+                                    <td th:text="${order.odDueDate}"></td>
+                                    <td th:text="${order.materials.vendor.vdName}"></td>
+                                    <td th:text="${order.materials.mtName}"></td>
+                                    <td th:text="${order.odAmount}"></td>
                                 </tr>
                                 </tbody>
                             </table>
-                            <!-- /.table-responsive -->
                         </div>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
                 </div>
-                <!-- /.col-lg-12 -->
+                <!-- 테이블 1 끝-->
             </div>
-            <!-- 테이블 1 끝-->
-        </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">금일 자재 입고 등록</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            자재 입고 등록
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body" style="height: 200px; overflow: auto">
-                            <table class="table table-striped table-bordered table-hover" style="width: 100%;"
-                                   id="dataTables-example">
-                                <thead>
-                                <tr>
-                                    <th>발주 코드</th>
-                                    <th>입고 코드</th>
-                                    <th>입고 예정일</th>
-                                    <th>거래처</th>
-                                    <th>원자재명</th>
-                                    <th>유통기한</th>
-                                    <th>입고량</th>
-                                    <th>입고단위</th>
-                                    <th>등록</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>OD220604</td>
-                                    <td>입고코드...</td>
-                                    <td>2022/06/07</td>
-                                    <td>OO업체</td>
-                                    <td>양배추</td>
-                                    <td>2023/06/14</td>
-                                    <td>2000</td>
-                                    <td>kg</td>
-                                    <td>
-                                        <button type="button" class="btn btn-success" id="saveOrderBtn">등록하기
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <!-- /.table-responsive -->
-                        </div>
-                        <!-- /.panel-body -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">금일 자재 입고 등록<h5>(단위 kg,L기준)</h5></h1>
                     </div>
-                    <!-- /.panel -->
                 </div>
-                <!-- /.col-lg-12 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                자재 입고 등록
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body" style="height: 200px; overflow: auto">
+                                <form method="post" th:action="@{/material}">
+                                    <div class="table-container">
+                                        <table class="table table-striped table-bordered table-hover"
+                                               style="width: 100%;"
+                                               id="dataTables-example">
+                                            작업자 : <select id="emName">
+                                            <option value="">전체</option>
+                                            <option th:each="employee : ${employees}" th:value="${employee.emName}"
+                                                    th:text="${employee.emName}"></option>
+                                        </select>
+                                            <thead>
+                                            <tr>
+                                                <th>발주 코드</th>
+                                                <th>입고 예정일</th>
+                                                <th>거래처</th>
+                                                <th>원자재명</th>
+                                                <th>입고량</th>
+                                                <th>등록</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="todayOrder, orderIndex : ${todayOrders}"
+                                                th:if="${todayOrder.whStatus == 0}">
+                                                <td th:text="${todayOrder.odCode}"></td>
+                                                <td th:text="${todayOrder.odDueDate}"></td>
+                                                <td th:text="${todayOrder.materials.vendor.vdName}"></td>
+                                                <td th:text="${todayOrder.materials.mtName}"></td>
+                                                <td th:text="${todayOrder.odAmount}"></td>
+                                                <td>
+                                                    <form method="post" th:action="@{/material}">
+                                                        <input type="hidden" name="odCode"
+                                                               th:value="${todayOrder.odCode}"/>
+                                                        <input type="hidden" name="emName"
+                                                               th:value="${todayOrder.employee.emName}"/>
+                                                        <input type="hidden" name="vdCode"
+                                                               th:value="${todayOrder.materials.vendor.vdCode}"/>
+                                                        <input type="hidden" name="mtCode"
+                                                               th:value="${todayOrder.materials.mtCode}"/>
+                                                        <button type="button" class="btn btn-success"
+                                                                th:id="'saveOrderBtn-' + ${orderIndex.index}">등록하기
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
             </div>
         </div>
     </div>
@@ -149,22 +151,46 @@
     <script>
         $(document).ready(function () {
             $('#saveWorkerBtn').click(function () {
-                // Save worker logic here
                 $('#registerModal').modal('hide');
             });
 
-            $('#saveOrderBtn').click(function () {
-                // 경고창 띄우기
+            $('[id^=saveOrderBtn]').click(function () {
+                var odCode = $(this).closest('form').find('input[name=odCode]').val();
+
+                var emName = $('#emName').val()
+
+                var vdCode = $(this).closest('form').find('input[name=vdCode]').val();
+                var mtCode = $(this).closest('form').find('input[name=mtCode]').val();
+
                 if (confirm('정말 등록하시겠습니까? 자재 입고 등록시 취소가 불가능합니다.')) {
-                    // 확인 버튼을 누르면 수행할 작업
-                    alert('등록이 완료되었습니다.');
-                    $('#addOrderModal').modal('hide'); // 모달 닫기
+
+                    if (emName === ""){
+                        alert("작업자를 선택해주세요");
+                        return;
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/material',
+                        data: {
+                            odCode: odCode,
+                            emName: emName,
+                            vdCode: vdCode,
+                            mtCode: mtCode
+                        },
+                        success: function (response) {
+                            alert('등록이 완료되었습니다.');
+                            window.location.reload();
+                        },
+                        error: function () {
+                            alert('등록에 실패했습니다. 다시 시도해 주세요.');
+                        }
+                    });
+                } else {
+                    alert('등록을 취소하였습니다.');
                 }
             });
-
         });
-
     </script>
 </th:block>
-<!--</body>-->
 </html>

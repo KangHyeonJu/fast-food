@@ -24,6 +24,7 @@ public class Orders {
     @JoinColumn(name = "mtCode")
     private Materials materials;
 
+    //Localdate로 수정
     @Column(name = "odDate")
     private LocalDate odDate;
 
@@ -39,5 +40,12 @@ public class Orders {
 //
 //    @Column(name = "odStatus", columnDefinition = "TINYINT(0)")
 //    private boolean odStatus;
+
+    @Column(name = "odDueDate")
+    private LocalDate odDueDate;
+
+    @Column(name = "whStatus")
+    private int whStatus = 0;
+
 
 }

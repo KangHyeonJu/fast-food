@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">자재 입고 내역</h1>
+                    <h1 class="page-header">자재 입고 내역<h5>(단위 kg,L기준)</h5></h1>
                 </div>
                 <div class="col-lg-12 text-right mb-20">
                     <button class="btn btn-success">엑셀 저장 버튼</button>
@@ -17,45 +17,40 @@
                 <!-- 검색 -->
                 <div class="row">
                     <div class="col-lg-12" style="border: 1px solid black">
-                        <ul class="list-inline">
-                            <li>
-                                <h4>발주 코드 : <input name="#"></h4>
-                            </li>
-                            <li>
-                                <h4>거래처 : <input name="#"></h4>
-                            </li>
-                            <li>
-                                <h4>입고 예정일 :
-                                    <input type="date">
-                                </h4>
-                            </li>
-                            <li>
-                                <h4>원자재명 :
-                                    <select>
-                                        <option>양배추</option>
-                                        <option>흑마늘</option>
-                                        <option>석류</option>
-                                        <option>매실</option>
-                                        <option>벌꿀</option>
-                                        <option>콜라겐</option>
-                                        <option>포장지</option>
-                                        <option>Box</option>
-                                    </select>
-                                </h4>
-                            </li>
-                            <li>
-                                <h4>자재 코드 : <input name="#"></h4>
-                            </li>
-                            <li>
-                                <h4>작업자 : <select>
-                                    <option>김OO</option>
-                                    <option>이OO</option>
-                                    <option>양OO</option>
-                                </select></h4>
-                            </li>
-                            <button class="btn btn-primary" style="float: right">조회
-                            </button>
-                        </ul>
+                        <form th:action="@{/searchWarehousing}" method="get">
+                            <ul class="list-inline">
+                                <li>
+                                    <h4>발주 코드 : <input type="text" name="odCode"></h4>
+                                </li>
+                                <li>
+                                    <h4>거래처 : <input type="text" name="vdName"></h4>
+                                </li>
+                                <li>
+                                    <h4>입고일 : <input type="date" name="whDate"></h4>
+                                </li>
+                                <li>
+                                    <h4>원자재명 :
+                                        <select name="mtName">
+                                            <option value="">전체</option>
+                                            <option th:each="material : ${materials}" th:value="${material.mtName}"
+                                                    th:text="${material.mtName}"></option>
+                                        </select>
+                                    </h4>
+                                </li>
+                                <li>
+                                    <h4>작업자 :
+                                        <select name="emName">
+                                            <option value="">전체</option>
+                                            <option th:each="employee : ${employees}" th:value="${employee.emName}"
+                                                    th:text="${employee.emName}"></option>
+                                        </select>
+                                    </h4>
+                                </li>
+                                <li>
+                                    <button class="btn btn-primary" style="float: right" type="submit">조회</button>
+                                </li>
+                            </ul>
+                        </form>
                     </div>
                 </div>
                 <!-- 검색 끝-->
@@ -77,27 +72,23 @@
                                     <th><input id="checkall" type="checkbox"></th>
                                     <th>발주 코드</th>
                                     <th>입고 코드</th>
-                                    <th>입고 예정일</th>
+                                    <th>입고일</th>
                                     <th>거래처</th>
                                     <th>원자재명</th>
                                     <th>입고량</th>
-                                    <th>유통기한</th>
-                                    <th>입고단위</th>
                                     <th>작업자</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                <tr th:each="warehousing : ${warehousings}">
                                     <td><input type="checkbox"></td>
-                                    <td>QW220604</td>
-                                    <td>입고코드...</td>
-                                    <td>2022/06/07</td>
-                                    <td>OO업체</td>
-                                    <td>양배추</td>
-                                    <td>1500kg</td>
-                                    <td>2022/06/14</td>
-                                    <td>kg</td>
-                                    <td>김OO</td>
+                                    <td th:text="${warehousing.orders.odCode}"></td>
+                                    <td th:text="${warehousing.whCode}"></td>
+                                    <td th:text="${warehousing.whDate}"></td>
+                                    <td th:text="${warehousing.vendor.vdName}"></td>
+                                    <td th:text="${warehousing.materials.mtName}"></td>
+                                    <td th:text="${warehousing.orders.odAmount}"></td>
+                                    <td th:text="${warehousing.employee.emName}"></td>
                                 </tr>
                                 </tbody>
                             </table>

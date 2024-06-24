@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,5 +33,14 @@ public class EmployeeService {
             employee.setEmCon(1);
             employeeRepository.save(employee);
         }
+    }
+
+    public List<Employee> findAll() {
+        return employeeRepository.findAll();
+    }
+
+    public Optional<Employee> findByEmName(String emName) {
+
+        return Optional.ofNullable(employeeRepository.findByEmName(emName));
     }
 }

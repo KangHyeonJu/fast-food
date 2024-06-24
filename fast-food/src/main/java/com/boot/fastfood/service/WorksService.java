@@ -14,4 +14,8 @@ import java.util.List;
 public class WorksService {
     private final WorksRepository worksRepository;
 
+    public List<Works> findAll() {
+        return worksRepository.findAll();
+    }
+
 }

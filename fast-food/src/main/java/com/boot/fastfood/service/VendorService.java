@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -15,5 +16,10 @@ public class VendorService {
 
     public List<Vendor> findAll() {
         return vendorRepository.findAll();
+    }
+
+    public Optional<Vendor> findByVdCode(String vdCode) {
+
+        return Optional.ofNullable(vendorRepository.findByVdCode(vdCode));
     }
 }

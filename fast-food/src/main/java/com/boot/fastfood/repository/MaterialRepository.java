@@ -12,4 +12,6 @@ public interface MaterialRepository extends JpaRepository<Materials, String> {
 
     @Query("SELECT m FROM Materials m WHERE m.mtName NOT IN('포장지', 'Box')")
     List<Materials> findMtList();
+
+    Materials findByMtCode(String mtCode);
 }

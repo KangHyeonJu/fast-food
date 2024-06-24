@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductionRepository extends JpaRepository<Production, String> {
     Production findByContract(Contract contract);
+    
+    Production findByPmCode(String pmCode);
 }

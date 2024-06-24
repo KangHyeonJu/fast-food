@@ -11,4 +11,12 @@ public interface OrdersRepository extends JpaRepository<Orders, String>, OrdersR
     List<Orders> findByOdDate(LocalDate date);
 
     List<Orders> findByOdDateAndMaterials(LocalDate date, Materials materials);
+
+    Orders findByOdCode(String odCode);
+
+    List<Orders> findByOdDueDate(LocalDate today);
+
+    List<Orders> findByMaterials_MtName(String mtName);
+
+    List<Orders> findByOdDueDateGreaterThanEqual(LocalDate today);
 }

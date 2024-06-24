@@ -30,4 +30,3 @@ public class BOM {
         this.mtAmount = mtAmount;
     }
 }
-

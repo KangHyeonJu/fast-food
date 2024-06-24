@@ -42,25 +42,6 @@ public class MaterialService {
                 orders.getContract().setCtStatus("생산중");
             }
         }
-//        for(OrderTodayDto orderTodayDto : orderTodayDtoList){
-//            System.out.println("orderAmount:" + orderTodayDto.getOrderAmount());
-//
-//            Orders orders = new Orders();
-//            orders.setContract(orderTodayDto.getContract());
-//
-//            orders.setMaterials(orderTodayDto.getMaterials());
-//            orders.setOdDate(LocalDate.now());
-//            orders.setOdCode("OR" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
-//            orders.setEmployee(employee);
-//            orders.setOdAmount(orderTodayDto.getOrderAmount());
-//
-//
-//            ordersRepository.save(orders);
-//
-//            orders.getContract().setCtStatus("생산중");
-//        }
-
-
     }
 
     public Map<String, Object> getOrderPlan(){
@@ -154,6 +135,15 @@ public class MaterialService {
 //        materials.setMtStock(materials.getMtStock() + wrapNum);
 
         ordersRepository.save(orders);
+    }
+
+    public List<Materials> findAll() {
+        return materialRepository.findAll();
+    }
+
+    public Optional<Materials> findByMtCode(String mtCode) {
+
+        return Optional.ofNullable(materialRepository.findByMtCode(mtCode));
     }
 
 }
