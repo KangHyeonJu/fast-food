@@ -23,6 +23,9 @@ public class QProcess extends EntityPathBase<Process> {
     public static final QProcess process = new QProcess("process");
 
     public final QFacility facilities;
+    public static final QProcess process = new QProcess("process");
+
+    public final ListPath<Facility, QFacility> facilities = this.<Facility, QFacility>createList("facilities", Facility.class, QFacility.class, PathInits.DIRECT2);
 
     public final StringPath pcCnt = createString("pcCnt");
 
@@ -49,6 +52,15 @@ public class QProcess extends EntityPathBase<Process> {
     public QProcess(Class<? extends Process> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.facilities = inits.isInitialized("facilities") ? new QFacility(forProperty("facilities")) : null;
+        super(Process.class, forVariable(variable));
+    }
+
+    public QProcess(Path<? extends Process> path) {
+        super(path.getType(), path.getMetadata());
+    }
+
+    public QProcess(PathMetadata metadata) {
+        super(Process.class, metadata);
     }
 
 }

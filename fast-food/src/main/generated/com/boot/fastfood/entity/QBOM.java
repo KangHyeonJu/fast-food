@@ -23,6 +23,7 @@ public class QBOM extends EntityPathBase<BOM> {
     public static final QBOM bOM = new QBOM("bOM");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+    public final StringPath bomCode = createString("bomCode");
 
     public final QItems items;
 
