@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout1}">
+<th:block layout:fragment="css">
+    <style>
+        canvas{
+            height: 800px;
+            width: 1000px;
+        }
+    </style>
+</th:block>
 
 <th:block layout:fragment="script">
     <script src="/js/chart.js"></script>
@@ -45,39 +53,48 @@
                     datasets: monthDatasets
                 },
                 options: {
+                    responsive: false,
                     scales: {
                         y: {
                             beginAtZero: true
                         }
+                    },
+                    title: {
+                        display: true,
+                        text: "월간 제품별 수주량",
+                        position: "bottom"
                     }
                 }
             });
 
 
             //연간 그래프
-            var yearlyContracts = /*[[${yearlyContracts}]]*/ [];
+            /*<![CDATA[*/
+            var yearlyContracts = /*[[${yearlyContracts}]]*/ {};
             var yearLabels = Object.keys(yearlyContracts).sort();
 
             var yearDatasets = [];
 
+            var yearColorIndex = 0;
             for (var year in yearlyContracts) {
-                if (yearlyContracts.hasOwnProperty(year)) {
-                    yearlyContracts[year].forEach(function(contract) {
-                        var dataset = yearDatasets.find(d => d.label === contract.itName);
-                        if (!dataset) {
-                            dataset = {
-                                label: contract.itName,
-                                data: new Array(monthLabels.length).fill(0),
-                                backgroundColor: colors[colorIndex % colors.length],
-                                borderColor: borderColors[colorIndex % borderColors.length],
-                                borderWidth: 1
-                            };
-                            yearDatasets.push(dataset);
-                            colorIndex++;
-                        }
-                        dataset.data[yearLabels.indexOf(year)] = contract.totalAmount;
-                    });
-                }
+                yearlyContracts[year].forEach(contract => {
+                    var dataset = yearDatasets.find(d => d.label === contract.itName);
+                    if (!dataset) {
+                        dataset = {
+                            label: contract.itName,
+                            data: new Array(yearLabels.length).fill(0),
+                            backgroundColor: colors[yearColorIndex % colors.length],
+                            borderColor: borderColors[yearColorIndex % borderColors.length],
+                            borderWidth: 1,
+                            fill: false
+                        };
+                        yearDatasets.push(dataset);
+                        yearColorIndex++;
+
+                    }
+                    dataset.data[yearLabels.indexOf(year)] = contract.totalAmount;
+                });
+
             }
 
             var yearCtx = document.getElementById('yearChart').getContext('2d');
@@ -85,13 +102,19 @@
                 type: 'line',
                 data: {
                     labels: yearLabels,
-                    datasets: yearLabels
+                    datasets: yearDatasets
                 },
                 options: {
+                    responsive: false,
                     scales: {
                         y: {
                             beginAtZero: true
                         }
+                    },
+                    title: {
+                        display: true,
+                        text: "연간 제품별 수주량",
+                        position: "bottom"
                     }
                 }
             });
@@ -108,15 +131,13 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">제품별 수주량 비교</h1>
-
-                    <div>
-                        <h3>월간 제품별 수주량</h3>
-                        <canvas id="monthChart"></canvas>
-                    </div>
-
-                    <div>
-                        <h3>연간 제품별 수주량</h3>
-                        <canvas id="yearChart"></canvas>
+                    <div style="display: flex; justify-content: space-around;">
+                        <div>
+                            <canvas id="monthChart"></canvas>
+                        </div>
+                        <div>
+                            <canvas id="yearChart"></canvas>
+                        </div>
                     </div>
 
                 </div>
