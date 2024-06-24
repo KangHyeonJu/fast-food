@@ -81,7 +81,7 @@ public class MaterialService {
         }
 
         for (MaterialOrderDto materialOrderDto: materialOrderDtoList){
-            if(materialOrderDto.getProduction().getPmSDate().minusDays(3).equals(LocalDate.now())){
+            if(materialOrderDto.getProduction().getPmSDate().minusDays(2).equals(LocalDate.now())){
                 String[][] todayOrder = materialOrderDto.getBomListAmount();
 
                 for (OrderTodayDto orderTodayDto : orderTodayDtoList){
