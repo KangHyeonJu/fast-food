@@ -134,7 +134,8 @@
                         <ul class="list-inline">
                             <li>
                                 <h4>작업자 :
-                                    <select name="emName">
+                                    <select name="emName" id="emName">
+                                        <option value="">전체</option>
                                         <option th:each="employees : ${employees}" th:value="${employees.emName}"
                                                 th:text="${employees.emName}"></option>
                                     </select>
@@ -142,7 +143,8 @@
                             </li>
                             <li>
                                 <h4>고객 업체 :
-                                    <select name="clName">
+                                    <select name="clName" id="clName">
+                                        <option value="">전체</option>
                                         <option th:each="client : ${clients}" th:value="${client.clName}"
                                                 th:text="${client.clName}"></option>
                                     </select>
@@ -151,7 +153,8 @@
                             </li>
                             <li>
                                 <h4>제품명 :
-                                    <select name="itName">
+                                    <select name="itName" id="itName">
+                                        <option value="">전체</option>
                                         <option th:each="item : ${items}" th:value="${item.itName}"
                                                 th:text="${item.itName}"></option>
                                     </select>
@@ -223,6 +226,60 @@
             // 초기 페이지 로드 시 최신순으로 테이블 정렬
             sortTableByDateDescending();
 
+            $('#saveOrderBtn').click(function (event) {
+                if ($('#emName').val() === "") {
+                    alert('작업자를 선택해주세요.');
+                    event.preventDefault(); // 등록 이벤트 막기
+                    return;
+                }
+
+                var ctAmount = $('#orderQuantity').val(); // 수주량 입력 값 가져오기
+                ctAmount = parseInt(ctAmount); // 수치형으로 변환
+
+                if (isNaN(ctAmount)) {
+                    alert('수주량을 입력해주세요.');
+                    event.preventDefault(); // 등록 이벤트 막기
+                    return;
+                }
+
+                if ($('#clName').val() === "") {
+                    alert('고객 업체를 선택해주세요.');
+                    event.preventDefault(); // 등록 이벤트 막기
+                    return;
+                }
+                if ($('#itName').val() === "") {
+                    alert('제품명을 선택해주세요.');
+                    event.preventDefault(); // 등록 이벤트 막기
+                    return;
+                }
+
+                // 수주량이 1000개 초과 또는 10개 미만인 경우
+                if (ctAmount > 1000 || ctAmount < 10) {
+                    alert('수주량은 10개 이상 1000개 이하이어야 합니다.');
+                    event.preventDefault(); // 등록 이벤트 막기
+                    return;
+                }
+
+                var deliveryDate = new Date($('#deliveryDate').val());
+                var today = new Date();
+
+                if (isNaN(deliveryDate)) {
+                    alert('납품일을 입력해주세요.');
+                    event.preventDefault(); // 등록 이벤트 막기
+                    return;
+                }
+
+                if (deliveryDate < today) {
+                    alert('납품일은 오늘 날짜 이후여야 합니다.');
+                    event.preventDefault(); // 등록 이벤트 막기
+                    return;
+                }
+
+                if ($('#deliveryPlace').val().trim() === "") {
+                    alert('납품 장소를 입력해주세요.');
+                    event.preventDefault(); // 등록 이벤트 막기
+                }
+            });
             $('#addOrderForm').submit(function (event) {
                 event.preventDefault();
 
@@ -249,25 +306,6 @@
             $('#CheckBtn').click(function () {
                 if (confirm('수주를 완료하시겠습니까? 수주 완료 후 취소가 불가능합니다.')) {
                     alert('수주 완료가 완료되었습니다.');
-                }
-            });
-
-            $('#saveOrderBtn').click(function (event) {
-                var ctAmount = $('#orderQuantity').val(); // 수주량 입력 값 가져오기
-                ctAmount = parseInt(ctAmount); // 수치형으로 변환
-
-                // 수주량이 1000개 초과 또는 10개 미만인 경우
-                if (ctAmount > 1000 || ctAmount < 10) {
-                    alert('수주량은 10개 이상 1000개 이하이어야 합니다.');
-                    event.preventDefault(); // 등록 이벤트 막기
-                }
-
-                var deliveryDate = new Date($('#deliveryDate').val());
-                var today = new Date();
-
-                if (deliveryDate < today) {
-                    alert('납품일은 오늘 날짜 이후여야 합니다.');
-                    event.preventDefault(); // 등록 이벤트 막기
                 }
             });
         });

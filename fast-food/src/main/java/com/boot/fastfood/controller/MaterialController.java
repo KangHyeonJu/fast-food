@@ -162,7 +162,7 @@ public class MaterialController {
             ordersRepository.save(order);
             LocalDateTime currentTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-            String whCode = "OD" + currentTime.format(formatter);
+            String whCode = "WH" + currentTime.format(formatter);
 
             Warehousing warehousing = new Warehousing();
             warehousing.setOrders(order);
@@ -259,12 +259,10 @@ public class MaterialController {
             Model model) {
         try {
             releasesService.saveRelease(wkCode, emCode);
-            System.out.println("11111111111111" + emCode);
             model.addAttribute("successMessage", "자재 출고가 성공적으로 등록되었습니다.");
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
-
         return "redirect:/release";
     }
     @GetMapping("/searchRelease")

@@ -56,6 +56,16 @@ public class ReleasesService {
                 release.setEmployee(employee);
                 release.setRsDate(LocalDate.now());
 
+                Materials materials = bom.getMaterials();
+                int newStock = materials.getMtStock() - release.getRsAmount();
+                if (newStock < 0) {
+                    throw new IllegalArgumentException("재고가 부족합니다");
+                }
+                materials.setMtStock(newStock);
+                materialRepository.save(materials);
+
+                releasesRepository.save(release);
+
                 releasesRepository.save(release);
             }
         } else {

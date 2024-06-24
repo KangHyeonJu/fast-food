@@ -165,6 +165,10 @@
                     alert("작업자를 선택해주세요");
                     return;
                 }
+                if (wkCode === ""){
+                    alert("작업 지시 코드를 입력해주세요");
+                    return;
+                }
 
                 $.ajax({
                     type: 'POST',
