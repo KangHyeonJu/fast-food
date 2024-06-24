@@ -81,10 +81,8 @@ public class ReleasesService {
         switch (mtName) {
             case "양배추":
             case "흑마늘":
-                releaseAmount = (((pmAmount * itEa) * 1.04) * 0.01 * 10 * 1.4);
-                break;
-            case "석류(농축액)":
-            case "매실(농축액)":
+            case "석류농축액":
+            case "매실농축액":
                 releaseAmount = (((pmAmount * itEa) * 1.04) * 0.01 * 10 * 1.4);
                 break;
             case "벌꿀":

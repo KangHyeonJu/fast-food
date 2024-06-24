@@ -4,14 +4,22 @@ package com.boot.fastfood.controller;
 import com.boot.fastfood.entity.*;
 import com.boot.fastfood.repository.*;
 import com.boot.fastfood.service.*;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -34,6 +42,7 @@ public class MaterialController {
     private  final WorksService worksService;
 
     private final ReleasesService releasesService;
+    private final ReleasesRepository releasesRepository;
 
     private final OrdersRepository ordersRepository;
 
@@ -118,6 +127,44 @@ public class MaterialController {
         model.addAttribute("employees", employeeService.findAll());
 
         return "material/Warehousing";  // HTML 템플릿 파일 이름
+    }
+    @PostMapping(value = "/warehousing/export/excel", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public void exportWarehousingsToExcel(@RequestParam("whCode") List<String> whCode, HttpServletResponse response) throws IOException {
+
+        // 데이터베이스에서 엑셀 데이터 생성
+        List<Warehousing> warehousings = warehousingRepository.findByWhCodeIn(whCode);
+
+        // 엑셀 파일 생성
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Contract");
+
+        // 엑셀 헤더 생성
+        Row headerRow = sheet.createRow(0);
+        String[] headers = {"발주 코드", "입고 업체", "입고일", "거래처", "원자재명", "입고량", "작업자"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+
+        // 데이터 추가
+        int rowNum = 1;
+        for (Warehousing warehousing : warehousings) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(warehousing.getOrders().getOdCode());
+            row.createCell(1).setCellValue(warehousing.getWhCode());
+            row.createCell(2).setCellValue(warehousing.getWhDate());
+            row.createCell(3).setCellValue(warehousing.getVendor().getVdName());
+            row.createCell(4).setCellValue(warehousing.getMaterials().getMtName());
+            row.createCell(5).setCellValue(warehousing.getOrders().getOdAmount());
+            row.createCell(6).setCellValue(warehousing.getEmployee().getEmName());
+        }
+
+        // 엑셀 파일 응답으로 전송
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "attachment; filename=OrderList.xlsx");
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
     }
 
     @GetMapping("/material")
@@ -313,6 +360,43 @@ public class MaterialController {
         model.addAttribute("employees", employeeService.findAll());
 
         return "material/Release";  // HTML 템플릿 파일 이름
+    }
+    @PostMapping(value = "/release/export/excel", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public void exportReleaseToExcel(@RequestParam("rsCode") List<String> rsCode, HttpServletResponse response) throws IOException {
+
+        // 데이터베이스에서 엑셀 데이터 생성
+        List<Releases> releases = releasesRepository.findByRsCodeIn(rsCode);
+
+        // 엑셀 파일 생성
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Releases");
+
+        // 엑셀 헤더 생성
+        Row headerRow = sheet.createRow(0);
+        String[] headers = {"작업 지시 코드", "출고 코드", "출고일", "출고량", "원자재명", "작업자"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+
+        // 데이터 추가
+        int rowNum = 1;
+        for (Releases releases1 : releases) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(releases1.getWorks().getWkCode());
+            row.createCell(1).setCellValue(releases1.getRsCode());
+            row.createCell(2).setCellValue(releases1.getRsDate());
+            row.createCell(3).setCellValue(releases1.getRsAmount());
+            row.createCell(4).setCellValue(releases1.getMaterials().getMtName());
+            row.createCell(5).setCellValue(releases1.getEmployee().getEmName());
+        }
+
+        // 엑셀 파일 응답으로 전송
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "attachment; filename=ReleaseList.xlsx");
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
     }
 
     @GetMapping("/order_plan")

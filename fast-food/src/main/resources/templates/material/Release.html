@@ -11,7 +11,7 @@
                     <h5>(단위 kg,L,개 기준)</h5>
                 </div>
                 <div class="col-lg-12 text-right mb-20">
-                    <button class="btn btn-success">엑셀 저장 버튼</button>
+                    <button id="excelExportBtn" class="btn btn-success">엑셀 저장</button>
                     <button id="addOrderBtn" data-toggle="modal" data-target="#addOrderModal" class="btn btn-primary">출고 등록</button>
                 </div>
                 <!-- 검색 -->
@@ -74,7 +74,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="release : ${releases}">
-                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox" class="release-checkbox" th:value="${release.rsCode}"></td>
                                     <td th:text="${release.works.wkCode}"></td>
                                     <td th:text="${release.rsCode}"></td>
                                     <td th:text="${release.rsDate}"></td>
@@ -182,6 +182,28 @@
                         alert('Error');
                     }
                 });
+            });
+            $('#excelExportBtn').click(function () {
+                var selectedRelease = [];
+                $('input.release-checkbox:checked').each(function () {
+                    selectedRelease.push($(this).attr('value'));
+                });
+
+                if (selectedRelease.length === 0) {
+                    alert('선택된 자재 입고 내역이 없습니다.');
+                    return;
+                }
+
+                // 선택된 수주 코드를 전송할 폼을 동적으로 생성합니다.
+                var form = $('<form action="/release/export/excel" method="POST"></form>');
+                for (var i = 0; i < selectedRelease.length; i++) {
+                    form.append('<input type="hidden" name="rsCode" value="' + selectedRelease[i] + '">');
+                }
+
+                $('body').append(form);
+
+                // 폼을 명시적으로 제출합니다.
+                form.submit();
             });
         });
         function updateStock() {
