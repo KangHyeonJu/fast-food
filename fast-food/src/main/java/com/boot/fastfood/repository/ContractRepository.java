@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface ContractRepository extends JpaRepository<Contract, String> {
     List<Contract> searchContracts(ContractSearchDto searchDto);
+
+    List<Contract> findByCtCodeIn(List<String> ctCodes);
 }

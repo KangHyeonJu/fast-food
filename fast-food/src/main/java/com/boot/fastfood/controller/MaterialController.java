@@ -2,13 +2,9 @@ package com.boot.fastfood.controller;
 
 
 import com.boot.fastfood.entity.*;
-import com.boot.fastfood.entity.QReleases;
 import com.boot.fastfood.repository.*;
 import com.boot.fastfood.service.*;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -209,19 +207,28 @@ public class MaterialController {
 
         List<Orders> orders;
         if (odCode != null && !odCode.isEmpty()) {
-            orders = (List<Orders>) ordersRepository.findByOdCode(odCode);
+            Orders order = ordersRepository.findFirstByOdCode(odCode); // 단일 객체 반환 메서드 사용
+            if (order != null && order.getWhStatus() == 0) {
+                orders = Collections.singletonList(order);
+            } else {
+                orders = Collections.emptyList();
+            }
         } else if (mtName != null && !mtName.isEmpty()) {
-            orders = ordersRepository.findByMaterials_MtName(mtName);
+            orders = ordersRepository.findByMaterials_MtName(mtName)
+                    .stream()
+                    .filter(order -> order.getWhStatus() == 0)
+                    .collect(Collectors.toList());
         } else if (odDueDate != null) {
-            orders = ordersRepository.findByOdDueDate(odDueDate);
+            orders = ordersRepository.findByOdDueDate(odDueDate)
+                    .stream()
+                    .filter(order -> order.getWhStatus() == 0)
+                    .collect(Collectors.toList());
         } else {
-            orders = ordersRepository.findAll();
+            orders = ordersRepository.findAll()
+                    .stream()
+                    .filter(order -> order.getWhStatus() == 0)
+                    .collect(Collectors.toList());
         }
-
-        // 입고 예정 자재만 필터링
-        orders = orders.stream()
-                .filter(order -> order.getWhStatus() == 0)
-                .collect(Collectors.toList());
 
         model.addAttribute("orders", orders);
 
@@ -234,6 +241,7 @@ public class MaterialController {
 
         return "material/Material";
     }
+
 
     @GetMapping("/release")
     public String Release(Model model) {
