@@ -5,7 +5,7 @@ import com.boot.fastfood.dto.Materials.UpdateMaterialsDTO;
 import com.boot.fastfood.dto.Routing.AddRoutingDTO;
 import com.boot.fastfood.entity.*;
 import com.boot.fastfood.entity.Process;
-import com.boot.fastfood.repository.BomRepository;
+import com.boot.fastfood.repository.BOMRepository;
 import com.boot.fastfood.repository.ItemRepository;
 import com.boot.fastfood.repository.MaterialsRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BomService {
 
-    private final BomRepository bomRepository;
+    private final BOMRepository bomRepository;
     private final MaterialsRepository materialsRepository;
     private final ItemRepository itemRepository;
 

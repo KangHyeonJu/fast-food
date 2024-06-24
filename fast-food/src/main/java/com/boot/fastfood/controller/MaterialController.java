@@ -45,13 +45,6 @@ public class MaterialController {
     private final VendorService vendorService;
 
 
-
-    //자재관리
-    @GetMapping("/order")
-    public String contract() {
-        return "material/Order";
-    }
-
     @GetMapping("/warehousing")
     public String Warehousing(Model model) {
 
@@ -305,10 +298,5 @@ public class MaterialController {
         model.addAttribute("employees", employeeService.findAll());
 
         return "material/Release";  // HTML 템플릿 파일 이름
-    }
-
-    @GetMapping("/order_plan")
-    public String order_plan() {
-        return "material/Order_plan";
     }
 }

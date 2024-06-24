@@ -31,10 +31,10 @@ public class Items {
 
 
     @Builder
-    public Items(String itCode, String itName, String itType, Long itCnt) {
+    public Items(String itCode, String itName, String itType, int itEa) {
         this.itCode = itCode;
         this.itName = itName;
         this.itType = itType;
-        this.itCnt = itCnt;
+        this.itEa = itEa;
     }
 }
