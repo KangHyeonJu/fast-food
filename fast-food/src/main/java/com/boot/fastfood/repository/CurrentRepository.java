@@ -11,11 +11,11 @@ import java.util.List;
 
 public interface CurrentRepository extends JpaRepository<Contract, String> {
 
-//    @Query("SELECT new com.boot.fastfood.dto.MonthChartDto(c.items.itName, MONTH(c.ctDate), SUM(c.ctAmount)) " +
-//            "FROM Contract c WHERE YEAR(c.ctDate) = :year GROUP BY c.items.itName, MONTH(c.ctDate)")
-//    List<MonthChartDto> findMonthlyContractsByYear(@Param("year") int year);
-//
-//    @Query("SELECT new com.boot.fastfood.dto.MonthChartDto(c.items.itName, YEAR(c.ctDate), SUM(c.ctAmount)) " +
-//            "FROM Contract c GROUP BY c.items.itName, YEAR(c.ctDate)")
-//    List<YearChartDto> findYearlyContracts();
+    @Query("SELECT new com.boot.fastfood.dto.MonthChartDto(c.items.itName, MONTH(c.ctDate), SUM(c.ctAmount)) " +
+            "FROM Contract c WHERE YEAR(c.ctDate) = :year GROUP BY c.items.itName, MONTH(c.ctDate)")
+    List<MonthChartDto> findMonthlyContractsByYear(@Param("year") int year);
+
+    @Query("SELECT new com.boot.fastfood.dto.YearChartDto(c.items.itName, YEAR(c.ctDate), SUM(c.ctAmount)) " +
+            "FROM Contract c GROUP BY c.items.itName, YEAR(c.ctDate)")
+    List<YearChartDto> findYearlyContracts();
 }

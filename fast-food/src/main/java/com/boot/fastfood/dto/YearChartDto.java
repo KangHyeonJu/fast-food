@@ -8,9 +8,9 @@ import lombok.Setter;
 public class YearChartDto {
     private String itName;
     private int year;
-    private int totalAmount;
+    private long totalAmount;
 
-    public YearChartDto(String itName, int year, int totalAmount) {
+    public YearChartDto(String itName, int year, long totalAmount) {
         this.itName = itName;
         this.year = year;
         this.totalAmount = totalAmount;

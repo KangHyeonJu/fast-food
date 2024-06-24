@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,11 +20,11 @@ public class CurrentController {
     @GetMapping("/current")
     public String currentPage(Model model){
         int currentYear = LocalDate.now().getYear();
-//        List<MonthChartDto> monthlyContracts = currentService.getMonthCart(currentYear);
-//        List<YearChartDto> yearlyContracts = currentService.getYearCart();
-//
-//        model.addAttribute("monthlyContracts", monthlyContracts);
-//        model.addAttribute("yearlyContracts", yearlyContracts);
+        Map<Integer, List<MonthChartDto>> monthlyContracts = currentService.getMonthCart(currentYear);
+        Map<Integer, List<YearChartDto>> yearlyContracts = currentService.getYearCart();
+
+        model.addAttribute("monthlyContracts", monthlyContracts);
+        model.addAttribute("yearlyContracts", yearlyContracts);
 
         return "current/current";
     }

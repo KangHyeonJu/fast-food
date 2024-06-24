@@ -8,9 +8,9 @@ import lombok.Setter;
 public class MonthChartDto {
     private String itName;
     private int month;
-    private int totalAmount;
+    private long totalAmount;
 
-    public MonthChartDto(String itName, int month, int totalAmount) {
+    public MonthChartDto(String itName, int month, long totalAmount) {
         this.itName = itName;
         this.month = month;
         this.totalAmount = totalAmount;

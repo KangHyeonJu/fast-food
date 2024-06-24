@@ -7,17 +7,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CurrentService {
     private final CurrentRepository currentRepository;
 
-//    public List<MonthChartDto> getMonthCart(int year){
-//        return currentRepository.findMonthlyContractsByYear(year);
-//    }
-//
-//    public List<YearChartDto> getYearCart() {
-//        return currentRepository.findYearlyContracts();
-//    }
+    public Map<Integer, List<MonthChartDto>> getMonthCart(int year){
+        List<MonthChartDto> monthChartDtoList =  currentRepository.findMonthlyContractsByYear(year);
+        return monthChartDtoList.stream().collect(Collectors.groupingBy(MonthChartDto::getMonth));
+    }
+
+    public Map<Integer, List<YearChartDto>> getYearCart() {
+        List<YearChartDto> yearChartDtoList =  currentRepository.findYearlyContracts();
+        return yearChartDtoList.stream().collect(Collectors.groupingBy(YearChartDto::getYear));
+    }
 }

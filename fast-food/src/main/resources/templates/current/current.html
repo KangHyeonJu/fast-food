@@ -4,36 +4,99 @@
 
 <th:block layout:fragment="script">
     <script src="/js/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
     <script th:inline="javascript">
-        // document.addEventListener('DOMContentLoaded', function (){
-        //     //monthCart
-        //     var monthlyContracts  = /*[[${monthlyContracts}]]*/ [];
-        //     var monthLabels = monthlyContracts .map(c => c.month);
-        //     var monthData = monthlyContracts .map(c => c.totalAmount);
-        //
-        //     var monthCtx = document.getElementById('monthChart').getContext('2d');
-        //     var monthChart = new Chart(monthCtx, {
-        //         type: 'bar',
-        //         data: {
-        //             labels: monthLabels,
-        //             datasets: [{
-        //                 label: '월간 수주량',
-        //                 data: monthData,
-        //                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        //                 borderColor: 'rgba(75, 192, 192, 1)',
-        //                 borderWidth: 1
-        //             }]
-        //         },
-        //         options: {
-        //             scales: {
-        //                 y: {
-        //                     beginAtZero: true
-        //                 }
-        //             }
-        //         }
-        //     });
-        // })
+        document.addEventListener('DOMContentLoaded', function () {
+            //월간 그래프
+            var monthlyContracts = /*[[${monthlyContracts}]]*/ {};
+            var monthLabels = Object.keys(monthlyContracts).sort();
+
+            var monthDatasets = [];
+            var colors = ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)'];
+            var borderColors = ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255, 99, 132, 1)'];
+
+            var colorIndex = 0;
+            for (var month in monthlyContracts) {
+                if (monthlyContracts.hasOwnProperty(month)) {
+                    monthlyContracts[month].forEach(function(contract) {
+                        var dataset = monthDatasets.find(d => d.label === contract.itName);
+                        if (!dataset) {
+                            dataset = {
+                                label: contract.itName,
+                                data: new Array(monthLabels.length).fill(0),
+                                backgroundColor: colors[colorIndex % colors.length],
+                                borderColor: borderColors[colorIndex % borderColors.length],
+                                borderWidth: 1
+                            };
+                            monthDatasets.push(dataset);
+                            colorIndex++;
+                        }
+                        dataset.data[monthLabels.indexOf(month)] = contract.totalAmount;
+                    });
+                }
+            }
+
+            var monthCtx = document.getElementById('monthChart').getContext('2d');
+            var monthChart = new Chart(monthCtx, {
+                type: 'bar',
+                data: {
+                    labels: monthLabels,
+                    datasets: monthDatasets
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+
+            //연간 그래프
+            var yearlyContracts = /*[[${yearlyContracts}]]*/ [];
+            var yearLabels = Object.keys(yearlyContracts).sort();
+
+            var yearDatasets = [];
+
+            for (var year in yearlyContracts) {
+                if (yearlyContracts.hasOwnProperty(year)) {
+                    yearlyContracts[year].forEach(function(contract) {
+                        var dataset = yearDatasets.find(d => d.label === contract.itName);
+                        if (!dataset) {
+                            dataset = {
+                                label: contract.itName,
+                                data: new Array(monthLabels.length).fill(0),
+                                backgroundColor: colors[colorIndex % colors.length],
+                                borderColor: borderColors[colorIndex % borderColors.length],
+                                borderWidth: 1
+                            };
+                            yearDatasets.push(dataset);
+                            colorIndex++;
+                        }
+                        dataset.data[yearLabels.indexOf(year)] = contract.totalAmount;
+                    });
+                }
+            }
+
+            var yearCtx = document.getElementById('yearChart').getContext('2d');
+            var yearChart = new Chart(yearCtx, {
+                type: 'line',
+                data: {
+                    labels: yearLabels,
+                    datasets: yearLabels
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+
 
     </script>
 </th:block>
