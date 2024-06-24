@@ -11,15 +11,21 @@ import com.boot.fastfood.service.ClientService;
 import com.boot.fastfood.service.ContractService;
 import com.boot.fastfood.service.EmployeeService;
 import com.boot.fastfood.service.ItemService;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -100,4 +106,44 @@ public class ContractController {
         return "redirect:/contract"; // 수주 관리 페이지로 리다이렉트
     }
 
+    @PostMapping(value = "/contract/export/excel", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public void exportContractsToExcel(@RequestParam("ctCode") List<String> ctCode, HttpServletResponse response) throws IOException {
+
+        // 데이터베이스에서 엑셀 데이터 생성
+        List<Contract> contracts = contractRepository.findByCtCodeIn(ctCode);
+
+        // 엑셀 파일 생성
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Contract");
+
+        // 엑셀 헤더 생성
+        Row headerRow = sheet.createRow(0);
+        String[] headers = {"수주 코드", "고객 업체", "제품명", "수주 수량", "수주 날짜", "납품일", "납품 장소", "작업자", "수주 상태"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+
+        // 데이터 추가
+        int rowNum = 1;
+        for (Contract contract : contracts) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(contract.getCtCode());
+            row.createCell(1).setCellValue(contract.getClients().getClName());
+            row.createCell(2).setCellValue(contract.getItems().getItName());
+            row.createCell(3).setCellValue(contract.getCtAmount());
+            row.createCell(4).setCellValue(contract.getCtDate().toString());
+            row.createCell(5).setCellValue(contract.getDeliveryDate().toString());
+            row.createCell(6).setCellValue(contract.getDeliveryPlace());
+            row.createCell(7).setCellValue(contract.getEmployee().getEmName());
+            row.createCell(8).setCellValue(contract.getCtStatus());
+        }
+
+        // 엑셀 파일 응답으로 전송
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "attachment; filename=ContractList.xlsx");
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
+    }
 }

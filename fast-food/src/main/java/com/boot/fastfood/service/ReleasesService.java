@@ -20,7 +20,6 @@ public class ReleasesService {
     private final MaterialRepository materialRepository;
     private final EmployeeRepository employeeRepository;
     private final BOMRepository bomRepository;
-    private final ItemsRepository itemsRepository;
 
     private final ProductionRepository productionRepository;
     public List<Releases> findAll() {
@@ -81,10 +80,8 @@ public class ReleasesService {
         switch (mtName) {
             case "양배추":
             case "흑마늘":
-                releaseAmount = (((pmAmount * itEa) * 1.04) * 0.01 * 10 * 1.4);
-                break;
-            case "석류(농축액)":
-            case "매실(농축액)":
+            case "석류농축액":
+            case "매실농축액":
                 releaseAmount = (((pmAmount * itEa) * 1.04) * 0.01 * 10 * 1.4);
                 break;
             case "벌꿀":
@@ -100,7 +97,7 @@ public class ReleasesService {
                 releaseAmount = (double) pmAmount * 1.04;
                 break;
             default:
-                throw new IllegalArgumentException("해당 재료 이름에 대한 계산식이 없습니다.");
+                throw new IllegalArgumentException("존재하지 않는 재료입니다.");
         }
 
         // 올림 처리
