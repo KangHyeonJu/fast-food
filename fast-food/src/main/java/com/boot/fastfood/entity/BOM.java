@@ -11,8 +11,9 @@ import java.io.Serializable;
 @Table(name = "bom")
 public class BOM {
     @Id
-    @Column(name = "bomCode")
-    private String bomCode;
+    @Column(name="bom_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "itCode")
@@ -24,5 +25,9 @@ public class BOM {
 
     @Column(name = "mtAmount")
     private float mtAmount;
+
+    public void update(float mtAmount) {
+        this.mtAmount = mtAmount;
+    }
 }
 

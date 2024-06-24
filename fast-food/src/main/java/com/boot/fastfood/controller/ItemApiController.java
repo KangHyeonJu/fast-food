@@ -22,19 +22,12 @@ public class ItemApiController {
                 .body(items);
     }
 
+    @DeleteMapping("/items/{itemCheck}")
+    public ResponseEntity<?> deleteById(@PathVariable String itemCheck) {
+        itemService.deleteById(itemCheck);
 
-/*
-    @GetMapping("/routing/{itCode}")
-    public ResponseEntity<Items> item(@PathVariable String itCode) {
-        Items item = itemService.findByitCode(itCode);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(item);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
- */
-
 
 
 }

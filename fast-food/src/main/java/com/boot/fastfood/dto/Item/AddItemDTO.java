@@ -12,15 +12,15 @@ import lombok.Setter;
 @Getter
 public class AddItemDTO {
 
-    private String itCode;
     private String itName;
     private String itType;
+    private Long itCnt;
 
     public Items toEntity() {
         return Items.builder()
-                .itCode(itCode)
                 .itName(itName)
                 .itType(itType)
+                .itCnt(itCnt)
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.boot.fastfood.dto.Process;
 
+import com.boot.fastfood.entity.Facility;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,13 +13,12 @@ import com.boot.fastfood.entity.Process;
 @NoArgsConstructor
 public class AddProcessDTO {
 
-    private String pcCode;
     private String pcName;
     private String pcCnt;
+    private String fcName;
 
     public Process toEntity() {
         return Process.builder()
-                .pcCode(pcCode)
                 .pcName(pcName)
                 .pcCnt(pcCnt)
                 .build();

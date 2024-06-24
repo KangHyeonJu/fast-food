@@ -37,4 +37,10 @@ public class FacilityService {
     public List<Facility> getAllFacility(){
         return facilityRepository.findAll();
     }
+
+    public Facility findByFcName(String fcName) {
+        Facility facility = facilityRepository.findFacilityByFcName(fcName);
+
+        return facility;
+    }
 }
