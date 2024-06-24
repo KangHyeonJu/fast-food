@@ -65,9 +65,7 @@ public class ContractService {
             contract.setCtStatus("생산중");
 
             // 저장
-            System.out.println("마지막ㅇㅇㅇ");
             contractRepository.save(contract);
-            System.out.println("수주가 저장되었습니다.");
 
             Production production = new Production();
             registerContractAndProduction(contract, production);
