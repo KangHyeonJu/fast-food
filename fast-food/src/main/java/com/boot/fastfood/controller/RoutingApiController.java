@@ -41,7 +41,7 @@ public class RoutingApiController {
     }
 
     @GetMapping("/routing/{itCode}")
-    public ResponseEntity<?> item(@PathVariable String itCode) {
+    public ResponseEntity<?> item(@PathVariable("itCode") String itCode) {
 
         List<Routing> routingList = routingService.findByid(itCode);
         ProcessListDTO listDTO = new ProcessListDTO();
@@ -60,7 +60,7 @@ public class RoutingApiController {
     }
 
     @DeleteMapping("/routing/{itCode}/{pcCode}")
-    public ResponseEntity<?> deleteRouting(@PathVariable String itCode, @PathVariable String pcCode) {
+    public ResponseEntity<?> deleteRouting(@PathVariable("itCode") String itCode, @PathVariable("pcCode") String pcCode) {
         routingService.deleteById(itCode, pcCode);
 
         return new ResponseEntity<>(HttpStatus.OK);

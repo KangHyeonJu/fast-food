@@ -43,10 +43,10 @@ public class ClientController {
     }
 
     @PostMapping("/client/update")
-    public String updateClient(@RequestParam String clCode,
-                               @RequestParam String clName,
-                               @RequestParam String clType,
-                               @RequestParam String clPhone) {
+    public String updateClient(@RequestParam("clCode") String clCode,
+                               @RequestParam("clName") String clName,
+                               @RequestParam("clType") String clType,
+                               @RequestParam("clPhone") String clPhone) {
         Clients client = new Clients();
         client.setClCode(clCode);
         client.setClName(clName);

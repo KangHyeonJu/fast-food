@@ -36,12 +36,6 @@ public class QOrders extends EntityPathBase<Orders> {
 
     public final DatePath<java.time.LocalDate> odDueDate = createDate("odDueDate", java.time.LocalDate.class);
 
-    public final DateTimePath<java.util.Date> odDate = createDateTime("odDate", java.util.Date.class);
-
-    public final DatePath<java.time.LocalDate> odDueDate = createDate("odDueDate", java.time.LocalDate.class);
-
-    public final QVendor vendor;
-
     public final NumberPath<Integer> whStatus = createNumber("whStatus", Integer.class);
 
     public QOrders(String variable) {
@@ -65,7 +59,6 @@ public class QOrders extends EntityPathBase<Orders> {
         this.contract = inits.isInitialized("contract") ? new QContract(forProperty("contract"), inits.get("contract")) : null;
         this.employee = inits.isInitialized("employee") ? new QEmployee(forProperty("employee")) : null;
         this.materials = inits.isInitialized("materials") ? new QMaterials(forProperty("materials"), inits.get("materials")) : null;
-        this.vendor = inits.isInitialized("vendor") ? new QVendor(forProperty("vendor")) : null;
     }
 
 }

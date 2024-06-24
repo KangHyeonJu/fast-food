@@ -33,9 +33,6 @@ public class QProduction extends EntityPathBase<Production> {
     public final DatePath<java.time.LocalDate> pmEDate = createDate("pmEDate", java.time.LocalDate.class);
 
     public final DatePath<java.time.LocalDate> pmSDate = createDate("pmSDate", java.time.LocalDate.class);
-    public final DateTimePath<java.util.Date> pmEDate = createDateTime("pmEDate", java.util.Date.class);
-
-    public final DateTimePath<java.util.Date> pmSDate = createDateTime("pmSDate", java.util.Date.class);
 
     public final NumberPath<Integer> pNo = createNumber("pNo", Integer.class);
 

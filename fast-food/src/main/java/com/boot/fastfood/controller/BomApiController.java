@@ -42,7 +42,7 @@ public class BomApiController {
     }
 
     @PutMapping("/bom/{itCode}/{mtCode}")
-    public ResponseEntity<?> bomInputAdd(@PathVariable String itCode, @PathVariable String mtCode,
+    public ResponseEntity<?> bomInputAdd(@PathVariable("itCode") String itCode, @PathVariable("mtCode") String mtCode,
                                          @RequestBody UpdateMaterialsDTO mtAmount) {
         BOM bom = bomService.saveById(itCode, mtCode, mtAmount);
 
@@ -51,7 +51,7 @@ public class BomApiController {
     }
 
     @GetMapping("/bom/{itCode}")
-    public ResponseEntity<?> item(@PathVariable String itCode) {
+    public ResponseEntity<?> item(@PathVariable("itCode") String itCode) {
 
 
         List<BOM> bomList = bomService.findByid(itCode);
@@ -86,7 +86,7 @@ public class BomApiController {
     }
 
     @DeleteMapping("/bom/{itCode}/{mtCode}")
-    public ResponseEntity<?> deleteRouting(@PathVariable String itCode, @PathVariable String mtCode) {
+    public ResponseEntity<?> deleteRouting(@PathVariable("itCode") String itCode, @PathVariable("mtCode") String mtCode) {
         bomService.deleteById(itCode, mtCode);
 
         return new ResponseEntity<>(HttpStatus.OK);

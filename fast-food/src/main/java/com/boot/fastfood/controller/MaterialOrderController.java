@@ -57,7 +57,7 @@ public class MaterialOrderController {
 
     //발주 등록
     @PostMapping("/order_plan/add/{emName}")
-    public String orderAdd(@PathVariable String emName){
+    public String orderAdd(@PathVariable("emName") String emName){
         try {
             Map<String, Object> orderPlanData = materialService.getOrderPlan();
 //            List<OrderTodayDto> orderTodayDtoList = (List<OrderTodayDto>) orderPlanData.get("orderTodayDtoList");

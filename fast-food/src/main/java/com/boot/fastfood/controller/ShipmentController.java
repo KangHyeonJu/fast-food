@@ -55,7 +55,7 @@ public class ShipmentController {
 
     //출하등록
     @PostMapping("/shipment/{smCode}/{emName}")
-    public String shipRegistration(@PathVariable String smCode, @PathVariable String emName){
+    public String shipRegistration(@PathVariable("smCode") String smCode, @PathVariable("emName") String emName){
         try {
             shipmentService.shipRegistration(smCode, emName);
             return "redirect:/shipment";
