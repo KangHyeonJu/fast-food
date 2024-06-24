@@ -15,42 +15,48 @@
                     <button id="excelExportBtn" class="btn btn-success">엑셀 저장</button>
                 </div>
                 <!-- 검색 -->
-                <div class="row">
-                    <div class="col-lg-12" style="border: 1px solid black">
-                        <form th:action="@{/searchWarehousing}" method="get">
-                            <ul class="list-inline">
-                                <li>
-                                    <h4>발주 코드 : <input type="text" name="odCode"></h4>
-                                </li>
-                                <li>
-                                    <h4>거래처 : <input type="text" name="vdName"></h4>
-                                </li>
-                                <li>
-                                    <h4>입고일 : <input type="date" name="whDate"></h4>
-                                </li>
-                                <li>
-                                    <h4>원자재명 :
-                                        <select name="mtName">
-                                            <option value="">전체</option>
-                                            <option th:each="material : ${materials}" th:value="${material.mtName}"
-                                                    th:text="${material.mtName}"></option>
-                                        </select>
-                                    </h4>
-                                </li>
-                                <li>
-                                    <h4>작업자 :
-                                        <select name="emName">
-                                            <option value="">전체</option>
-                                            <option th:each="employee : ${employees}" th:value="${employee.emName}"
-                                                    th:text="${employee.emName}"></option>
-                                        </select>
-                                    </h4>
-                                </li>
-                                <li>
-                                    <button class="btn btn-primary" style="float: right" type="submit">조회</button>
-                                </li>
-                            </ul>
-                        </form>
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <form th:action="@{/searchWarehousing}" method="get">
+                                    <ul class="list-inline">
+                                        <li>
+                                            <label>발주 코드 : <input type="text" name="odCode"></label>
+                                        </li>
+                                        <li>
+                                            <label>거래처 : <input type="text" name="vdName"></label>
+                                        </li>
+                                        <li>
+                                            <label>입고일 : <input type="date" name="whDate"></label>
+                                        </li>
+                                        <li>
+                                            <label>원자재명 :
+                                                <select name="mtName">
+                                                    <option value="">전체</option>
+                                                    <option th:each="material : ${materials}"
+                                                            th:value="${material.mtName}"
+                                                            th:text="${material.mtName}"></option>
+                                                </select>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>작업자 :
+                                                <select name="emName">
+                                                    <option value="">전체</option>
+                                                    <option th:each="employee : ${employees}"
+                                                            th:value="${employee.emName}"
+                                                            th:text="${employee.emName}"></option>
+                                                </select>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-primary" type="submit">조회</button>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- 검색 끝-->
@@ -82,7 +88,8 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="warehousing : ${warehousings}">
-                                    <td><input type="checkbox" class="warehousing-checkbox" th:value="${warehousing.whCode}"></td>
+                                    <td><input type="checkbox" class="warehousing-checkbox"
+                                               th:value="${warehousing.whCode}"></td>
                                     <td th:text="${warehousing.orders.odCode}"></td>
                                     <td th:text="${warehousing.whCode}"></td>
                                     <td th:text="${warehousing.whDate}"></td>

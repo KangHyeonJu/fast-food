@@ -20,7 +20,6 @@ public class ReleasesService {
     private final MaterialRepository materialRepository;
     private final EmployeeRepository employeeRepository;
     private final BOMRepository bomRepository;
-    private final ItemsRepository itemsRepository;
 
     private final ProductionRepository productionRepository;
     public List<Releases> findAll() {
@@ -98,7 +97,7 @@ public class ReleasesService {
                 releaseAmount = (double) pmAmount * 1.04;
                 break;
             default:
-                throw new IllegalArgumentException("해당 재료 이름에 대한 계산식이 없습니다.");
+                throw new IllegalArgumentException("존재하지 않는 재료입니다.");
         }
 
         // 올림 처리

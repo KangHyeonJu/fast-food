@@ -4,6 +4,31 @@
       layout:decorate="~{layout/layout1}">
 
 <div layout:fragment="content">
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: flex-end; /* 왼쪽 정렬 */
+            margin-bottom: 10px;
+        }
+
+        .button-container button {
+            margin-left: 10px; /* 버튼 사이의 간격 조정 */
+        }
+
+        #excelExportBtn {
+            background-color: #2b542c;
+        }
+
+        .form-group label {
+            margin-right: 10px;
+        }
+
+        .form-control {
+            width: 150px;
+            margin-right: 10px;
+            display: inline-block;
+        }
+    </style>
 
     <!-- Page Content -->
     <div id="page-wrapper">
@@ -11,52 +36,60 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">수주 등록</h1>
+                    <div class="col-lg-12 text-right mb-20">
+                        <div class="button-container">
+                            <button id="excelExportBtn" class="btn btn-success">엑셀 저장</button>
+                            <button id="addOrderBtn" data-toggle="modal" data-target="#addOrderModal"
+                                    class="btn btn-primary">수주
+                                등록
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <!-- 검색 -->
-                <div class="col-lg-12 text-right mb-20">
-                    <button id="excelExportBtn" class="btn btn-success">엑셀 저장</button>
-                    <button id="addOrderBtn" data-toggle="modal" data-target="#addOrderModal" class="btn btn-primary">수주
-                        등록
-                    </button>
-                </div>
                 <form th:action="@{/searchcontract}" method="get">
-                    <div class="row">
-                        <div class="col-lg-12" style="border: 1px solid black">
-                            <ul class="list-inline">
-                                <li>
-                                    <h4>수주 코드 : <input name="ctCode" type="text"></h4>
-                                </li>
-                                <li>
-                                    <h4>고객 업체 :
-                                        <select name="clName">
-                                            <option value="">전체</option>
-                                            <option th:each="client : ${clients}" th:value="${client.clName}"
-                                                    th:text="${client.clName}"></option>
-                                        </select>
-                                    </h4>
-                                </li>
-                                <li>
-                                    <h4>수주일 : <input type="date" name="ctDate"></h4>
-                                </li>
-                                <li>
-                                    <h4>제품명 :
-                                        <select name="itName">
-                                            <option value="">전체</option>
-                                            <option th:each="item : ${items}" th:value="${item.itName}"
-                                                    th:text="${item.itName}"></option>
-                                        </select>
-                                    </h4>
-                                </li>
-                                <li>
-                                    <h4> 작업자 : <select name="emName">
-                                        <option value="">전체</option>
-                                        <option th:each="employees : ${employees}" th:value="${employees.emName}"
-                                                th:text="${employees.emName}"></option>
-                                    </select></h4>
-                                </li>
-                                <button class="btn btn-primary" style="float: right">조회
-                                </button>
-                            </ul>
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <ul class="list-inline">
+                                        <li>
+                                            <label>수주 코드 : <input name="ctCode" type="text" class="form-control"></label>
+                                        </li>
+                                        <li>
+                                            <label>고객 업체 :
+                                                <select name="clName" class="form-control">
+                                                    <option value="">전체</option>
+                                                    <option th:each="client : ${clients}" th:value="${client.clName}"
+                                                            th:text="${client.clName}"></option>
+                                                </select>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>수주일 : <input type="date" name="ctDate" class="form-control"></label>
+                                        </li>
+                                        <li>
+                                            <label>제품명 :
+                                                <select name="itName" class="form-control">
+                                                    <option value="">전체</option>
+                                                    <option th:each="item : ${items}" th:value="${item.itName}"
+                                                            th:text="${item.itName}"></option>
+                                                </select>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label> 작업자 : <select name="emName" class="form-control">
+                                                <option value="">전체</option>
+                                                <option th:each="employees : ${employees}"
+                                                        th:value="${employees.emName}"
+                                                        th:text="${employees.emName}"></option>
+                                            </select></label>
+                                        </li>
+                                        <button class="btn btn-primary" >조회
+                                        </button>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- 검색 끝-->
@@ -89,7 +122,8 @@
                                         </thead>
                                         <tbody>
                                         <tr th:each="contract, staus : ${contracts}">
-                                            <td><input type="checkbox" class="contract-checkbox" th:value="${contract.ctCode}"></td>
+                                            <td><input type="checkbox" class="contract-checkbox"
+                                                       th:value="${contract.ctCode}"></td>
                                             <td th:text="${contract.ctCode}"></td>
                                             <td th:text="${contract.clients.clName}"></td>
                                             <td th:text="${contract.items.itName}"></td>
@@ -128,46 +162,46 @@
                 <form id="addOrderForm" action="/contract/add" method="post">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="addOrderModalLabel">수주 등록</h4>
+                        <h5 class="modal-title" id="addOrderModalLabel">수주 등록</h5>
                     </div>
                     <div class="col-lg-12" style="border: 1px solid black">
                         <ul class="list-inline">
                             <li>
-                                <h4>작업자 :
+                                <h5>작업자 :
                                     <select name="emName" id="emName">
                                         <option value="">전체</option>
                                         <option th:each="employees : ${employees}" th:value="${employees.emName}"
                                                 th:text="${employees.emName}"></option>
                                     </select>
-                                </h4>
+                                </h5>
                             </li>
                             <li>
-                                <h4>고객 업체 :
+                                <h5>고객 업체 :
                                     <select name="clName" id="clName">
                                         <option value="">전체</option>
                                         <option th:each="client : ${clients}" th:value="${client.clName}"
                                                 th:text="${client.clName}"></option>
                                     </select>
-                                </h4>
+                                </h5>
 
                             </li>
                             <li>
-                                <h4>제품명 :
+                                <h5>제품명 :
                                     <select name="itName" id="itName">
                                         <option value="">전체</option>
                                         <option th:each="item : ${items}" th:value="${item.itName}"
                                                 th:text="${item.itName}"></option>
                                     </select>
-                                </h4>
+                                </h5>
                             </li>
                             <li>
-                                <h4>수주수량 : <input name="ctAmount" id="orderQuantity" type="number"></h4>
+                                <h5>수주수량 : <input name="ctAmount" id="orderQuantity" type="number"></h5>
                             </li>
                             <li>
-                                <h4>납품일 : <input type="date" id="deliveryDate" name="deliveryDate"></h4>
+                                <h5>납품일 : <input type="date" id="deliveryDate" name="deliveryDate"></h5>
                             </li>
                             <li>
-                                <h4>납품 장소 : <input id="deliveryPlace" name="deliveryPlace"></h4>
+                                <h5>납품 장소 : <input id="deliveryPlace" name="deliveryPlace"></h5>
                             </li>
                         </ul>
                     </div>
@@ -312,7 +346,7 @@
 
             $('#excelExportBtn').click(function () {
                 var selectedContracts = [];
-                $('input.contract-checkbox:checked').each(function() {
+                $('input.contract-checkbox:checked').each(function () {
                     selectedContracts.push($(this).attr('value'));
                 });
 
