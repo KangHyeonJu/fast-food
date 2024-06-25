@@ -18,7 +18,7 @@
             <!-- 버튼 모음 -->
             <div class="list-inline text-right">
                 <a class="btn btn-warning" href="/machine/calender">캘린더</a>
-                <button type="button" class="btn btn-success">엑셀 저장</button>
+                <button id="excelExportBtn" class="btn btn-success">엑셀 저장</button>
             </div>
             <!--버튼끝-->
 
@@ -63,10 +63,11 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body" style="height: 200px; overflow: auto">
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="width: 100%;">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example"
+                                   style="width: 100%;">
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox"></th>
+                                    <th><input type="checkbox" id="checkall"></th>
                                     <th>생산 코드</th>
                                     <th>생산 시작일</th>
                                     <th>생산 종료일</th>
@@ -77,7 +78,8 @@
                                 <tbody>
                                 <!-- 생산계획만큼 반복문으로 데이터 받아옴 controller에서 받아와야함 -->
                                 <tr th:each="production : ${productions}">
-                                    <td><input type="checkbox" class="planCheckbox"></td>
+                                    <td><input type="checkbox" class="productionPlan-checkbox"
+                                               th:value="${production.pmCode}"></td>
                                     <td th:text="${production.pmCode}"></td>
                                     <!-- 생산 시작일 = (납품요청일) - 1일 - (생산 소요 시간)  -->
                                     <td th:text="${production.pmSDate}"></td>
@@ -148,5 +150,34 @@
 
 </div>
 <!-- /#wrapper -->
+<th:block layout:fragment="script">
+    <script>
+        $(document).ready(function () {
+            $('#excelExportBtn').click(function () {
+                var selectedproductPlan = [];
+                $('input.productionPlan-checkbox:checked').each(function () {
+                    selectedproductPlan.push($(this).attr('value'));
+                });
 
+                if (selectedproductPlan.length === 0) {
+                    alert('선택된 작업 계획이 없습니다.');
+                    return;
+                }
+
+                var form = $('<form action="/machine/productPlan/export/excel" method="POST"></form>');
+                for (var i = 0; i < selectedproductPlan.length; i++) {
+                    form.append('<input type="hidden" name="pmCode" value="' + selectedproductPlan[i] + '">');
+                }
+
+                $('body').append(form);
+
+                // 폼을 명시적으로 제출합니다.
+                form.submit();
+            });
+            $('#checkall').click(function () {
+                $('input:checkbox').not(this).prop('checked', this.checked);
+            });
+        });
+    </script>
+</th:block>
 </html>

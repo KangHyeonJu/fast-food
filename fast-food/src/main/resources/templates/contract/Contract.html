@@ -169,7 +169,7 @@
                             <li>
                                 <h5>작업자 :
                                     <select name="emName" id="emName">
-                                        <option value="">전체</option>
+                                        <option value="">선택</option>
                                         <option th:each="employees : ${employees}" th:value="${employees.emName}"
                                                 th:text="${employees.emName}"></option>
                                     </select>
@@ -178,7 +178,7 @@
                             <li>
                                 <h5>고객 업체 :
                                     <select name="clName" id="clName">
-                                        <option value="">전체</option>
+                                        <option value="">선택</option>
                                         <option th:each="client : ${clients}" th:value="${client.clName}"
                                                 th:text="${client.clName}"></option>
                                     </select>
@@ -188,7 +188,7 @@
                             <li>
                                 <h5>제품명 :
                                     <select name="itName" id="itName">
-                                        <option value="">전체</option>
+                                        <option value="">선택</option>
                                         <option th:each="item : ${items}" th:value="${item.itName}"
                                                 th:text="${item.itName}"></option>
                                     </select>
@@ -355,7 +355,6 @@
                     return;
                 }
 
-                // 선택된 수주 코드를 전송할 폼을 동적으로 생성합니다.
                 var form = $('<form action="/contract/export/excel" method="POST"></form>');
                 for (var i = 0; i < selectedContracts.length; i++) {
                     form.append('<input type="hidden" name="ctCode" value="' + selectedContracts[i] + '">');

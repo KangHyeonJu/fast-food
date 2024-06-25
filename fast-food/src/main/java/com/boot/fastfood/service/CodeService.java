@@ -3,6 +3,7 @@ package com.boot.fastfood.service;
 import com.boot.fastfood.entity.Codes;
 import com.boot.fastfood.repository.CodesRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,5 @@ public class CodeService {
     public List<Codes> getAllCodes(){
         return codesRepository.findAll();
     }
-
 
 }

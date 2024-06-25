@@ -103,7 +103,7 @@
                                 <tbody>
                                 <tr class="itemList" th:each="item : ${itemList}">
                                     <td></td>
-                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox" class="routing-checkbox" id="itemCheck" th:value="${item.itCode}"></td>
                                     <td th:text="${item.itCode}" id="showPanel" th:value="${item.itCode}"></td>
                                     <td class="center" th:text="${item.itName}" ></td>
                                     <td class="center" th:text="${item.itType}"></td>
@@ -235,6 +235,27 @@
                 getBOM(itCode);
             });
             //itemList 클릭 이벤트 끝
+            $('#excel-btn').click(function () {
+                var selectedItems = [];
+                $('input.routing-checkbox:checked').each(function () {
+                    selectedItems.push($(this).val());
+                });
+
+                if (selectedItems.length === 0) {
+                    alert('선택된 라우팅이 없습니다.');
+                    return;
+                }
+
+                var form = $('<form action="/routing/export/excel" method="POST"></form>');
+                for (var i = 0; i < selectedItems.length; i++) {
+                    form.append('<input type="hidden" name="itCode" value="' + selectedItems[i] + '">');
+                }
+
+                $('body').append(form);
+
+                // 폼을 명시적으로 제출합니다.
+                form.submit();
+            });
 
             let selectCheck = [];
 

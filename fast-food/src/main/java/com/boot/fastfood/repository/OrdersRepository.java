@@ -21,4 +21,6 @@ public interface OrdersRepository extends JpaRepository<Orders, String>, OrdersR
     List<Orders> findByOdDueDateGreaterThanEqual(LocalDate today);
 
     Orders findFirstByOdCode(String odCode);
+
+    List<Orders> findByOdCodeIn(List<String> odCode);
 }

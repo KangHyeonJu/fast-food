@@ -132,7 +132,6 @@
                     return;
                 }
 
-                // 선택된 수주 코드를 전송할 폼을 동적으로 생성합니다.
                 var form = $('<form action="/warehousing/export/excel" method="POST"></form>');
                 for (var i = 0; i < selectedWarehousings.length; i++) {
                     form.append('<input type="hidden" name="whCode" value="' + selectedWarehousings[i] + '">');

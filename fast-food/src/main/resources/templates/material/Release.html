@@ -151,7 +151,7 @@
                     </li>
                     <li>
                         작업자 : <select id="emCode" name="emCode">
-                        <option value="">전체</option>
+                        <option value="">선택</option>
                         <option th:each="employee : ${employees}" th:value="${employee.emCode}"
                                 th:text="${employee.emName}"></option>
                     </select>
@@ -212,7 +212,6 @@
                     return;
                 }
 
-                // 선택된 수주 코드를 전송할 폼을 동적으로 생성합니다.
                 var form = $('<form action="/release/export/excel" method="POST"></form>');
                 for (var i = 0; i < selectedRelease.length; i++) {
                     form.append('<input type="hidden" name="rsCode" value="' + selectedRelease[i] + '">');

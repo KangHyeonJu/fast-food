@@ -6,10 +6,7 @@ import com.boot.fastfood.repository.*;
 import com.boot.fastfood.service.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
@@ -39,7 +36,7 @@ public class MaterialController {
     private final EmployeeService employeeService;
     private final EmployeeRepository employeeRepository;
 
-    private  final WorksService worksService;
+    private final WorksService worksService;
 
     private final ReleasesService releasesService;
     private final ReleasesRepository releasesRepository;
@@ -121,6 +118,7 @@ public class MaterialController {
 
         return "material/Warehousing";  // HTML 템플릿 파일 이름
     }
+
     @PostMapping(value = "/warehousing/export/excel", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public void exportWarehousingsToExcel(@RequestParam("whCode") List<String> whCode, HttpServletResponse response) throws IOException {
 
@@ -129,7 +127,7 @@ public class MaterialController {
 
         // 엑셀 파일 생성
         Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Contract");
+        Sheet sheet = workbook.createSheet("Warehousing");
 
         // 엑셀 헤더 생성
         Row headerRow = sheet.createRow(0);
@@ -141,20 +139,33 @@ public class MaterialController {
 
         // 데이터 추가
         int rowNum = 1;
+        CellStyle dateCellStyle = workbook.createCellStyle();
+        CreationHelper createHelper = workbook.getCreationHelper();
+        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd")); // 날짜 형식 지정
+
         for (Warehousing warehousing : warehousings) {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(warehousing.getOrders().getOdCode());
             row.createCell(1).setCellValue(warehousing.getWhCode());
-            row.createCell(2).setCellValue(warehousing.getWhDate());
+
+            // 입고일에 날짜 형식 적용
+            Cell whDateCell = row.createCell(2);
+            whDateCell.setCellValue(warehousing.getWhDate());
+            whDateCell.setCellStyle(dateCellStyle);
+
             row.createCell(3).setCellValue(warehousing.getVendor().getVdName());
             row.createCell(4).setCellValue(warehousing.getMaterials().getMtName());
             row.createCell(5).setCellValue(warehousing.getOrders().getOdAmount());
             row.createCell(6).setCellValue(warehousing.getEmployee().getEmName());
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
         }
+
 
         // 엑셀 파일 응답으로 전송
         response.setContentType("application/vnd.ms-excel");
-        response.setHeader("Content-Disposition", "attachment; filename=OrderList.xlsx");
+        response.setHeader("Content-Disposition", "attachment; filename=WarehousingList.xlsx");
 
         workbook.write(response.getOutputStream());
         workbook.close();
@@ -192,7 +203,7 @@ public class MaterialController {
 
     @PostMapping("/material")
     public String updateWhStatus(@RequestParam("odCode") String odCode, @RequestParam("emName") String emName,
-                                 @RequestParam("mtCode") String mtCode, @RequestParam("vdCode") String vdCode){
+                                 @RequestParam("mtCode") String mtCode, @RequestParam("vdCode") String vdCode) {
         Orders order = ordersRepository.findByOdCode(odCode);
         Materials materials = materialRepository.findByMtCode(mtCode);
         if (order != null) {
@@ -300,6 +311,7 @@ public class MaterialController {
 
         return "material/Release";
     }
+
     @PostMapping("/release/save")
     public String saveRelease(
             @RequestParam("wkCode") String wkCode,
@@ -313,6 +325,7 @@ public class MaterialController {
         }
         return "redirect:/release";
     }
+
     @GetMapping("/searchRelease")
     public String searchRelease(
             @RequestParam(required = false, name = "rsDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate rsDate,
@@ -354,6 +367,7 @@ public class MaterialController {
 
         return "material/Release";  // HTML 템플릿 파일 이름
     }
+
     @PostMapping(value = "/release/export/excel", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public void exportReleaseToExcel(@RequestParam("rsCode") List<String> rsCode, HttpServletResponse response) throws IOException {
 
@@ -374,15 +388,28 @@ public class MaterialController {
 
         // 데이터 추가
         int rowNum = 1;
-        for (Releases releases1 : releases) {
+        CellStyle dateCellStyle = workbook.createCellStyle();
+        CreationHelper createHelper = workbook.getCreationHelper();
+        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd")); // 날짜 형식 지정
+
+        for (Releases release : releases) {
             Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(releases1.getWorks().getWkCode());
-            row.createCell(1).setCellValue(releases1.getRsCode());
-            row.createCell(2).setCellValue(releases1.getRsDate());
-            row.createCell(3).setCellValue(releases1.getRsAmount());
-            row.createCell(4).setCellValue(releases1.getMaterials().getMtName());
-            row.createCell(5).setCellValue(releases1.getEmployee().getEmName());
+            row.createCell(0).setCellValue(release.getWorks().getWkCode());
+            row.createCell(1).setCellValue(release.getRsCode());
+
+            // 출고일에 날짜 형식 적용
+            Cell rsDateCell = row.createCell(2);
+            rsDateCell.setCellValue(release.getRsDate());
+            rsDateCell.setCellStyle(dateCellStyle);
+
+            row.createCell(3).setCellValue(release.getRsAmount());
+            row.createCell(4).setCellValue(release.getMaterials().getMtName());
+            row.createCell(5).setCellValue(release.getEmployee().getEmName());
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
         }
+
 
         // 엑셀 파일 응답으로 전송
         response.setContentType("application/vnd.ms-excel");

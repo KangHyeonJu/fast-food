@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -18,6 +19,8 @@ public class QVendor extends EntityPathBase<Vendor> {
     private static final long serialVersionUID = -1373660882L;
 
     public static final QVendor vendor = new QVendor("vendor");
+
+    public final ListPath<Materials, QMaterials> materials = this.<Materials, QMaterials>createList("materials", Materials.class, QMaterials.class, PathInits.DIRECT2);
 
     public final StringPath vdCode = createString("vdCode");
 

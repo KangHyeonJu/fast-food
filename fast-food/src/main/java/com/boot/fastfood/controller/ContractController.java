@@ -12,10 +12,7 @@ import com.boot.fastfood.service.ContractService;
 import com.boot.fastfood.service.EmployeeService;
 import com.boot.fastfood.service.ItemService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -112,7 +109,7 @@ public class ContractController {
         // 데이터베이스에서 엑셀 데이터 생성
         List<Contract> contracts = contractRepository.findByCtCodeIn(ctCode);
 
-        // 엑셀 파일 생성
+        // 새로운 Workbook 생성
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Contract");
 
@@ -126,17 +123,34 @@ public class ContractController {
 
         // 데이터 추가
         int rowNum = 1;
+        CellStyle dateCellStyle = workbook.createCellStyle();
+        CreationHelper createHelper = workbook.getCreationHelper();
+        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd")); // 날짜 형식 지정
+
         for (Contract contract : contracts) {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(contract.getCtCode());
             row.createCell(1).setCellValue(contract.getClients().getClName());
             row.createCell(2).setCellValue(contract.getItems().getItName());
             row.createCell(3).setCellValue(contract.getCtAmount());
-            row.createCell(4).setCellValue(contract.getCtDate().toString());
-            row.createCell(5).setCellValue(contract.getDeliveryDate().toString());
+
+            // 수주 날짜에 날짜 형식 적용
+            Cell ctDateCell = row.createCell(4);
+            ctDateCell.setCellValue(contract.getCtDate());
+            ctDateCell.setCellStyle(dateCellStyle);
+
+            // 납품일에 날짜 형식 적용
+            Cell deliveryDateCell = row.createCell(5);
+            deliveryDateCell.setCellValue(contract.getDeliveryDate());
+            deliveryDateCell.setCellStyle(dateCellStyle);
+
             row.createCell(6).setCellValue(contract.getDeliveryPlace());
             row.createCell(7).setCellValue(contract.getEmployee().getEmName());
             row.createCell(8).setCellValue(contract.getCtStatus());
+
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
         }
 
         // 엑셀 파일 응답으로 전송

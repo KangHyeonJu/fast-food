@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout1}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout1}">
 
 <th:block layout:fragment="css">
     <style>
-        p, select{
+        p, select {
             font-size: 16px;
         }
+
         #circle_green {
-            width : 25px;
-            height : 25px;
+            width: 25px;
+            height: 25px;
             border-radius: 50%;
             background-color: green;
         }
+
         #circle_red {
-            width : 25px;
-            height : 25px;
+            width: 25px;
+            height: 25px;
             border-radius: 50%;
             background-color: red;
         }
+
         #circle_yellow {
-            width : 25px;
-            height : 25px;
+            width: 25px;
+            height: 25px;
             border-radius: 50%;
 
             background-color: #ffcc00;
@@ -30,8 +34,8 @@
 </th:block>
 <th:block layout:fragment="script">
     <script>
-        $(function(){
-            $('#searchBtn').click(function (){
+        $(function () {
+            $('#searchBtn').click(function () {
                 var fcCode = $("#fcCode").val();
                 var fcName = $("#fcName").val();
                 var searchStatus = $("#searchStatus").val();
@@ -43,6 +47,32 @@
                 ];
 
                 location.href = "/facility" + "?" + queryParams.join('&');
+            });
+        });
+        $(document).ready(function () {
+            $('#excelExportBtn').click(function () {
+                var selectedfacility = [];
+                $('input.facility-checkbox:checked').each(function () {
+                    selectedfacility.push($(this).attr('value'));
+                });
+
+                if (selectedfacility.length === 0) {
+                    alert('선택된 출하 예정 목록이 없습니다.');
+                    return;
+                }
+
+                var form = $('<form action="/facility/export/excel" method="POST"></form>');
+                for (var i = 0; i < selectedfacility.length; i++) {
+                    form.append('<input type="hidden" name="fcCode" value="' + selectedfacility[i] + '">');
+                }
+
+                $('body').append(form);
+
+                // 폼을 명시적으로 제출합니다.
+                form.submit();
+            });
+            $('#checkall').click(function () {
+                $('input:checkbox').not(this).prop('checked', this.checked);
             });
         });
     </script>
@@ -62,16 +92,21 @@
 
             <div class="row" style="padding-right: 15px; display: flex; justify-content: flex-end;">
                 <!-- 버튼 모음 -->
-                <button class="btn" type="button" style="background-color: rgb(189,215,238)" data-toggle="modal" data-target="#facilityModal" id="facilityBtn">설비 등록</button>
-                <button class="btn" style="background-color: rgb(197,224,180); margin-left: 5px" type="button">엑셀파일저장</button>
+                <button class="btn" type="button" style="background-color: rgb(189,215,238)" data-toggle="modal"
+                        data-target="#facilityModal" id="facilityBtn">설비 등록
+                </button>
+                <button class="btn" id="excelExportBtn" style="background-color: rgb(197,224,180); margin-left: 5px" type="button">엑셀파일저장
+                </button>
             </div>
             <!-- Modal -->
             <form role="form" method="post" th:object="${facilityDto}" th:action="@{'/facility/new'}">
-                <div class="modal fade" id="facilityModal" tabindex="-1" role="dialog" aria-labelledby="facilityModalLabel" aria-hidden="true">
+                <div class="modal fade" id="facilityModal" tabindex="-1" role="dialog"
+                     aria-labelledby="facilityModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                </button>
                                 <h4 class="modal-title" id="facilityModalLabel">설비 등록</h4>
                             </div>
                             <div class="modal-body">
@@ -113,10 +148,10 @@
                     <div class="panel panel-default">
                         <ul class="list-inline" style="margin: 15px 10px 10px 10px;">
                             <li>
-                                <p>설비 코드 : <input th:field="*{fcCode}" type="text"> </p>
+                                <p>설비 코드 : <input th:field="*{fcCode}" type="text"></p>
                             </li>
                             <li>
-                                <p>설비명 : <input th:field="*{fcName}" type="text"> </p>
+                                <p>설비명 : <input th:field="*{fcName}" type="text"></p>
                             </li>
                             <li>
                                 <p>동작여부 :
@@ -129,7 +164,8 @@
                                 </p>
                             </li>
                             <li style="float: right;">
-                                <button class="btn btn-primary" style="width: 60px;" id="searchBtn" type="submit">검색</button>
+                                <button class="btn btn-primary" style="width: 60px;" id="searchBtn" type="submit">검색
+                                </button>
                             </li>
                         </ul>
                     </div>
@@ -147,10 +183,11 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body" style="height: 500px; overflow: auto">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="width: 100%;">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example"
+                                       style="width: 100%;">
                                     <thead>
                                     <tr>
-                                        <th></th>
+                                        <th><input type="checkbox" id="checkall"></th>
                                         <th>설비코드</th>
                                         <th>설비명</th>
                                         <th>생산가능량</th>
@@ -162,16 +199,23 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="facilitys : ${facility}">
-                                        <td><input class="form-check-input" type="checkbox" value=""></td>
+                                        <td><input type="checkbox" class="facility-checkbox"
+                                                   th:value="${facilitys.fcCode}"></td>
                                         <td th:text="${facilitys.fcCode}"></td>
                                         <td th:text="${facilitys.fcName}"></td>
                                         <td th:text="${facilitys.fcCapa}"></td>
                                         <td th:text="${facilitys.fcPreTime}"></td>
                                         <td th:text="${facilitys.cycleHour}"></td>
                                         <td th:text="${facilitys.fcDate}"></td>
-                                        <td th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).WORK}"><div id="circle_green"></div></td>
-                                        <td th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).STANDBY}"><div id="circle_yellow"></div></td>
-                                        <td th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).STOP}"><div id="circle_red"></div></td>
+                                        <td th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).WORK}">
+                                            <div id="circle_green"></div>
+                                        </td>
+                                        <td th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).STANDBY}">
+                                            <div id="circle_yellow"></div>
+                                        </td>
+                                        <td th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).STOP}">
+                                            <div id="circle_red"></div>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
