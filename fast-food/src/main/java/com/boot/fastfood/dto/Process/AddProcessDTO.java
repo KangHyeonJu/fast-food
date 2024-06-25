@@ -16,11 +16,13 @@ public class AddProcessDTO {
     private String pcName;
     private String pcCnt;
     private String fcName;
+    private int pcOutput;
 
     public Process toEntity() {
         return Process.builder()
                 .pcName(pcName)
                 .pcCnt(pcCnt)
+                .pcOutput(pcOutput)
                 .build();
     }
 

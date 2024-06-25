@@ -25,11 +25,15 @@ public class Process {
     @JoinColumn(name = "fcCode")
     private Facility facilities;
 
+    @Column(name = "pcOutput")
+    private int pcOutput;
+
     @Builder
-    public Process(String pcCode, String pcName, String pcCnt, Facility facilities) {
+    public Process(String pcCode, String pcName, String pcCnt, Facility facilities, int pcOutput) {
         this.pcCode = pcCode;
         this.pcName = pcName;
         this.pcCnt = pcCnt;
+        this.pcOutput = pcOutput;
         this.facilities = facilities;
     }
 
