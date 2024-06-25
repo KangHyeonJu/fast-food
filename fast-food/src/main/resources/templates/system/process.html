@@ -66,14 +66,15 @@
                 <div class="panel-body">
                     <div class="form-group">
                         <p class="fa fa-search"></p>
-                        <label>품목코드</label><input class="form-control" >
-                        <label>품목명</label><input class="form-control" >
+                        <label>품목코드</label><input class="form-control"  id="itCodeSearch">
+                        <label>품목명</label><input class="form-control"  id="itNameSearch">
                         <label>품목분류</label>
-                        <select class="form-control">
+                        <select class="form-control" id="itTypeSearch">
+                            <option value=" ">선택없음</option>
                             <option value="즙">즙</option>
                             <option value="젤리스틱">젤리스틱</option>
                     </select>
-                        <button type="button" class="btn btn-primary">검색</button>
+                        <button type="button" class="btn btn-primary" id="itemSearchBtn">검색</button>
                     </div>
                 </div>
             </div>
@@ -116,8 +117,8 @@
                                 </tr>
                                 </thead>
                                     <tbody class="scrollable-tbody">
-                                    <tr class="itemList" th:each="item : ${itemList}">
-                                        <td><input type="checkbox"></td>
+                                    <tr class="itemList" th:each="item : ${items}">
+                                        <td><input type="checkbox" id="itemCheck" th:value="${item.itCode}"></td>
                                         <td th:text="${item.itCode}" id="showPanel" th:value="${item.itCode}"></td>
                                         <td class="center" th:text="${item.itName}" ></td>
                                         <td class="center" th:text="${item.itType}"></td>
@@ -415,6 +416,20 @@
                     });
                 });
             }
+
+            $("#itemSearchBtn").on("click", function() {
+                var itCode= $("#itCodeSearch").val();
+                var itName= $("#itNameSearch").val();
+                var itType= $("#itTypeSearch").val();
+
+                var queryParams = [
+                    'itCode=' + itCode,
+                    'itName=' + itName,
+                    'itType=' + itType
+                ];
+
+                location.href = "/routing" + "?" + queryParams.join('&');
+            });
 
             //bom 투입량 등록
             $("#bomAddBtn").on("click", function() {

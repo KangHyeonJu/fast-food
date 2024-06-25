@@ -42,27 +42,22 @@ public class ItemService {
     public List<Items> search(String itCode, String itName, String itType) {
         List<Items> items = new ArrayList<>();
         try{
-            if(itCode!=null & itName!=null &itType!=null
-                    || !itCode.isEmpty() & !itName.isEmpty() & !itType.isEmpty()) {
-                items = itemRepository.findItems(itCode, itName, itType);
-            } else if(itCode!=null & itName!=null) {
-                items = itemRepository.findByItCodeAndItName(itCode, itName);
-            } else if(itCode!=null & itType!=null) {
-                items = itemRepository.findByItCodeAndItType(itCode, itType);
-            } else if(itName!=null & itType!=null) {
-                items = itemRepository.findByItTypeAndItName(itType, itName);
-            } else if(itCode!=null) {
-                items = itemRepository.findByItCode(itCode);
-            } else if(itName!=null) {
-                items = itemRepository.findByItName(itName);
-            } else if(itType!=null) {
-                items = itemRepository.findByItType(itType);
-            } else if(itCode==null & itName==null&itType==null) {
+            if(itCode==null & itName==null & itType==null || itCode.isEmpty() & itName.isEmpty() & itType.isEmpty()) {
                 items = itemRepository.findAll();
-            }
-            System.out.println(items);
-            if(items.isEmpty()) {
-
+            } else if(!itCode.isEmpty() & !itName.isEmpty() & itType.isEmpty()) {
+                items = itemRepository.findByItCodeAndItName(itCode, itName);
+            } else if(!itCode.isEmpty() & itName.isEmpty() & !itType.isEmpty()) {
+                items = itemRepository.findByItCodeAndItType(itCode, itType);
+            } else if(itCode.isEmpty() & !itName.isEmpty() & !itType.isEmpty()) {
+                items = itemRepository.findByItTypeAndItName(itType, itName);
+            } else if(!itCode.isEmpty() & itName.isEmpty() & itType.isEmpty()) {
+                items = itemRepository.findByItCode(itCode);
+            } else if(itCode.isEmpty() & !itName.isEmpty() & itType.isEmpty()) {
+                items = itemRepository.findByItName(itName);
+            } else if(itCode.isEmpty() & itName.isEmpty() &!itType.isEmpty()) {
+                items = itemRepository.findByItType(itType);
+            } else if(!itCode.isEmpty() & !itName.isEmpty() & !itType.isEmpty()) {
+                items = itemRepository.findByItCodeAndItNameAndItType(itCode, itName, itType);
             }
         } catch (EmptyResultDataAccessException e) {
             System.out.println("조회된 결과가 없습니다. ");

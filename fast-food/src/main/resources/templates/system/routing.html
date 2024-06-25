@@ -54,6 +54,7 @@
                         <label>품목명</label><input class="form-control" id="itNameSearch">
                         <label>품목분류</label>
                         <select class="form-control" id="itTypeSearch">
+                            <option value=" ">선택없음</option>
                             <option value="즙">즙</option>
                             <option value="젤리스틱">젤리스틱</option>
                         </select>
@@ -102,7 +103,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="itemList" th:each="item : ${itemList}">
+                                <tr class="itemList" th:each="item : ${items}">
                                     <td><input type="checkbox" id="itemCheck" th:value="${item.itCode}"></td>
                                     <td th:text="${item.itCode}" id="showPanel" th:value="${item.itCode}"></td>
                                     <td class="center" th:text="${item.itName}" ></td>
@@ -116,10 +117,10 @@
                                     <div class="panel-body">
                                         <div class="form-group">
                                             <p class="fa fa-search"></p>
-                                            <label>공정코드</label><input class="form-control" >
-                                            <label>공정명</label><input class="form-control" >
-                                            <label>공정내용</label><input class="form-control" >
-                                            <button type="button" class="btn btn-primary">검색</button>
+                                            <label>공정코드</label><input class="form-control" id="pcCodeSearch" >
+                                            <label>공정명</label><input class="form-control" id="pcNameSearch">
+                                            <label>공정내용</label><input class="form-control" id="pcCntSearch">
+                                            <button type="button" class="btn btn-primary" id="processSearchBtn">검색</button>
                                         </div>
                                     </div>
                                 </div>
@@ -422,24 +423,26 @@
                     'itName=' + itName,
                     'itType=' + itType
                 ];
-                    console.log(itCode);
-                    console.log(itName);
-                    console.log(itType);
-                    console.log(queryParams.join('&'));
-                fetch("/routing" + "?" + queryParams.join('&'), {
-                    method:"GET",
-                }).then(response => {
-                    return response.json();
-                }).then(function(data) {
-                    $("#itemCheck").val(data.items.itCode);
-                    $("#showPanel").val(data.items.itName);
-                    console.log(data.items.itCode);
-                    console.log(data.items.itName);
-                })
-            })
+
+                location.href = "/routing" + "?" + queryParams.join('&');
+            });
 
 
-        })
+            $("#processSearchBtn").on("click", function() {
+                var pcCode= $("#pcCodeSearch").val();
+                var pcName= $("#pcNameSearch").val();
+                var pcCnt= $("#pcCntSearch").val();
+
+                var queryParams = [
+                    'itCode=' + itCode,
+                    'itName=' + itName,
+                    'itType=' + itType
+                ];
+
+                location.href = "/routing" + "?" + queryParams.join('&');
+            });
+        });
+
 
         <!--문서 시작 끝-->
     </script>

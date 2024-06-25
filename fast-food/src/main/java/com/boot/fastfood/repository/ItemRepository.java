@@ -10,22 +10,27 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Items, String> {
 
 
-    List<Items> findByItCode(String itCode);
-    List<Items> findByItName(String itName);
-    List<Items> findByItType(String itType);
+    @Query(value = "SELECT i FROM Items i WHERE i.itCode LIKE %:itCode%")
+    List<Items> findByItCode(@Param("itCode") String itCode);
 
+    @Query(value = "SELECT i FROM Items i WHERE i.itName LIKE %:itName%")
 
-    @Query(value = "SELECT * FROM items WHERE i.it_code LIKE %:itCode% AND i.it_name LIKE %:itName% AND i.it_type LIKE %:itType%", nativeQuery = true)
-    List<Items> findItems(@Param("itCode") String itCode, @Param("itName") String itName, @Param("itType") String itType);
+    List<Items> findByItName(@Param("itName") String itName);
+    @Query(value = "SELECT i FROM Items i WHERE i.itType LIKE %:itType%")
+    List<Items> findByItType(@Param("itType") String itType);
 
-    @Query(value = "SELECT * FROM items WHERE it_code LIKE :itCode AND it_name LIKE :itName ", nativeQuery = true)
+    @Query("SELECT i FROM Items i WHERE i.itCode LIKE %:itCode% AND i.itName LIKE %:itName% AND i.itType LIKE %:itType%")
+    List<Items> findByItCodeAndItNameAndItType(@Param("itCode") String itCode, @Param("itName") String itName, @Param("itType") String itType);
+
+    @Query(value = "SELECT i FROM Items i WHERE i.itCode LIKE %:itCode% AND i.itName LIKE %:itName%")
     List<Items> findByItCodeAndItName(@Param("itCode") String itCode, @Param("itName") String itName);
 
-    @Query(value = "SELECT * FROM items WHERE it_code LIKE :itCode AND it_type LIKE :itType ", nativeQuery = true)
+    @Query(value = "SELECT i FROM Items i WHERE i.itCode LIKE %:itCode% AND i.itType LIKE %:itType%")
     List<Items> findByItCodeAndItType(@Param("itCode") String itCode, @Param("itType") String itType);
 
-    @Query(value = "SELECT * FROM items WHERE it_type LIKE :itType AND it_name LIKE :itName ", nativeQuery = true)
+    @Query(value = "SELECT i FROM Items i WHERE i.itType LIKE %:itType% AND i.itName LIKE %:itName%")
     List<Items> findByItTypeAndItName(@Param("itType") String itType, @Param("itName") String itName);
+
 
 }
 

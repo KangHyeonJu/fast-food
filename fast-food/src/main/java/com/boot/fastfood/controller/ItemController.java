@@ -40,43 +40,30 @@ public class ItemController {
                                 .map(ItemListDTO::new)
                                         .toList();
 
+       // List<Process> processes = processService.search(pcCode, pcName, pcCnt);
         ProcessListDTO processList = processService.findList();
 
         List<Facility> facilityList= facilityService.findAll();
 
-       // List<Items> items = itemService.search(itCode, itName, itType);
+       List<ItemListDTO> items = itemService.search(itCode, itName, itType)
+               .stream()
+               .map(ItemListDTO::new)
+               .toList();
 
         model.addAttribute("itemList", itemList);
-      //  model.addAttribute("items", items);
+        model.addAttribute("items", items);
         model.addAttribute("processList", processList);
+        //model.addAttribute("processes", processes);
         model.addAttribute("facilityList", facilityList);
 
         return "system/routing";
     }
 
 
-/*
-    @GetMapping("/itemSearch")
-    public String itemSearch(@RequestParam(required = false, name = "itCode") String itCode,
-                                        @RequestParam(required = false, name="itName") String itName,
-                                        @RequestParam(required = false, name="itType") String itType, Model model) {
-        List<Items> items = itemService.search(itCode, itName, itType);
-
-        List<ProcessDTO> processList = processService.findAll()
-                .stream()
-                .map(ProcessDTO::new)
-                .toList();
-
-        model.addAttribute("itemList", items);
-        model.addAttribute("processList", processList);
-
-        return "system/routing";
-    }
-
- */
-
     @GetMapping("/process")
-    public String itemList2(Model model) {
+    public String itemList2(@RequestParam(required = false, name = "itCode") String itCode,
+                            @RequestParam(required = false, name="itName") String itName,
+                            @RequestParam(required = false, name="itType") String itType, Model model) {
         List<ItemListDTO> itemList = itemService.findAll()
                 .stream()
                 .map(ItemListDTO::new)
@@ -85,7 +72,13 @@ public class ItemController {
         MaterialsListDTO materialsList = materialsService.findList();
         List<Vendor> vendorList = vendorService.findAll();
 
+        List<ItemListDTO> items = itemService.search(itCode, itName, itType)
+                .stream()
+                .map(ItemListDTO::new)
+                .toList();
+
         model.addAttribute("itemList", itemList);
+        model.addAttribute("items", items);
         model.addAttribute("materialsList", materialsList);
         model.addAttribute("vendorList", vendorList);
 
