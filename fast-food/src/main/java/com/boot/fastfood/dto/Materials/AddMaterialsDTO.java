@@ -15,10 +15,15 @@ import lombok.Setter;
 public class AddMaterialsDTO {
 
     private String mtName;
+    private int mtMin;
+    private int mtMax;
+    private String vdCode;
 
     public Materials toEntity() {
         return Materials.builder()
                 .mtName(mtName)
+                .mtMax(mtMax)
+                .mtMin(mtMin)
                 .build();
     }
 }

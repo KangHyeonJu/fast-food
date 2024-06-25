@@ -153,17 +153,17 @@
                                     <th width="2%"> </th>
                                     <th width="20%">자재코드</th>
                                     <th width="20%">자재명</th>
-                                    <th width="20%">자재분류</th>
-                                    <th width="20%">비고</th>
+                                    <th width="20%">업체코드</th>
+                                    <th width="20%">업체명</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="materialsList" th:each="materials, iterStat : ${materialsList}">
+                                <tr class="materialsList" th:each="materials : ${materialsList.materials}">
                                     <td><input type="checkbox" class="checkbox" id="checkBox" th:value="${materials.mtCode}"></td>
                                     <td th:text="${materials.mtCode}" id="mtCode"></td>
                                     <td class="center" th:text="${materials.mtName}" id="mtName"></td>
-                                    <td class="center"> </td>
-                                    <td>  </td>
+                                    <td class="center" th:text="${materials.vdCode}"></td>
+                                    <td class="center" th:text="${materials.vdName}"></td>
                                 </tr>
                                 </tbody>
 
@@ -188,7 +188,7 @@
                                         </table>
                                         <div class="add-btn">
                                             <input type="hidden" id="hiddenItCode">
-                                            <button type="button" class="btn btn-primary" id="bomAddBtn">등록</button>
+                                            <button type="button" class="btn btn-primary" id="bomAddBtn">투입량 등록</button>
                                         </div>
                                     </div>
                                 </div>
@@ -254,6 +254,18 @@
                     <div class="item group">
                         <div class="item">
                             <label class="item-title">자재명</label><input class="form-control" id="mtNameId" >
+                        </div>
+                        <div class="item">
+                             <label class="item-title">설비</label>
+                            <select class="form-control" id="mtVendorId">
+                                <option th:each="vendor : ${vendorList}" th:text="${vendor.vdName}" th:value="${vendor.vdCode}"></option>
+                            </select>
+                        </div>
+                        <div class="item">
+                            <label class="item-title">최대 주문량</label><input class="form-control" id="mtMaxId" th:type="number" >
+                        </div>
+                        <div class="item">
+                            <label class="item-title">최소 주문량</label><input class="form-control" id="mtMinId" th:type="number" >
                         </div>
                     </div>
                 </div>
@@ -379,7 +391,10 @@
             if (materialsBtn) {
                 materialsBtn.addEventListener("click", (event) => {
                     var mtName = document.getElementById("mtNameId").value
-                    if(!mtName) {
+                    var mtMin = document.getElementById("mtMinId").value
+                    var mtMax = document.getElementById("mtMaxId").value
+                    var vdCode = document.getElementById("mtVendorId").value
+                    if(!mtName || !mtMax || !mtMin ||!vdCode) {
                         alert("모두 입력해주세요. ");
                         return;
                     }
@@ -389,7 +404,10 @@
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            mtName: mtName
+                            mtName: mtName,
+                            mtMin : mtMin,
+                            mtMax : mtMax,
+                            vdCode : vdCode
                         }),
                     }).then(() => {
                         alert("등록 완료되었습니다. ");

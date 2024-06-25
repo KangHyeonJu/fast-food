@@ -15,7 +15,7 @@ public interface ItemRepository extends JpaRepository<Items, String> {
     List<Items> findByItType(String itType);
 
 
-    @Query(value = "SELECT * FROM items WHERE it_code LIKE :itCode AND it_name LIKE :itName AND it_type LIKE :itType", nativeQuery = true)
+    @Query(value = "SELECT * FROM items WHERE i.it_code LIKE %:itCode% AND i.it_name LIKE %:itName% AND i.it_type LIKE %:itType%", nativeQuery = true)
     List<Items> findItems(@Param("itCode") String itCode, @Param("itName") String itName, @Param("itType") String itType);
 
     @Query(value = "SELECT * FROM items WHERE it_code LIKE :itCode AND it_name LIKE :itName ", nativeQuery = true)

@@ -42,7 +42,8 @@ public class ItemService {
     public List<Items> search(String itCode, String itName, String itType) {
         List<Items> items = new ArrayList<>();
         try{
-            if(itCode!=null & itName!=null &itType!=null) {
+            if(itCode!=null & itName!=null &itType!=null
+                    || !itCode.isEmpty() & !itName.isEmpty() & !itType.isEmpty()) {
                 items = itemRepository.findItems(itCode, itName, itType);
             } else if(itCode!=null & itName!=null) {
                 items = itemRepository.findByItCodeAndItName(itCode, itName);
@@ -64,9 +65,7 @@ public class ItemService {
 
             }
         } catch (EmptyResultDataAccessException e) {
-            // 조회 결과가 없을 경우 처리
             System.out.println("조회된 결과가 없습니다. ");
-            // 예를 들어, 빈 리스트를 반환하거나 다른 예외 처리 로직을 추가할 수 있습니다.
         }
         return items;
     }

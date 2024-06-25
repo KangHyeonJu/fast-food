@@ -1,5 +1,6 @@
 package com.boot.fastfood.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,14 +21,20 @@ public class Materials {
     @Column(name = "mtStock")
     private int mtStock;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "vdCode")
     private Vendor vendor;
 
 
+    private int mtMin;
+
+    private int mtMax;
     @Builder
-    public Materials(String mtCode, String mtName) {
+    public Materials(String mtCode, String mtName, int mtMax, int mtMin) {
         this.mtCode = mtCode;
         this.mtName = mtName;
+        this.mtMax = mtMax;
+        this.mtMin = mtMin;
     }
 }

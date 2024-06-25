@@ -32,18 +32,5 @@ public class ItemApiController {
     }
 
 
-    @GetMapping("/itemSearch")
-    public ResponseEntity<?> itemSearch(@RequestParam(required = false, name = "itCode") String itCode,
-                                        @RequestParam(required = false, name="itName") String itName,
-                                        @RequestParam(required = false, name="itType") String itType) {
-        List<Items> items = itemService.search(itCode, itName, itType);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(items);
-    }
-
-
-
-
 
 }
