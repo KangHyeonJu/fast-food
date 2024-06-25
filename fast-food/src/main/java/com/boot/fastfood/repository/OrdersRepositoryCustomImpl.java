@@ -49,7 +49,7 @@ public class OrdersRepositoryCustomImpl implements OrdersRepositoryCustom{
     public List<Orders> getOrderList(OrderSearchDto orderSearchDto) {
         return query
                 .selectFrom(orders)
-                .where(searchByCtCode(orderSearchDto.getCtCode()), searchByOdCode(orderSearchDto.getOdCode()), searchByMtCode(orderSearchDto.getMtCode()), searchByEmCode(orderSearchDto.getEmCode()))
+                .where(orders.odState.isTrue(), searchByCtCode(orderSearchDto.getCtCode()), searchByOdCode(orderSearchDto.getOdCode()), searchByMtCode(orderSearchDto.getMtCode()), searchByEmCode(orderSearchDto.getEmCode()))
                 .fetch();
     }
 }

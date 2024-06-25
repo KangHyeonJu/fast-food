@@ -181,14 +181,14 @@
                                 <caption style="font-weight: bold;" th:text="'발주예정일 ' + ${orders.key}"></caption>
                                 <thead>
                                 <tr>
-                                    <th>자재명</th>
+                                    <th>원자재명</th>
                                     <th>발주량</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="order : ${orders.value}">
                                     <td th:text="${order.materials.mtName}"></td>
-                                    <td th:text="${order.odAmount}"></td>
+                                    <td th:text="${order.totalAmount}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -220,14 +220,14 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td th:each="orderToday : ${orderTodayList}" th:text="${orderToday.orderAmount}"></td>
+                                    <td th:each="orderToday : ${orderTodayList}" th:text="${orderToday.totalAmount}"></td>
                                     <td>
                                         <button id="saveOrderBtn" class="btn btn-success" type="button" onclick="orders()">발주하기</button>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
-                            <!-- /.table-responsive -->
+<!--                             /.table-responsive-->
                         </div>
                         <!-- /.panel-body -->
                     </div>

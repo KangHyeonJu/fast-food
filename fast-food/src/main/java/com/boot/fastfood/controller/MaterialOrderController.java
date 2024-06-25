@@ -2,6 +2,7 @@ package com.boot.fastfood.controller;
 
 import com.boot.fastfood.dto.MaterialOrderDto;
 import com.boot.fastfood.dto.OrderSearchDto;
+import com.boot.fastfood.dto.OrderSummaryDto;
 import com.boot.fastfood.dto.OrderTodayDto;
 import com.boot.fastfood.entity.*;
 import com.boot.fastfood.repository.MaterialRepository;
@@ -36,14 +37,8 @@ public class MaterialOrderController {
     public String order_plan(Model model) {
         List<Employee> employees = employeeService.getAllEmployees();
 
-//        Map<String, Object> orderPlanData = materialService.getOrderPlan();
-//        model.addAttribute("contracts", orderPlanData.get("materialOrderDtoList"));
-//        model.addAttribute("materialsList", orderPlanData.get("materialsList"));
-//        model.addAttribute("orderTodayDtoList", orderPlanData.get("orderTodayDtoList"));
-//
-
-        Map<LocalDate, List<Orders>> ordersByDate = ordersService.getOrderPlanGroupedByDate();
-        List<Orders> orderToday = ordersRepository.findByOdDate(LocalDate.now());
+        Map<LocalDate, List<OrderSummaryDto>> ordersByDate = ordersService.getOrderPlanGroupedByDate();
+        List<OrderSummaryDto> orderToday = ordersService.getOrderSumToday();
 
         model.addAttribute("employees", employees);
         model.addAttribute("ordersByDate", ordersByDate);
@@ -59,15 +54,11 @@ public class MaterialOrderController {
     }
 
 
-
-
     //발주 등록
     @PostMapping("/order_plan/add/{emName}")
     public String orderAdd(@PathVariable String emName){
         try {
-            List<Orders> orderToday = ordersRepository.findByOdDate(LocalDate.now());
-
-
+            List<Orders> orderToday = ordersRepository.findByOdDateAndOdState(LocalDate.now(), false);
 
             materialService.orderAdd(emName, orderToday);
             return "redirect:/order_plan";

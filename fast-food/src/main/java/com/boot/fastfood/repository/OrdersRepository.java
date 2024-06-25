@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface OrdersRepository extends JpaRepository<Orders, String>, OrdersRepositoryCustom {
-    List<Orders> findByOdDate(LocalDate date);
+    List<Orders> findByOdDateAndOdState(LocalDate date, boolean state);
 
     Orders findByOdDateAndMaterials(LocalDate date, Materials materials);
 
@@ -24,4 +24,6 @@ public interface OrdersRepository extends JpaRepository<Orders, String>, OrdersR
     Orders findByOdDateAndMaterialsAndOdCodeContaining(LocalDate date, Materials materials, String ND);
 
     List<Orders> findByOdState(boolean state);
+
+    List<Orders> findByOdDateAndMaterialsAndOdState(LocalDate date, Materials materials, boolean state);
 }

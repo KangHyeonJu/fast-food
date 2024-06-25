@@ -107,82 +107,91 @@ public class ContractService {
         mtOrderPlan(contract);
     }
 
+    //자재 발주 계획
     public void mtOrderPlan(Contract contract){
-        System.out.println("들어오나");
-        Production production = productionRepository.findByContract(contract);
+        System.out.println("잉");
 
+        Production production = productionRepository.findByContract(contract);
+        System.out.println("production: " + production);
         List<BOM> bomList = bomService.getItemByBom(contract.getItems());
 
         for (int i = 0; i < bomList.size(); i++) {
+            System.out.println("잉1");
             int odAmount = (int) Math.ceil(bomList.get(i).getMtAmount() * production.getPmAmount() * contract.getItems().getItEa());
-
             int week = production.getPmSDate().getDayOfWeek().getValue();
 
-            if (week == 1 || week == 2 || week == 3){
-                Orders findOrder = ordersRepository.findByOdDateAndMaterials(production.getPmSDate().minusDays(5), bomList.get(i).getMaterials());
-                if(findOrder == null){
-                    Orders orders = new Orders();
-                    orders.setOdCode("OD" + i + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
-                    orders.setOdDate(production.getPmSDate().minusDays(5));
-                    orders.setMaterials(bomList.get(i).getMaterials());
-                    orders.setOdState(false);
-                    orders.setWhStatus(0);
-                    orders.setOdAmount(odAmount);
-                    ordersRepository.save(orders);
-                }else {
-                    Materials materials = findOrder.getMaterials();
-                    int minOrder = materials.getMtMin();
-                    int maxOrder = materials.getMtMax();
-
-                    if(findOrder.getOdAmount() + odAmount > maxOrder){
-                        int excessAmount = findOrder.getOdAmount()  + odAmount - maxOrder;
-                        findOrder.setOdAmount(maxOrder);
-                        ordersRepository.save(findOrder);
-
-                        pushToNextDay(findOrder, excessAmount);
-                    }else {
-                        findOrder.setOdAmount(findOrder.getOdAmount() + odAmount);
-                        ordersRepository.save(findOrder);
-                    }
-                }
+            if (week == 1 || week == 2 || week == 3 || week == 7){
+                processOrder(contract, production, odAmount, i, bomList, 2);
 
             }else if(week == 4 || week == 5){
-                Orders findOrder = ordersRepository.findByOdDateAndMaterials(production.getPmSDate().minusDays(3), bomList.get(i).getMaterials());
-                if(findOrder == null){
-                    Orders orders = new Orders();
-                    orders.setOdCode("OD" + i + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
-                    orders.setOdDate(production.getPmSDate().minusDays(3));
-                    orders.setMaterials(bomList.get(i).getMaterials());
-                    orders.setOdAmount(odAmount);
-                    orders.setOdState(false);
-                    orders.setWhStatus(0);
-                    ordersRepository.save(orders);
-                }else {
-                    Materials materials = findOrder.getMaterials();
-                    int minOrder = materials.getMtMin();
-                    int maxOrder = materials.getMtMax();
-
-                    if(findOrder.getOdAmount() + odAmount > maxOrder){
-                        int excessAmount = findOrder.getOdAmount()  + odAmount - maxOrder;
-                        findOrder.setOdAmount(maxOrder);
-                        ordersRepository.save(findOrder);
-
-                        pushToNextDay(findOrder, excessAmount);
-                    }else {
-                        findOrder.setOdAmount(findOrder.getOdAmount() + odAmount);
-                        ordersRepository.save(findOrder);
-                    }
-                }
+                processOrder(contract, production, odAmount, i, bomList, 0);
+            }else if(week == 6){
+                processOrder(contract, production, odAmount, i, bomList, 1);
             }
         }
     }
 
+    //주말 포함 시 leadTime
+    public void processOrder(Contract contract, Production production, int odAmount, int i, List<BOM> bomList, int minusDay){
+        int leadTime = bomList.get(i).getMaterials().getLeadTime();
+        Materials materials = bomList.get(i).getMaterials();
+
+        System.out.println("잉2");
+
+        Orders orders = new Orders();
+        orders.setOdCode("OD" + i + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+        orders.setOdDate(production.getPmSDate().minusDays(leadTime + minusDay));
+        orders.setMaterials(materials);
+        orders.setOdState(false);
+        orders.setWhStatus(0);
+        orders.setContract(contract);
+
+        int minOrder = materials.getMtMin();
+        int maxOrder = materials.getMtMax();
+
+        List<Orders> findOrdersList = ordersRepository.findByOdDateAndMaterialsAndOdState(production.getPmSDate().minusDays(leadTime + minusDay), materials, false);
+
+        if(!findOrdersList.isEmpty()){
+            int sumAmount = 0;
+            for(Orders findOrder : findOrdersList){
+                sumAmount += findOrder.getOdAmount();
+            }
+
+            if(sumAmount + odAmount > maxOrder){
+                int excessAmount = sumAmount + odAmount - maxOrder;
+                orders.setOdAmount(odAmount - excessAmount);
+
+                ordersRepository.save(orders);
+                pushToNextDay(orders, excessAmount);
+            }else {
+                orders.setOdAmount(odAmount);
+                ordersRepository.save(orders);
+            }
+        }else {
+            if(odAmount > maxOrder){
+                int excessAmount = odAmount - maxOrder;
+                orders.setOdAmount(odAmount - excessAmount);
+
+                ordersRepository.save(orders);
+                pushToNextDay(orders, excessAmount);
+            }else {
+                orders.setOdAmount(odAmount);
+                ordersRepository.save(orders);
+            }
+        }
+
+
+    }
+
+
+    //최대 주문량 초과 시 다음날에 추가
     public void pushToNextDay(Orders orders, int amount){
         Orders nextDayOrder = new Orders();
+
+        nextDayOrder.setContract(orders.getContract());
         nextDayOrder.setMaterials(orders.getMaterials());
         nextDayOrder.setOdDate(orders.getOdDate().plusDays(1));
         nextDayOrder.setOdAmount(amount);
-//        nextDayOrder.setContract(orderTodayDto.getContract());
         nextDayOrder.setOdCode("OD" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
         nextDayOrder.setWhStatus(0);
         nextDayOrder.setOdState(false);

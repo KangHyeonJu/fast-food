@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,7 +25,6 @@ public class Orders {
     @JoinColumn(name = "mtCode")
     private Materials materials;
 
-    //Localdate로 수정
     @Column(name = "odDate")
     private LocalDate odDate;
 

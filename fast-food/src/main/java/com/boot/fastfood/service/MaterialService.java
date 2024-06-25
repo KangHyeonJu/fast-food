@@ -23,139 +23,17 @@ public class MaterialService {
     private final ProductionRepository productionRepository;
     private final MaterialRepository materialRepository;
 
-    public void orderAdd(String emName, List<OrderTodayDto> orderTodayDtoList){
+    public void orderAdd(String emName, List<Orders> orderList){
         Employee employee = employeeRepository.findByEmName(emName);
+        for (Orders orders : orderList){
+            orders.setOdState(true);
+            orders.setEmployee(employee);
 
-        for (int i=0; i<orderTodayDtoList.size(); i++){
-            if(orderTodayDtoList.get(i).getOrderAmount() > 0){
-
-                //어제 저장한 값 있으면 지우기
-                Orders yesterdayOrders = ordersRepository.findByOdDateAndMaterialsAndOdCodeContaining(LocalDate.now(), orderTodayDtoList.get(i).getMaterials(), "_ND" );
-                if(yesterdayOrders != null){
-                    ordersRepository.delete(yesterdayOrders);
-                }
-
-                Orders orders = new Orders();
-                orders.setContract(orderTodayDtoList.get(i).getContract());
-
-                orders.setMaterials(orderTodayDtoList.get(i).getMaterials());
-                orders.setOdDate(LocalDate.now());
-                orders.setOdCode("OD" + i + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
-                orders.setEmployee(employee);
-                orders.setOdAmount(orderTodayDtoList.get(i).getOrderAmount());
-
-                Production production = productionRepository.findByContract(orders.getContract());
-                orders.setOdDueDate(production.getPmSDate());
-
-                ordersRepository.save(orders);
-                orders.getContract().setCtStatus("생산중");
-            }
+            Production production = productionRepository.findByContract(orders.getContract());
+            orders.setOdDueDate(production.getPmSDate());
+            orders.getContract().setCtStatus("생산중");
+            ordersRepository.save(orders);
         }
-    }
-
-    public Map<String, Object> getOrderPlan(){
-        List<Contract> contracts = contractService.getAllContract();
-        List<MaterialOrderDto> materialOrderDtoList = new ArrayList<>();
-        List<Materials> materialsList = materialRepository.findMtList();
-
-        //수주별 아이템 BOM 구하기
-        for (Contract contract : contracts) {
-            MaterialOrderDto materialOrderDto = new MaterialOrderDto();
-            materialOrderDto.setContract(contract);
-            materialOrderDto.setItems(contract.getItems());
-
-            Production production = productionRepository.findByContract(contract);
-            materialOrderDto.setProduction(production);
-            materialOrderDto.setAmount(production.getPmAmount() * contract.getItems().getItEa());
-
-            List<BOM> bomList = bomService.getItemByBom(contract.getItems());
-            String[][] bomAmount = new String[bomList.size()][2];
-
-            for (int i = 0; i < bomList.size(); i++) {
-                bomAmount[i][0] = bomList.get(i).getMaterials().getMtName();
-                bomAmount[i][1] = Integer.toString((int) Math.ceil(bomList.get(i).getMtAmount() * production.getPmAmount() * contract.getItems().getItEa()));
-            }
-            materialOrderDto.setBomList(bomList);
-            materialOrderDto.setBomListAmount(bomAmount);
-
-            materialOrderDtoList.add(materialOrderDto);
-        }
-
-        List<OrderTodayDto> orderTodayDtoList = new ArrayList<>();
-
-        //원자재 리스트
-        for (Materials materials : materialsList){
-            OrderTodayDto orderTodayDto = new OrderTodayDto();
-            orderTodayDto.setMaterials(materials);
-            orderTodayDtoList.add(orderTodayDto);
-        }
-
-        for (MaterialOrderDto materialOrderDto : materialOrderDtoList) {
-            String[][] todayOrder = materialOrderDto.getBomListAmount();
-            //요일 구하기(월~일 = 1~7)
-            int week = materialOrderDto.getProduction().getPmSDate().getDayOfWeek().getValue();
-
-            //주말 포함 시 +2일
-            if ((week == 1 || week == 2 || week == 3) && materialOrderDto.getProduction().getPmSDate().minusDays(5).equals(LocalDate.now()) ||
-                    (week == 4 || week == 5) && materialOrderDto.getProduction().getPmSDate().minusDays(3).equals(LocalDate.now())) {
-
-                //같은 원자재면 더하기
-                for (OrderTodayDto orderTodayDto : orderTodayDtoList) {
-                    orderTodayDto.setContract(materialOrderDto.getContract());
-                    int amount = orderTodayDto.getOrderAmount();
-                    for (int i = 0; i < todayOrder.length; i++) {
-                        if (Objects.equals(todayOrder[i][0], orderTodayDto.getMaterials().getMtName())) {
-                            amount += Integer.parseInt(todayOrder[i][1]);
-                            orderTodayDto.setOrderAmount(amount);
-                        }
-                    }
-                }
-
-                //어제 pushNextDay로 저장한 값이 있다면 더하기
-                for (OrderTodayDto orderTodayDto : orderTodayDtoList) {
-                    Orders orders = ordersRepository.findByOdDateAndMaterialsAndOdCodeContaining(LocalDate.now(), orderTodayDto.getMaterials(), "_ND");
-
-                    if (orders != null) {
-                        orderTodayDto.setOrderAmount(orderTodayDto.getOrderAmount() + orders.getOdAmount());
-                    }
-                }
-            }
-        }
-
-        //각 원자재별 최소 주문 수량 미만, 최대 주문 수량 초과시 다음날로
-        for(OrderTodayDto orderTodayDto : orderTodayDtoList){
-            Materials materials = orderTodayDto.getMaterials();
-            int minOrder = materials.getMtMin();
-            int maxOrder = materials.getMtMax();
-
-            if (orderTodayDto.getOrderAmount() != 0 && orderTodayDto.getOrderAmount() < minOrder){
-                pushToNextDay(orderTodayDto, minOrder);
-            }else if(orderTodayDto.getOrderAmount() > maxOrder){
-                int excessAmount = orderTodayDto.getOrderAmount() - maxOrder;
-                orderTodayDto.setOrderAmount(maxOrder);
-                pushToNextDay(orderTodayDto, excessAmount);
-            }
-        }
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("materialOrderDtoList", materialOrderDtoList);
-        result.put("materialsList", materialsList);
-        result.put("orderTodayDtoList", orderTodayDtoList);
-
-        return result;
-    }
-
-    public void pushToNextDay(OrderTodayDto orderTodayDto, int amount){
-        Orders nextDayOrder = new Orders();
-
-        nextDayOrder.setMaterials(orderTodayDto.getMaterials());
-        nextDayOrder.setOdDate(LocalDate.now().plusDays(1));
-        nextDayOrder.setOdAmount(amount);
-        nextDayOrder.setContract(orderTodayDto.getContract());
-        nextDayOrder.setOdCode("OD" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_ND");
-        nextDayOrder.setWhStatus(0);
-
-        ordersRepository.save(nextDayOrder);
     }
 
     public void orderBox(String emName, int boxNum){
@@ -168,13 +46,10 @@ public class MaterialService {
         orders.setEmployee(employee);
         orders.setOdAmount(boxNum);
         orders.setOdDate(LocalDate.now());
+        orders.setWhStatus(0);
+        orders.setOdState(true);
+        orders.setOdDueDate(LocalDate.now().plusDays(9));
 
-        int week = LocalDate.now().getDayOfWeek().getValue();
-        if(week == 1 || week == 2 || week == 3){
-            orders.setOdDueDate(LocalDate.now().plusDays(5));
-        }else if(week == 4 || week == 5){
-            orders.setOdDueDate(LocalDate.now().plusDays(3));
-        }
         ordersRepository.save(orders);
     }
 
@@ -188,7 +63,17 @@ public class MaterialService {
         orders.setEmployee(employee);
         orders.setOdAmount(wrapNum);
         orders.setOdDate(LocalDate.now());
-        orders.setOdDueDate(LocalDate.now().plusDays(9));
+        orders.setWhStatus(0);
+        orders.setOdState(true);
+
+        int week = LocalDate.now().getDayOfWeek().getValue();
+
+        if (week == 1 || week == 2){
+            orders.setOdDueDate(LocalDate.now().plusDays(3));
+        }else if(week == 3 || week == 4 || week == 5){
+            orders.setOdDueDate(LocalDate.now().plusDays(5));
+        }
+
 
         ordersRepository.save(orders);
     }

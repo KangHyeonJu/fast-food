@@ -29,4 +29,6 @@ public class Materials {
 
     private int mtMax;
 
+    private int leadTime;
+
 }
