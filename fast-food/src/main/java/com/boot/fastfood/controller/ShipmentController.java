@@ -48,7 +48,7 @@ public class ShipmentController {
             ShipmentDto shipmentDto = new ShipmentDto();
             shipmentDto.setSmCode(shipment.getSmCode());
             shipmentDto.setContract(shipment.getContract());
-            shipmentDto.setSmSchedule(shipment.getContract().getDeliveryDate().minusDays(1));
+            shipmentDto.setSmCalendar(shipment.getContract().getDeliveryDate().minusDays(1));
             shipmentDtoList.add(shipmentDto);
         }
 

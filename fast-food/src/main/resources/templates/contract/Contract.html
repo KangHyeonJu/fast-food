@@ -28,6 +28,28 @@
             margin-right: 10px;
             display: inline-block;
         }
+
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .calendar-table th, .calendar-table td {
+            border: 1px solid #ddd;
+            width: 14.28%;
+            height: 80px;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .highlighted {
+            background-color: #ffeb3b;
+        }
+        .nnn{
+            color: red;
+            text-align: center;
+
+        }
     </style>
 
     <!-- Page Content -->
@@ -147,9 +169,6 @@
                 </form>
             </div>
             <!-- 테이블 1 끝-->
-        </div>
-        <div style="text-align : center;">
-            <img src="/image/Plan.png" style="width: 70%; height: 500px">
         </div>
         <!-- /.container-fluid -->
     </div>
@@ -365,6 +384,7 @@
                 // 폼을 명시적으로 제출합니다.
                 form.submit();
             });
+
         });
     </script>
 

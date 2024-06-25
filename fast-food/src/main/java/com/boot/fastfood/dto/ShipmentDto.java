@@ -12,6 +12,6 @@ public class ShipmentDto {
 
     private Contract contract;
 
-    private LocalDate smSchedule;
+    private LocalDate smCalendar;
 
 }

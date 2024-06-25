@@ -89,9 +89,9 @@ public class ProductController {
         return "ProductPages/endProcess";
     }
 
-    @GetMapping("/calender")
-    public String calender(){
-        return "ProductPages/calender";
+    @GetMapping("/Calendar")
+    public String Calendar(){
+        return "ProductPages/Calendar";
     }
 
     @PostMapping(value = "/productPlan/export/excel", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

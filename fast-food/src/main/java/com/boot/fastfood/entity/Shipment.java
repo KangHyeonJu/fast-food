@@ -21,7 +21,7 @@ public class Shipment {
     @JoinColumn(name = "ctCode")
     private Contract contract;
 
-//    private LocalDate smSchedule = contract.getDeliveryDate().minusDays(1);
+//    private LocalDate smCalendar = contract.getDeliveryDate().minusDays(1);
 
     @Column(name = "smDate")
     private LocalDate smDate;

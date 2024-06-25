@@ -1,6 +1,5 @@
 package com.boot.fastfood.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,4 +46,5 @@ public class Contract {
 
     @Column(name = "ctStatus")
     private String ctStatus; // 수주 상태 필드새로 추가
+
 }

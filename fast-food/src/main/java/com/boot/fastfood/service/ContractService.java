@@ -2,25 +2,15 @@ package com.boot.fastfood.service;
 
 import com.boot.fastfood.dto.ContractDto;
 import com.boot.fastfood.dto.ContractSearchDto;
-import com.boot.fastfood.dto.ShipSearchDto;
 import com.boot.fastfood.entity.*;
 import com.boot.fastfood.repository.*;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -32,8 +22,9 @@ public class ContractService {
     private final ItemsRepository itemsRepository;
     private final ClientsRepository clientsRepository;
     private final EmployeeRepository employeeRepository;
-
     private final ProductionRepository productionRepository;
+    private final CalendarRepository calendarRepository;
+
 
     public void saveContract(ContractDto contractDto) {
         // 고객 정보 설정
@@ -65,12 +56,22 @@ public class ContractService {
             contract.setDeliveryDate(contractDto.getDeliveryDate());
             contract.setCtStatus("준비중");
 
-            // 저장
-            contractRepository.save(contract);
+            Calendar calendar = new Calendar();
+            calendar.setTitle(contract.getClients().getClName() + ", " + contract.getItems().getItName());
+            calendar.setSDate(contract.getCtDate());
+            calendar.setEDate(contract.getDeliveryDate());
+
+            calendarRepository.save(calendar);
+
 
             Clients clients = contract.getClients();
             clients.setClAmount(clients.getClAmount() + contract.getCtAmount());
+
             clientsRepository.save(clients); // 저장
+
+
+
+            contractRepository.save(contract);
 
             Production production = new Production();
             registerContractAndProduction(contract, production);
@@ -98,8 +99,8 @@ public class ContractService {
         int itStock = item.getItStock();
 
         // pmAmount 계산: ctAmount - itStock
-        int pmAmount = contract.getCtAmount() - itStock ;
-        if (pmAmount < 0){
+        int pmAmount = contract.getCtAmount() - itStock;
+        if (pmAmount < 0) {
             pmAmount = 0;
         }
 
@@ -115,7 +116,7 @@ public class ContractService {
         productionRepository.save(production);
     }
 
-    public List<Contract> getAllContract(){
+    public List<Contract> getAllContract() {
         return contractRepository.findByCtStatus("준비중");
     }
 
