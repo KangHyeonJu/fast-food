@@ -20,6 +20,8 @@ public class QVendor extends EntityPathBase<Vendor> {
 
     public static final QVendor vendor = new QVendor("vendor");
 
+    public final NumberPath<Integer> alAmount = createNumber("alAmount", Integer.class);
+
     public final ListPath<Materials, QMaterials> materials = this.<Materials, QMaterials>createList("materials", Materials.class, QMaterials.class, PathInits.DIRECT2);
 
     public final StringPath vdCode = createString("vdCode");

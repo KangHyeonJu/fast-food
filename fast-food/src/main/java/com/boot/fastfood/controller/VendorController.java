@@ -28,19 +28,19 @@ public class VendorController {
 
     private final VendorService vendorService;
     private final VendorRepository vendorRepository;
-    private final MaterialsRepository materialsRepository;
 
     @GetMapping("/vendor")
     public String findAll(Model model) {
-        List<VendorListDTO> vendorList = vendorService.findAll()
+        List<VendorListDTO> vendorList = vendorService.findAllVendorsWithMaterials()
                 .stream()
-                .map(VendorListDTO::new)
+                .map(vendor -> new VendorListDTO(vendor, vendor.getMaterials()))
                 .toList();
 
         model.addAttribute("vendorList", vendorList);
 
         return "system/vendor";
     }
+
 
     @PostMapping(value = "/vendor/export/excel", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public void exportCodeToExcel(@RequestParam(name = "vdCode", required = false) List<String> vdCode, HttpServletResponse response) throws IOException {
@@ -50,7 +50,7 @@ public class VendorController {
         Sheet sheet = workbook.createSheet("Codes");
 
         Row headerRow = sheet.createRow(0);
-        String[] headers = {"업체코드", "업체명" /*, "자재코드", "자재명"*/};
+        String[] headers = {"업체코드", "업체명" , "자재명","총 주문량"};
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(headers[i]);
@@ -58,13 +58,13 @@ public class VendorController {
 
         int rowNum = 1;
         for (Vendor vendor : vendors) {
-//            for (Materials material : vendor.getMaterials()) {
-                Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(vendor.getVdCode());
-                row.createCell(1).setCellValue(vendor.getVdName());
-//                row.createCell(2).setCellValue(material.getMtCode());
-//                row.createCell(3).setCellValue(material.getMtName());
-//            }
+            for (Materials material : vendor.getMaterials()) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(vendor.getVdCode());
+            row.createCell(1).setCellValue(vendor.getVdName());
+            row.createCell(2).setCellValue(material.getMtName());
+            row.createCell(3).setCellValue(vendor.getAlAmount());
+            }
         }
 
         for (int i = 0; i < headers.length; i++) {

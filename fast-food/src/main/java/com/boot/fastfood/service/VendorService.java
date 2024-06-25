@@ -3,6 +3,7 @@ package com.boot.fastfood.service;
 import com.boot.fastfood.entity.Vendor;
 import com.boot.fastfood.repository.VendorRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,5 +22,11 @@ public class VendorService {
     public Optional<Vendor> findByVdCode(String vdCode) {
 
         return Optional.ofNullable(vendorRepository.findByVdCode(vdCode));
+    }
+
+    public List<Vendor> findAllVendorsWithMaterials() {
+        List<Vendor> vendors = vendorRepository.findAll();
+        vendors.forEach(vendor -> Hibernate.initialize(vendor.getMaterials()));
+        return vendors;
     }
 }

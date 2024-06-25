@@ -44,6 +44,7 @@ public class ContractService {
         //작업자 정보 설정
         Employee employee = employeeRepository.findByEmName(contractDto.getEmName());
 
+
         if (item != null) {
             // 작업자 정보 설정
 
@@ -66,6 +67,10 @@ public class ContractService {
 
             // 저장
             contractRepository.save(contract);
+
+            Clients clients = contract.getClients();
+            clients.setClAmount(clients.getClAmount() + contract.getCtAmount());
+            clientsRepository.save(clients); // 저장
 
             Production production = new Production();
             registerContractAndProduction(contract, production);

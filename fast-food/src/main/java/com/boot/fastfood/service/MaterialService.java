@@ -17,6 +17,8 @@ import java.util.*;
 public class MaterialService {
     private final OrdersRepository ordersRepository;
     private final EmployeeRepository employeeRepository;
+    private final VendorRepository vendorRepository;
+
 
     private final ContractService contractService;
     private final BomService bomService;
@@ -34,9 +36,16 @@ public class MaterialService {
 
                 orders.setMaterials(orderTodayDtoList.get(i).getMaterials());
                 orders.setOdDate(LocalDate.now());
+                orders.setOdDueDate(LocalDate.now());
                 orders.setOdCode("OD" + i + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
                 orders.setEmployee(employee);
                 orders.setOdAmount(orderTodayDtoList.get(i).getOrderAmount());
+
+                Vendor vendor = orders.getMaterials().getVendor(); // 자재에 연결된 Vendor 가져오기
+                if (vendor != null) {
+                    vendor.setAlAmount(vendor.getAlAmount() + orders.getOdAmount());
+                    vendorRepository.save(vendor);
+                }
 
                 ordersRepository.save(orders);
                 orders.getContract().setCtStatus("생산중");
@@ -117,7 +126,14 @@ public class MaterialService {
         orders.setEmployee(employee);
         orders.setOdAmount(boxNum);
         orders.setOdDate(LocalDate.now());
+        orders.setOdDueDate(LocalDate.now());
 //        materials.setMtStock(materials.getMtStock() + boxNum);
+
+        Vendor vendor = materials.getVendor(); // 자재에 연결된 Vendor 가져오기
+        if (vendor != null) {
+            vendor.setAlAmount(vendor.getAlAmount() + boxNum);
+            vendorRepository.save(vendor);
+        }
 
         ordersRepository.save(orders);
     }
@@ -132,7 +148,14 @@ public class MaterialService {
         orders.setEmployee(employee);
         orders.setOdAmount(wrapNum);
         orders.setOdDate(LocalDate.now());
+        orders.setOdDueDate(LocalDate.now());
 //        materials.setMtStock(materials.getMtStock() + wrapNum);
+
+        Vendor vendor = materials.getVendor(); // 자재에 연결된 Vendor 가져오기
+        if (vendor != null) {
+            vendor.setAlAmount(vendor.getAlAmount() + wrapNum);
+            vendorRepository.save(vendor);
+        }
 
         ordersRepository.save(orders);
     }

@@ -71,25 +71,25 @@
                                    id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th width="3%">번호</th>
                                     <th width="1%"><input type="checkbox" id="checkall"></th>
                                     <th width="15%">업체코드</th>
                                     <th width="15%">업체명</th>
-                                    <th width="15%">자재코드</th>
                                     <th width="15%">자재명</th>
                                     <th width="15%">총 주문량</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr class="vendor" th:each="vendor : ${vendorList}">
-                                    <td>1</td>
                                     <td><input type="checkbox" class="vendor-checkbox"
                                                th:value="${vendor.vdCode}"></td>
                                     <td th:text="${vendor.vdCode}"></td>
                                     <td th:text="${vendor.vdName}"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>
+                                        <span th:each="material : ${vendor.materialsList}">
+                                            <span th:text="${material.mtName}"></span>
+                                        </span>
+                                    </td>
+                                    <td th:text="${vendor.getAlAmount()}"></td>
                                 </tr>
                                 </tbody>
                             </table>
