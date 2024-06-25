@@ -40,4 +40,7 @@ public class Orders {
 
     @Column(name = "whStatus")
     private int whStatus = 0;
+
+    @Column(name = "odState", columnDefinition = "TINYINT(0)")
+    private boolean odState;
 }

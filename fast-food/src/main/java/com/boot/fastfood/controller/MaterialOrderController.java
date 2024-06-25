@@ -36,12 +36,18 @@ public class MaterialOrderController {
     public String order_plan(Model model) {
         List<Employee> employees = employeeService.getAllEmployees();
 
-        Map<String, Object> orderPlanData = materialService.getOrderPlan();
-        model.addAttribute("contracts", orderPlanData.get("materialOrderDtoList"));
-        model.addAttribute("materialsList", orderPlanData.get("materialsList"));
-        model.addAttribute("orderTodayDtoList", orderPlanData.get("orderTodayDtoList"));
+//        Map<String, Object> orderPlanData = materialService.getOrderPlan();
+//        model.addAttribute("contracts", orderPlanData.get("materialOrderDtoList"));
+//        model.addAttribute("materialsList", orderPlanData.get("materialsList"));
+//        model.addAttribute("orderTodayDtoList", orderPlanData.get("orderTodayDtoList"));
+//
+
+        Map<LocalDate, List<Orders>> ordersByDate = ordersService.getOrderPlanGroupedByDate();
+        List<Orders> orderToday = ordersRepository.findByOdDate(LocalDate.now());
 
         model.addAttribute("employees", employees);
+        model.addAttribute("ordersByDate", ordersByDate);
+        model.addAttribute("orderTodayList", orderToday);
 
         Materials box = materialRepository.findByMtName("Box");
         Materials wrap = materialRepository.findByMtName("포장지");
@@ -59,20 +65,11 @@ public class MaterialOrderController {
     @PostMapping("/order_plan/add/{emName}")
     public String orderAdd(@PathVariable String emName){
         try {
-            Map<String, Object> orderPlanData = materialService.getOrderPlan();
-//            List<OrderTodayDto> orderTodayDtoList = (List<OrderTodayDto>) orderPlanData.get("orderTodayDtoList");
+            List<Orders> orderToday = ordersRepository.findByOdDate(LocalDate.now());
 
-            Object orderTodayDtoListObject = orderPlanData.get("orderTodayDtoList");
-            List<OrderTodayDto> orderTodayDtoList = new ArrayList<>();
-            if (orderTodayDtoListObject instanceof List<?>) {
-                for (Object obj : (List<?>) orderTodayDtoListObject) {
-                    if (obj instanceof OrderTodayDto) {
-                        orderTodayDtoList.add((OrderTodayDto) obj);
-                    }
-                }
-            }
 
-            materialService.orderAdd(emName, orderTodayDtoList);
+
+            materialService.orderAdd(emName, orderToday);
             return "redirect:/order_plan";
         }catch (Exception e){
             return "redirect:/order_plan";
