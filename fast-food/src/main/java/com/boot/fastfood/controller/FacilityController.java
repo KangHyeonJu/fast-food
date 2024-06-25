@@ -81,7 +81,8 @@ public class FacilityController {
             fcDateCell.setCellValue(facility.getFcDate());
             fcDateCell.setCellStyle(dateCellStyle);
 
-            row.createCell(6).setCellValue(facility.getFcStatus().ordinal());
+            String state = String.valueOf(facility.getFcStatus());
+            row.createCell(6).setCellValue(state);
 
 
             for (int i = 0; i < headers.length; i++) {
