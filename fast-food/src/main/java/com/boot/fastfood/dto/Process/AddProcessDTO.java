@@ -22,7 +22,6 @@ public class AddProcessDTO {
         return Process.builder()
                 .pcName(pcName)
                 .pcCnt(pcCnt)
-                .pcOutput(pcOutput)
                 .build();
     }
 

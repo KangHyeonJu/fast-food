@@ -24,6 +24,5 @@ public class ProcessDTO {
         this.pcName = process.getPcName();
         this.pcCnt = process.getPcCnt();
         this.facility = process.getFacilities();
-        this.pcOutput = process.getPcOutput();
     }
 }
