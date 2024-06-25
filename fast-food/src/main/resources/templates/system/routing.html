@@ -32,6 +32,9 @@
         .item-title {
             margin-right: 10px;
         }
+        hr {
+            margin-top: 10px;
+        }
     </style>
 
     <!-- Page Content -->
@@ -84,10 +87,10 @@
                     <div class="panel panel-default">
                         <ul class="nav nav-tabs">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" onclick="location.href='/routing'">라우팅</a>
+                                <a class="nav-link active" aria-current="page" href="/routing" style="background-color: #efefef"><b>라우팅</b></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" onclick="location.href='/process'">BOM</a>
+                                <a class="nav-link" href="/process">BOM</a>
                             </li>
                         </ul>
                         <!-- /ul -->
@@ -112,19 +115,8 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <div class="col-lg-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <div class="form-group">
-                                            <p class="fa fa-search"></p>
-                                            <label>공정코드</label><input class="form-control" id="pcCodeSearch" >
-                                            <label>공정명</label><input class="form-control" id="pcNameSearch">
-                                            <label>공정내용</label><input class="form-control" id="pcCntSearch">
-                                            <button type="button" class="btn btn-primary" id="processSearchBtn">검색</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+                            <hr style="height: 0.1px; border: none; border-top: dotted #cecece;"></hr>
 
                             <div class="col-lg-12">
                                 <div class="button-container">
@@ -156,7 +148,7 @@
                             </table>
 
                             <div class="col-lg-12">
-                                <div class="panel" id="panelshow" style="display: none">
+                                <div class="panel panel-default" id="panelshow" style="display: none">
                                     <div class="panel-body">
                                         <!--검색 패널-->
 
@@ -220,7 +212,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="itemCreateBtn">등록</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -255,7 +247,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="processBtn">등록</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                 </div>
             </div>
             <!-- /.modal-content -->

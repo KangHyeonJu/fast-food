@@ -98,10 +98,10 @@
                     <div class="panel panel-default">
                         <ul class="nav nav-tabs">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" onclick="location.href='/routing'">라우팅</a>
+                                <a class="nav-link active" aria-current="page" href="/routing">라우팅</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" onclick="location.href='/process'">BOM</a>
+                                <a class="nav-link" href="/process" style="background-color: #efefef"><b>BOM</b></a>
                             </li>
                         </ul>
                         <!-- /.panel-heading -->
@@ -127,19 +127,7 @@
                                     </tbody>
 
                             </table>
-                            <div class="col-lg-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <div class="form-group">
-                                            <p class="fa fa-search"></p>
-                                            <label>자재코드</label><input class="form-control" >
-                                            <label>자재명</label><input class="form-control" >
-                                            <label>자재분류</label><input class="form-control" >
-                                            <button type="button" class="btn btn-primary">검색</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <hr style="height: 0.1px; border: none; border-top: dotted #cecece;"></hr>
 
                             <div class="col-lg-12">
                                 <div class="button-container">
@@ -235,7 +223,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="itemCreateBtn">등록</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -249,7 +237,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="Label">공정 등록</h4>
+                    <h4 class="modal-title" id="Label">자재 등록</h4>
                 </div>
                 <div class="modal-body">
                     <div class="item group">
@@ -257,7 +245,7 @@
                             <label class="item-title">자재명</label><input class="form-control" id="mtNameId" >
                         </div>
                         <div class="item">
-                             <label class="item-title">설비</label>
+                             <label class="item-title">업체명</label>
                             <select class="form-control" id="mtVendorId">
                                 <option th:each="vendor : ${vendorList}" th:text="${vendor.vdName}" th:value="${vendor.vdCode}"></option>
                             </select>
@@ -272,7 +260,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="materialsBtn">등록</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                 </div>
             </div>
             <!-- /.modal-content -->
