@@ -78,7 +78,7 @@
                                 <!-- 생산계획만큼 반복문으로 데이터 받아옴 controller에서 받아와야함 -->
                                 <tr th:each="production : ${productions}">
                                     <td><input type="checkbox" class="planCheckbox"></td>
-                                    <td th:text="${production.pmCode}" onclick="showDetail(this);"></td>
+                                    <td th:text="${production.pmCode}" onclick="savePmCode();"></td>
                                     <!-- 생산 시작일 = (납품요청일) - 1일 - (생산 소요 시간)  -->
                                     <td th:text="${production.pmSDate}"></td>
                                     <!-- 생산 종료일 = (납품요청일) - 1일 -->
@@ -119,7 +119,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="work : ${works}">
+                                <tr th:each="work : ${works}" th:if="${work.production.pmCode == savePmCode}">
                                     <td th:text="${work.wkCode}"></td>
                                     <td th:text="${work.SDate}"></td>
                                     <td th:text="${work.EDate}"></td>
@@ -145,7 +145,30 @@
 <!-- /#wrapper -->
 
 <th:block layout:fragment="script">
+<script>
+    $("#dataTables-example tr").click(function (){
+        var tr = $(this);
+        var td = tr.children();
 
+        var savePmCode = td.eq(1).text();
+        var url = '/machine/productionPlan/' + savePmCode;
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: JSON.stringify(savePmCode),
+            contentType: "application/json; charset=UTF-8",
+            cache: false,
+            success: function(){
+                console.log(savePmCode);
+            },
+            error: function (){
+                alert("불러오기 오류");
+            }
+        });
+    })
+
+</script>
 </th:block>
 
 </html>
