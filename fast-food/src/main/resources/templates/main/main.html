@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout1}">
 
 <th:block layout:fragment="css">
@@ -64,7 +63,8 @@
             </div>
             <!-- /.row -->
 
-            <!-- 테이블 1 -->
+
+            <!-- 설비 현황 -->
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
@@ -72,22 +72,32 @@
                             설비 현황
                         </div>
                         <!-- /.panel-heading -->
-                        <div class="panel-body" style="height: 500px; overflow: auto">
-                            <table class="table table-striped table-bordered table-hover" style="width: 100%;" th:each="facility : ${facilities}">
-                                <thead>
-                                <tr>
-                                    <th th:text="${facility.fcName}" class="text-center" style="background-color: black; color: white"></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td th:if="${facility.fcStatus == T(com.boot.fastfood.constant.FcStatus).WORK}"><div id="circle_green">가동중</div></td>
-                                    <td th:if="${facility.fcStatus == T(com.boot.fastfood.constant.FcStatus).STANDBY}"><div id="circle_yellow">대기중</div></td>
-                                    <td th:if="${facility.fcStatus == T(com.boot.fastfood.constant.FcStatus).STOP}"><div id="circle_red">비가동</div></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <!-- /.table-responsive -->
+                        <div class="panel-body" style="height: auto; overflow: auto">
+                            <div class="row">
+                                <div th:each="facility : ${facilities}" class="col-lg-2 col-md-4 col-sm-6 col-xs-12" style="margin-bottom: 20px;">
+                                    <table class="table table-striped table-bordered table-hover" style="width: 100%;">
+                                        <thead>
+                                        <tr>
+                                            <th th:text="${facility.fcName}" class="text-center" style="background-color: black; color: white"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td th:if="${facility.fcStatus == T(com.boot.fastfood.constant.FcStatus).WORK}">
+                                                <div id="circle_green" style="margin: auto">가동중</div>
+                                            </td>
+                                            <td th:if="${facility.fcStatus == T(com.boot.fastfood.constant.FcStatus).STANDBY}">
+                                                <div id="circle_yellow" style="margin: auto">대기중</div>
+                                            </td>
+                                            <td th:if="${facility.fcStatus == T(com.boot.fastfood.constant.FcStatus).STOP}">
+                                                <div id="circle_red" style="margin: auto">비가동</div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.row -->
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -95,7 +105,12 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            <!-- 테이블 1 끝-->
+            <!-- /.row -->
+            <!-- 설비 현황 끝 -->
         </div>
+        <!-- /.container-fluid -->
     </div>
+    <!-- /#page-wrapper -->
 </div>
+<!-- /#content -->
+</html>
