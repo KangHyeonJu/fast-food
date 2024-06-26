@@ -83,6 +83,9 @@ public class ContractService {
             // 하루 최대생산량 넘으면 작업 계획 생성 메서드 두번 돌림
             int more = 0;
             int i = 0;
+            
+            // 이전 공정(최종 납품)일을 변수로 저장
+
 
             if (itType.contains("즙")){
                 while (pmAmount > 10000){
@@ -103,7 +106,7 @@ public class ContractService {
 
             } else if (itType.contains("스틱")) {
                 while (pmAmount > 12000){
-                    more = pmAmount - 12000;
+                            more = pmAmount - 12000;
                     pmAmount = 12000;
 
                     production.setPmAmount(pmAmount);
@@ -128,11 +131,11 @@ public class ContractService {
 
         String pmCode = "PM" + currentTime.format(formatter) + i;
 
-        // 제품 정보 설정
+        // 제품 정보
         Items item = contract.getItems();
 
         // 제품의 재고량
-        int itStock = item.getItStock();
+//        int itStock = item.getItStock();
 
         // 제품의 타입
         String itType = item.getItType();
@@ -150,18 +153,29 @@ public class ContractService {
 
         // 생산 시작일 계산
         LocalDate productionStartDate = null;
-        if (itType.equals("즙")){
+
+        if (itType.contains("즙")){
             if (production.getPmAmount() <= 10000){
-                productionStartDate = productionEndDate.minusDays(3);
-            }else {
-                productionStartDate = productionEndDate.minusDays( 3 + 2L * (int)Math.ceil((production.getPmAmount() -10000)/10000.0));
+                productionStartDate = productionEndDate.minusDays(3).plusDays(i*2L);
+                productionEndDate = productionStartDate.plusDays(2);
             }
-        }else if (itType.equals("젤리스틱")){
-            if (production.getPmAmount()  <= 8000){
-                productionStartDate = productionEndDate.minusDays(2);
-            }else {
-                productionStartDate = productionEndDate.minusDays( 2 + (int)Math.ceil((production.getPmAmount() -8000)/12000.0));
+//            else {
+//                productionStartDate = productionEndDate.minusDays( 3 + 2L * (int)Math.ceil((production.getPmAmount() -10000)/10000.0));
+//            }
+        }else if (itType.contains("스틱")){
+            if (production.getPmAmount() <= 12000){
+                if (i<=1){
+                    productionStartDate = productionEndDate.minusDays(2).plusDays(i);
+                    productionEndDate = productionStartDate.plusDays(1);
+                }
+//                else{
+//                    productionStartDate = productionEndDate.minusDays(2).plusDays(1);
+//                    productionEndDate = productionStartDate;
+//                }
             }
+//            else {
+//                productionStartDate = productionEndDate.minusDays( 2 + (int)Math.ceil((production.getPmAmount() -8000)/12000.0));
+//            }
         }
 
         // Production 엔티티에 수주 정보 및 생산 일정 설정 후 저장
@@ -174,6 +188,8 @@ public class ContractService {
 
         // 생산량 등 다른 필요한 정보 설정
         productionRepository.save(production);
+
+        // 변수 = 이전 제품의 생산 시작일
 
         //작업 계획 생성
         Works works = new Works();
@@ -341,6 +357,7 @@ public class ContractService {
 
                 // eDate
                 // wkCode
+                // wkOutput
                 int time = 0;
                 if (itType.contains("즙")) {
                     currentWorks.setWkCode("A6" + date);
@@ -348,18 +365,19 @@ public class ContractService {
                     eDate = sDate.plusMinutes(time);
                     currentWorks.setEDate(eDate);
                     sDate = eDate;
+                    output = (int) (double) (input / 30);
+                    currentWorks.setWkOutput(output);
+                    input = output;
                 } else {
                     currentWorks.setWkCode("B4" + date);
                     time = (int) Math.ceil(input * 0.03);
                     eDate = sDate.plusMinutes(time);
                     currentWorks.setEDate(eDate);
                     sDate = eDate;
+                    output = (int) (double) (input / 25);
+                    currentWorks.setWkOutput(output);
+                    input = output;
                 }
-
-                // wkOutput
-                output = (int) (double) (input * 100);
-                currentWorks.setWkOutput(output);
-                input = output;
 
                 // def
                 currentWorks.setDef(0);
@@ -474,13 +492,7 @@ public class ContractService {
                 currentWorks.setWkInput(input);
 
                 // eDate
-                int plusHours = 0;
-                if (input > 60) {
-                    plusHours = (int) Math.ceil((double) input / 60) * 8;
-                } else {
-                    plusHours = 8;
-                }
-                eDate = sDate.plusHours(plusHours);
+                eDate = sDate.plusHours(8);
                 currentWorks.setEDate(eDate);
                 sDate = eDate;
 
