@@ -1,5 +1,6 @@
 package com.boot.fastfood.repository;
 
+import com.boot.fastfood.entity.Items;
 import com.boot.fastfood.entity.Routing;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +24,6 @@ public interface RoutingRepository extends JpaRepository<Routing, Long> {
     @Query("SELECT r FROM Routing r WHERE r.items.itCode = :itCode AND r.process.pcCode = :pcCode")
     Routing findByItCodeAndPcCode(@Param("itCode") String itCode, @Param("pcCode") String pcCode);
 
+    List<Routing> findByItems_ItCodeOrderBySequenceAsc(String itCode);
 }
 

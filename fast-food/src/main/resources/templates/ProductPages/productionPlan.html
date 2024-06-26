@@ -78,7 +78,7 @@
                                 <!-- 생산계획만큼 반복문으로 데이터 받아옴 controller에서 받아와야함 -->
                                 <tr th:each="production : ${productions}">
                                     <td><input type="checkbox" class="planCheckbox"></td>
-                                    <td th:text="${production.pmCode}"></td>
+                                    <td th:text="${production.pmCode}" onclick="showDetail(this);"></td>
                                     <!-- 생산 시작일 = (납품요청일) - 1일 - (생산 소요 시간)  -->
                                     <td th:text="${production.pmSDate}"></td>
                                     <!-- 생산 종료일 = (납품요청일) - 1일 -->
@@ -114,20 +114,15 @@
                                 <thead>
                                 <tr>
                                     <th>작업 지시 코드</th>
-                                    <th>공정</th>
-                                    <th>수량</th>
                                     <th>작업 시작일</th>
                                     <th>작업 종료일</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="work : ${works}">
-                                    <td><input type="checkbox" class="planCheckbox"></td>
                                     <td th:text="${work.wkCode}"></td>
-                                    <td>공정</td>
-                                    <td th:text="${work.pmAmount}"></td>
-                                    <td th:text="${#dates.format(work.sDate, 'yyyy-MM-dd')}"></td>
-                                    <td th:text="${#dates.format(work.eDate, 'yyyy-MM-dd')}"></td>
+                                    <td th:text="${work.SDate}"></td>
+                                    <td th:text="${work.EDate}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -148,5 +143,9 @@
 
 </div>
 <!-- /#wrapper -->
+
+<th:block layout:fragment="script">
+
+</th:block>
 
 </html>

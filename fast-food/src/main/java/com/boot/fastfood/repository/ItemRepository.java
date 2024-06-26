@@ -16,6 +16,7 @@ public interface ItemRepository extends JpaRepository<Items, String> {
     @Query(value = "SELECT i FROM Items i WHERE i.itName LIKE %:itName%")
 
     List<Items> findByItName(@Param("itName") String itName);
+    
     @Query(value = "SELECT i FROM Items i WHERE i.itType LIKE %:itType%")
     List<Items> findByItType(@Param("itType") String itType);
 
@@ -30,7 +31,5 @@ public interface ItemRepository extends JpaRepository<Items, String> {
 
     @Query(value = "SELECT i FROM Items i WHERE i.itType LIKE %:itType% AND i.itName LIKE %:itName%")
     List<Items> findByItTypeAndItName(@Param("itType") String itType, @Param("itName") String itName);
-
-
 }
 

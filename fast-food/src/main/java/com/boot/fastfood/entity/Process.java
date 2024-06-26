@@ -25,6 +25,7 @@ public class Process {
     @JoinColumn(name = "fcCode")
     private Facility facilities;
 
+
     @Builder
     public Process(String pcCode, String pcName, String pcCnt, Facility facilities) {
         this.pcCode = pcCode;

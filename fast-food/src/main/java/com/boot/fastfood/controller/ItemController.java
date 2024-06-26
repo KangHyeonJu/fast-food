@@ -36,9 +36,9 @@ public class ItemController {
                            @RequestParam(required = false, name="itType") String itType, Model model) {
 
         List<ItemListDTO> itemList = itemService.findAll()
-                        .stream()
-                                .map(ItemListDTO::new)
-                                        .toList();
+                .stream()
+                .map(ItemListDTO::new)
+                .toList();
 
        // List<Process> processes = processService.search(pcCode, pcName, pcCnt);
         ProcessListDTO processList = processService.findList();

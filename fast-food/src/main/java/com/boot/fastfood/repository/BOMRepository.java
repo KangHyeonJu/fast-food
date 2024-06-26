@@ -16,4 +16,5 @@ public interface BOMRepository extends JpaRepository<BOM, Long> {
 
     @Query("SELECT r FROM BOM r WHERE r.items.itCode = :itCode AND r.materials.mtCode = :mtCode")
     BOM findByItCodeAndMtCode(@Param("itCode") String itCode, @Param("mtCode") String mtCode);
+
 }

@@ -32,5 +32,9 @@ public interface ProcessRepository extends JpaRepository<Process, String> {
     @Query(value = "SELECT p FROM Process p WHERE p.pcCnt LIKE %:pcCnt% AND p.pcName LIKE %:pcName%")
     List<Process> findByPcCntAndPcName(@Param("pcCnt") String pcCnt, @Param("pcName") String pcName);
 
+    //pcCode로 pcName 찾기
+    @Query("SELECT p.pcName FROM Process p WHERE p.pcCode = :pcCode")
+    String findPcNameByPcCode(@Param("pcCode") String pcCode);
+
 
 }
