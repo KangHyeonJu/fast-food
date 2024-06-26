@@ -176,7 +176,7 @@ public class ContractService {
         // 생산량 등 다른 필요한 정보 설정
         productionRepository.save(production);
 
-        mtOrderPlan(contract);
+        mtOrderPlan(contract, production);
         //작업 계획 생성
         Works works = new Works();
         registerProductionsWorks(production, works, i);
@@ -497,16 +497,12 @@ public class ContractService {
     }
 
     //자재 발주 계획
-    public void mtOrderPlan(Contract contract){
-        System.out.println("잉");
-
-        Production production = productionRepository.findByContract(contract);
-        System.out.println("production: " + production);
+    public void mtOrderPlan(Contract contract, Production production){
         List<BOM> bomList = bomService.getItemByBom(contract.getItems());
 
         for (int i = 0; i < bomList.size(); i++) {
             System.out.println("잉1");
-            int odAmount = (int) Math.ceil(bomList.get(i).getMtAmount() * production.getPmAmount() * contract.getItems().getItEa());
+            int odAmount = (int) Math.ceil(bomList.get(i).getMtAmount() * production.getPmAmount());
             int week = production.getPmSDate().getDayOfWeek().getValue();
 
             if (week == 1 || week == 2 || week == 3 || week == 7){
@@ -533,7 +529,7 @@ public class ContractService {
         orders.setMaterials(materials);
         orders.setOdState(false);
         orders.setWhStatus(0);
-        orders.setContract(contract);
+        orders.setProduction(production);
 
         int minOrder = materials.getMtMin();
         int maxOrder = materials.getMtMax();
@@ -577,7 +573,7 @@ public class ContractService {
     public void pushToNextDay(Orders orders, int amount){
         Orders nextDayOrder = new Orders();
 
-        nextDayOrder.setContract(orders.getContract());
+        nextDayOrder.setProduction(orders.getProduction());
         nextDayOrder.setMaterials(orders.getMaterials());
         nextDayOrder.setOdDate(orders.getOdDate().plusDays(1));
         nextDayOrder.setOdAmount(amount);

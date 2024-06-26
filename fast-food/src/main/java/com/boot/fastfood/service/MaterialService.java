@@ -29,9 +29,8 @@ public class MaterialService {
             orders.setOdState(true);
             orders.setEmployee(employee);
 
-            Production production = productionRepository.findByContract(orders.getContract());
-            orders.setOdDueDate(production.getPmSDate());
-            orders.getContract().setCtStatus("생산중");
+            orders.setOdDueDate(orders.getProduction().getPmSDate());
+            orders.getProduction().getContract().setCtStatus("생산중");
             ordersRepository.save(orders);
         }
     }

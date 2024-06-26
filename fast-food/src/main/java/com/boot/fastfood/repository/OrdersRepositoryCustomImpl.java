@@ -19,7 +19,7 @@ public class OrdersRepositoryCustomImpl implements OrdersRepositoryCustom{
         if(ctCode == null){
             return null;
         }
-        return orders.contract.ctCode.like("%" + ctCode + "%");
+        return orders.production.contract.ctCode.like("%" + ctCode + "%");
     }
 
     private BooleanExpression searchByOdCode(String odCode){

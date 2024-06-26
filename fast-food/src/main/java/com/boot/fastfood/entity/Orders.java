@@ -17,9 +17,13 @@ public class Orders {
     @Column(name = "odCode")
     private String odCode;
 
+//    @ManyToOne
+//    @JoinColumn(name = "ctCode")
+//    private Contract contract;
+
     @ManyToOne
-    @JoinColumn(name = "ctCode")
-    private Contract contract;
+    @JoinColumn(name = "pmCode")
+    private Production production;
 
     @ManyToOne
     @JoinColumn(name = "mtCode")
