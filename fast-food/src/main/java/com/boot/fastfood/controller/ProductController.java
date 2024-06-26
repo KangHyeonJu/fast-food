@@ -1,7 +1,9 @@
 package com.boot.fastfood.controller;
 
 import com.boot.fastfood.dto.ProductionDto;
+import com.boot.fastfood.entity.Works;
 import com.boot.fastfood.service.ProductionService;
+import com.boot.fastfood.service.WorksService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +17,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductionService productionService;
+    private final WorksService worksService;
 
     @GetMapping("/productPlan")
     public String productPlan(Model model){
         List<ProductionDto> productions = productionService.getAllProductions();
+        List<Works> works = worksService.findAll();
+        model.addAttribute("works", works);
         model.addAttribute("productions", productions);
         return "ProductPages/productionPlan";
     }
