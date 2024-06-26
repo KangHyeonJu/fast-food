@@ -63,21 +63,70 @@ public class ContractService {
             contract.setCtStatus("준비중");
 
             // 저장
-            System.out.println("마지막ㅇㅇㅇ");
             contractRepository.save(contract);
             System.out.println("수주가 저장되었습니다.");
 
+            //생산 계획 생성
             Production production = new Production();
-            registerContractAndProduction(contract, production);
+
+            // 제품의 재고량
+            int itStock = item.getItStock();
+            // 제품의 타입
+            String itType = item.getItType();
+
+            // pmAmount 계산: ctAmount - itStock // 하루 최대 생산량 걸고
+            int pmAmount = contract.getCtAmount() * item.getItEa() - itStock;
+            if (pmAmount < 0){
+                pmAmount = 0;
+            }
+
+            // 하루 최대생산량 넘으면 작업 계획 생성 메서드 두번 돌림
+            int more = 0;
+            int i = 0;
+
+            if (itType.contains("즙")){
+                while (pmAmount > 10000){
+                    more = pmAmount - 10000;
+                    pmAmount = 10000;
+
+                    production.setPmAmount(pmAmount);
+
+                    registerContractAndProduction(contract, production, i);
+
+                    pmAmount = more;
+
+                    i++;
+                }
+
+                production.setPmAmount(pmAmount);
+                registerContractAndProduction(contract, production, i);
+
+            } else if (itType.contains("스틱")) {
+                while (pmAmount > 12000){
+                    more = pmAmount - 12000;
+                    pmAmount = 12000;
+
+                    production.setPmAmount(pmAmount);
+                    registerContractAndProduction(contract, production, i);
+
+                    pmAmount = more;
+
+                    i++;
+                }
+
+                production.setPmAmount(pmAmount);
+                registerContractAndProduction(contract, production, i);
+            }
         } else {
             throw new IllegalArgumentException("제품 정보를 찾을 수 없습니다: A1");
         }
     }
 
-    public void registerContractAndProduction(Contract contract, Production production) {
+    public void registerContractAndProduction(Contract contract, Production production, int i) {
         LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        String pmCode = "PM" + currentTime.format(formatter);
+
+        String pmCode = "PM" + currentTime.format(formatter) + i;
 
         // 제품 정보 설정
         Items item = contract.getItems();
@@ -88,11 +137,12 @@ public class ContractService {
         // 제품의 타입
         String itType = item.getItType();
 
-        // pmAmount 계산: ctAmount - itStock
-        int pmAmount = contract.getCtAmount() * item.getItEa() - itStock;
-        if (pmAmount < 0){
-            pmAmount = 0;
-        }
+        // pmAmount 계산: ctAmount - itStock // 하루 최대 생산량 걸고
+//        int pmAmount = contract.getCtAmount() * item.getItEa() - itStock;
+//        if (pmAmount < 0){
+//            pmAmount = 0;
+//        }
+
 
         //생산 종료일 계산(납품일로부터 1일 전)
         LocalDate deliveryDate = contract.getDeliveryDate();
@@ -101,16 +151,16 @@ public class ContractService {
         // 생산 시작일 계산
         LocalDate productionStartDate = null;
         if (itType.equals("즙")){
-            if (pmAmount <= 10000){
+            if (production.getPmAmount() <= 10000){
                 productionStartDate = productionEndDate.minusDays(3);
             }else {
-                productionStartDate = productionEndDate.minusDays( 3 + 2L * (int)Math.ceil((pmAmount-10000)/10000.0));
+                productionStartDate = productionEndDate.minusDays( 3 + 2L * (int)Math.ceil((production.getPmAmount() -10000)/10000.0));
             }
         }else if (itType.equals("젤리스틱")){
-            if (pmAmount <= 8000){
+            if (production.getPmAmount()  <= 8000){
                 productionStartDate = productionEndDate.minusDays(2);
             }else {
-                productionStartDate = productionEndDate.minusDays( 2 + (int)Math.ceil((pmAmount-8000)/12000.0));
+                productionStartDate = productionEndDate.minusDays( 2 + (int)Math.ceil((production.getPmAmount() -8000)/12000.0));
             }
         }
 
@@ -120,17 +170,17 @@ public class ContractService {
         production.setItName(item);
         production.setPmSDate(productionStartDate);
         production.setPmEDate(productionEndDate);
-        production.setPmAmount(pmAmount);
+//        production.setPmAmount(pmAmount);
 
         // 생산량 등 다른 필요한 정보 설정
         productionRepository.save(production);
 
         //작업 계획 생성
         Works works = new Works();
-        registerProductionsWorks(production, works);
+        registerProductionsWorks(production, works, i);
     }
 
-    public void registerProductionsWorks(Production production, Works works) {
+    public void registerProductionsWorks(Production production, Works works, int i) {
         // Production 객체에서 itName 가져오기
         Items item = production.getItName();
 
@@ -148,7 +198,7 @@ public class ContractService {
         LocalDateTime eDate = null;
 
         // 공정코드 준비
-        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + i;
 
         int input = 0;
         int output = 0;
@@ -399,7 +449,7 @@ public class ContractService {
 
                 // wkOutput
                 currentWorks.setWkOutput(input);
-                input = output;
+                output = input;
 
                 // def
                 currentWorks.setDef(0);
@@ -430,7 +480,7 @@ public class ContractService {
 
                 // wkOutput
                 currentWorks.setWkOutput(input);
-                input = output;
+                output = input;
 
                 // def
                 currentWorks.setDef(0);
