@@ -130,7 +130,6 @@ public class ContractService {
         registerProductionsWorks(production, works);
     }
 
-    //작업 계획 생성
     public void registerProductionsWorks(Production production, Works works) {
         // Production 객체에서 itName 가져오기
         Items item = production.getItName();
@@ -138,230 +137,310 @@ public class ContractService {
         // itName으로 itCode가져오기
         String itCode = item.getItCode();
 
-        //itCode로 공정가져오기
+        // itCode로 공정가져오기
         List<Routing> routingList = routingRepository.findByItems_ItCodeOrderBySequenceAsc(itCode);
 
-        //itCode로 itType 가져오기
+        // itCode로 itType 가져오기
         String itType = item.getItName();
 
-        //날짜 초기화
+        // 날짜 초기화
         LocalDateTime sDate = production.getPmSDate().atTime(9, 0);
-        LocalDateTime eDate = production.getPmEDate().atTime(9, 0);
+        LocalDateTime eDate = null;
 
-        //공정코드 준비
+        // 공정코드 준비
         String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
         int input = 0;
         int output = 0;
 
-        //수주별 공정 생성
+        // 수주별 공정 생성
         for (Routing routing : routingList) {
-            works.setProduction(production); //생산 코드 등록
-            works.setEmployee(null); //직원 초기화
+            // 새로운 works 객체 생성
+            Works currentWorks = new Works();
 
-            String pcCode = routing.getProcess().getPcCode(); //공정 코드 가져옴
+            currentWorks.setProduction(production); // 생산 코드 등록
+            currentWorks.setEmployee(null); // 직원 초기화
+
+            String pcCode = routing.getProcess().getPcCode(); // 공정 코드 가져옴
             String pcName = processRepository.findPcNameByPcCode(pcCode); // 공정 이름 가져옴
 
-            //공정 이름에 포함된 단어에 따라 공정 시간 계산
-            if (pcName.contains("전처리")) {
-                //wkCode
-                works.setWkCode("A1" + date);
+            // 공정 이름에 포함된 단어에 따라 공정 시간 계산
+            if (pcName.contains("전처리") || pcName.contains("세척")) {
+                // wkCode
+                currentWorks.setWkCode("A1" + date);
 
-                //sDate
-                works.setSDate(sDate);
+                // sDate
+                currentWorks.setSDate(sDate);
 
-                //wkInput
+                // wkInput
                 input = (int) Math.ceil((production.getPmAmount() * 1.04 * 0.01 * 10) / 0.75);
-                works.setWkInput(input);
+                currentWorks.setWkInput(input);
 
-                //wkOutput
-                output = (int) Math.ceil(input * 0.75);
-                works.setWkOutput(output);
-                input = output;
-
-                //eDate
+                // eDate
                 int time = (int) Math.ceil(input * 0.12);
-                works.setEDate(sDate.plusMinutes(time));
+                eDate = sDate.plusMinutes(time);
+                currentWorks.setEDate(eDate);
                 sDate = eDate;
 
-                //def
-                int def = (int) Math.ceil((production.getPmAmount() * 1.04 * 0.01 * 10) * 0.25);
-                works.setDef(def);
+                // wkOutput
+                output = (int) Math.ceil(input * 0.75);
+                currentWorks.setWkOutput(output);
+                input = output;
 
-                //defRate
+                // def
+                int def = (int) Math.ceil((production.getPmAmount() * 1.04 * 0.01 * 10) * 0.25);
+                currentWorks.setDef(def);
+
+                // defRate
                 int defRate = 75;
-                works.setDefRate(defRate + '%');
+                currentWorks.setDefRate(defRate + '%');
 
             } else if (pcName.contains("추출")) {
-                //wkCode
-                works.setWkCode("A3" + date);
+                // wkCode
+                currentWorks.setWkCode("A3" + date);
 
-                //sDate
-                works.setSDate(sDate);
+                // sDate
+                currentWorks.setSDate(sDate);
 
-                //wkInput
-                works.setWkInput(input);
+                // wkInput
+                currentWorks.setWkInput(input);
 
-                //wkOutput
-                output = (int) Math.ceil(input * 0.2);
-                works.setWkOutput(output);
-                input = output;
+                int plusDays = 0;
 
-                //eDate
-                works.setEDate(sDate.plusDays(1));
+                // eDate
+                if (input > 1000){
+                    plusDays = (int)Math.ceil((double) input /1000);
+                }else {
+                    plusDays = 1;
+                }
+                eDate = sDate.plusDays(plusDays);
+                currentWorks.setEDate(eDate);
                 sDate = eDate;
 
-                //def
-                works.setDef(0);
+                // wkOutput
+                output = (int) Math.ceil(input * 0.2);
+                currentWorks.setWkOutput(output);
+                input = output;
 
-                //defRate
-                works.setDefRate(0);
+                // def
+                currentWorks.setDef(0);
+
+                // defRate
+                currentWorks.setDefRate(0);
 
             } else if (pcName.contains("여과")) {
-                //wkCode
-                works.setWkCode("A4" + date);
+                // wkCode
+                currentWorks.setWkCode("A4" + date);
 
-                //sDate
-                works.setSDate(sDate);
+                // sDate
+                currentWorks.setSDate(sDate);
 
-                //wkInput
-                works.setWkInput(input);
+                // wkInput
+                currentWorks.setWkInput(input);
 
-                //wkOutput
-                output = (int) Math.ceil(input * 0.5);
-                works.setWkOutput(output);
-                input = output;
-
-                //eDate
-                works.setEDate(sDate.plusHours(4));
+                // eDate
+                eDate = sDate.plusHours(4);
+                currentWorks.setEDate(eDate);
                 sDate = eDate;
 
-                //def
-                works.setDef(0);
+                // wkOutput
+                output = (int) Math.ceil(input * 0.5);
+                currentWorks.setWkOutput(output);
+                input = output;
 
-                //defRate
-                works.setDefRate(0);
+                // def
+                currentWorks.setDef(0);
+
+                // defRate
+                currentWorks.setDefRate(0);
 
             } else if (pcName.contains("살균")) {
-                //wkCode
-                if (itType.equals("즙")) {
-                    works.setWkCode("A5" + date);
+                // wkCode
+                if (itType.contains("즙")) {
+                    currentWorks.setWkCode("A5" + date);
                 } else {
-                    works.setWkCode("B3" + date);
+                    currentWorks.setWkCode("B3" + date);
                 }
 
-                //sDate
-                works.setSDate(sDate);
+                // sDate
+                currentWorks.setSDate(sDate);
 
-                //wkInput
-                works.setWkInput(input);
+                // wkInput
+                currentWorks.setWkInput(input);
 
-                //wkOutput
-                works.setWkOutput(input);
-
-                //eDate
-                works.setEDate(sDate.plusHours(2));
+                // eDate
+                currentWorks.setEDate(sDate.plusHours(2));
                 sDate = eDate;
 
-                //def
-                works.setDef(0);
+                // wkOutput
+                currentWorks.setWkOutput(input);
 
-                //defRate
-                works.setDefRate(0);
+                // def
+                currentWorks.setDef(0);
+
+                // defRate
+                currentWorks.setDefRate(0);
 
             } else if (pcName.contains("충진")) {
-                //wkCode
-                if (itType.equals("즙")) {
-                    works.setWkCode("A6" + date);
+                // sDate
+                currentWorks.setSDate(sDate);
+
+                // wkInput
+                currentWorks.setWkInput(input);
+
+                // eDate
+                // wkCode
+                int time = 0;
+                if (itType.contains("즙")) {
+                    currentWorks.setWkCode("A6" + date);
+                    time = (int) Math.ceil(input * 0.048);
+                    currentWorks.setEDate(sDate.plusMinutes(time));
+                    sDate = eDate;
                 } else {
-                    works.setWkCode("B4" + date);
+                    currentWorks.setWkCode("B4" + date);
+                    time = (int) Math.ceil(input * 0.03);
+                    currentWorks.setEDate(sDate.plusMinutes(time));
+                    sDate = eDate;
                 }
 
-                //sDate
-                works.setSDate(sDate);
-
-                //wkInput
-                works.setWkInput(input);
-
-                //wkOutput
+                // wkOutput
                 output = (int) (double) (input * 100);
-                works.setWkOutput(output);
+                currentWorks.setWkOutput(output);
                 input = output;
 
-                //eDate
-                int time = (int) Math.ceil(output * 0.048);
-                works.setEDate(sDate.plusMinutes(time));
-                sDate = eDate;
+                // def
+                currentWorks.setDef(0);
 
-                //def
-                works.setDef(0);
+                // defRate
+                currentWorks.setDefRate(0);
 
-                //defRate
-                works.setDefRate(0);
-
-            } else if (pcName.contains("검사")){
-                //wkCode
-                if (itType.equals("즙")) {
-                    works.setWkCode("A7" + date);
+            } else if (pcName.contains("검사")) {
+                // wkCode
+                if (itType.contains("즙")) {
+                    currentWorks.setWkCode("A7" + date);
                 } else {
-                    works.setWkCode("B6" + date);
+                    currentWorks.setWkCode("B6" + date);
                 }
 
-                //sDate
-                works.setSDate(sDate);
+                // sDate
+                currentWorks.setSDate(sDate);
 
-                //wkInput
-                works.setWkInput(input);
+                // wkInput
+                currentWorks.setWkInput(input);
 
-                //defRate
-                int defRate = (int)(Math.random() * 3) + 1; //1~3까지의 랜덤 정수
-                works.setDefRate(defRate + '%');
+                // defRate
+                int defRate = (int)(Math.random() * 3) + 1; // 1~3까지의 랜덤 정수
+                currentWorks.setDefRate(defRate + '%');
 
-                //def
-                int def = (int)Math.ceil((input * ((double) defRate /100)));
-                works.setDef(def);
+                // def
+                int def = (int)Math.ceil((input * ((double) defRate / 100)));
+                currentWorks.setDef(def);
 
-                //wkOutput
-                works.setWkOutput(input - def);
-                input = output;
-
-                //eDate
+                // eDate
                 int time = (int)Math.ceil(input * 0.012);
-                works.setEDate(sDate.plusMinutes(time));
+                currentWorks.setEDate(sDate.plusMinutes(time));
                 sDate = eDate;
 
-            } else if (pcName.contains("포장")){
-                //wkCode
-                //wkOutput
-                if (itType.equals("즙")) {
-                    works.setWkCode("A8" + date);
-                    works.setWkOutput(production.getPmAmount()/30);
+                // wkOutput
+                currentWorks.setWkOutput(input - def);
+                input = currentWorks.getWkOutput();
+
+            } else if (pcName.contains("포장")) {
+
+                // sDate
+                currentWorks.setSDate(sDate);
+
+                // wkInput
+                int pa = input - production.getPmAmount();
+                currentWorks.setWkInput(production.getPmAmount());
+
+                // def
+                currentWorks.setDef(0);
+
+                // defRate
+                currentWorks.setDefRate(0);
+
+                // eDate
+                int time = (int)Math.ceil(((double) production.getPmAmount() / 30) * 0.375);
+                currentWorks.setEDate(sDate.plusMinutes(time));
+                sDate = eDate;
+
+                // wkCode
+                // wkOutput
+                if (itType.contains("즙")) {
+                    currentWorks.setWkCode("A8" + date);
+                    currentWorks.setWkOutput(production.getPmAmount() / 30);
                 } else {
-                    works.setWkCode("B7" + date);
-                    works.setWkOutput(production.getPmAmount()/25);
+                    currentWorks.setWkCode("B7" + date);
+                    currentWorks.setWkOutput(production.getPmAmount() / 25);
                 }
 
-                //sDate
-                works.setSDate(sDate);
+            } else if (pcName.contains("혼합")) {
+                // wkCode
+                currentWorks.setWkCode("B2" + date);
 
-                //wkInput
-                int pa = input - production.getPmAmount();
-                works.setWkInput(production.getPmAmount());
+                // sDate
+                currentWorks.setSDate(sDate);
 
-                //def
-                works.setDef(0);
+                // wkInput
+                input = (int) Math.ceil(production.getPmAmount() * 1.04 * 0.01 * 5);
+                currentWorks.setWkInput(input);
 
-                //defRate
-                works.setDefRate(0);
-
-                //eDate
-                int time = (int)Math.ceil(((double) production.getPmAmount() /30) * 0.375);
-                works.setEDate(sDate.plusMinutes(time));
+                // eDate
+                int plusHours = 0;
+                if (input > 60){
+                    plusHours = (int)Math.ceil((double) input/60) * 8;
+                }else {
+                    plusHours = 8;
+                }
+                eDate = sDate.plusHours(plusHours);
+                currentWorks.setEDate(eDate);
                 sDate = eDate;
+
+                // wkOutput
+                currentWorks.setWkOutput(input);
+                input = output;
+
+                // def
+                currentWorks.setDef(0);
+
+                // defRate
+                currentWorks.setDefRate(0);
+
+            } else if (pcName.contains("냉각")) {
+                // wkCode
+                currentWorks.setWkCode("B5" + date);
+
+                // sDate
+                currentWorks.setSDate(sDate);
+
+                // wkInput
+                currentWorks.setWkInput(input);
+
+                // eDate
+                int plusHours = 0;
+                if (input > 60) {
+                    plusHours = (int) Math.ceil((double) input / 60) * 8;
+                } else {
+                    plusHours = 8;
+                }
+                eDate = sDate.plusHours(plusHours);
+                currentWorks.setEDate(eDate);
+                sDate = eDate;
+
+                // wkOutput
+                currentWorks.setWkOutput(input);
+                input = output;
+
+                // def
+                currentWorks.setDef(0);
+
+                // defRate
+                currentWorks.setDefRate(0);
+
             }
 
-            worksRepository.save(works);
-
+                worksRepository.save(currentWorks);
         }
     }
 
