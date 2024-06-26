@@ -117,11 +117,11 @@
                                         <td><input class="form-check-input" type="checkbox"></td>
                                         <td th:text="${order.odCode}"></td>
 
-                                        <th:block th:if="${order.contract} != null">
-                                            <td th:text="${order.contract.ctCode}"></td>
+                                        <th:block th:if="${order.production.contract} != null">
+                                            <td th:text="${order.production.contract.ctCode}"></td>
                                         </th:block>
 
-                                        <th:block th:if="${order.contract} == null">
+                                        <th:block th:if="${order.production} == null">
                                             <td></td>
                                         </th:block>
 

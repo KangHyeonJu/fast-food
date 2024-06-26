@@ -176,7 +176,7 @@ public class ContractService {
         // 생산량 등 다른 필요한 정보 설정
         productionRepository.save(production);
 
-        mtOrderPlan(contract, production);
+        mtOrderPlan(contract, production, i);
         //작업 계획 생성
         Works works = new Works();
         registerProductionsWorks(production, works, i);
@@ -497,7 +497,7 @@ public class ContractService {
     }
 
     //자재 발주 계획
-    public void mtOrderPlan(Contract contract, Production production){
+    public void mtOrderPlan(Contract contract, Production production, int j){
         List<BOM> bomList = bomService.getItemByBom(contract.getItems());
 
         for (int i = 0; i < bomList.size(); i++) {
@@ -506,25 +506,25 @@ public class ContractService {
             int week = production.getPmSDate().getDayOfWeek().getValue();
 
             if (week == 1 || week == 2 || week == 3 || week == 7){
-                processOrder(contract, production, odAmount, i, bomList, 2);
+                processOrder(production, odAmount, i, bomList, 2, j);
 
             }else if(week == 4 || week == 5){
-                processOrder(contract, production, odAmount, i, bomList, 0);
+                processOrder(production, odAmount, i, bomList, 0, j);
             }else if(week == 6){
-                processOrder(contract, production, odAmount, i, bomList, 1);
+                processOrder(production, odAmount, i, bomList, 1, j);
             }
         }
     }
 
     //주말 포함 시 leadTime
-    public void processOrder(Contract contract, Production production, int odAmount, int i, List<BOM> bomList, int minusDay){
+    public void processOrder(Production production, int odAmount, int i, List<BOM> bomList, int minusDay, int j){
         int leadTime = bomList.get(i).getMaterials().getLeadTime();
         Materials materials = bomList.get(i).getMaterials();
 
         System.out.println("잉2");
 
         Orders orders = new Orders();
-        orders.setOdCode("OD" + i + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+        orders.setOdCode("OD" + i + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + j);
         orders.setOdDate(production.getPmSDate().minusDays(leadTime + minusDay));
         orders.setMaterials(materials);
         orders.setOdState(false);
