@@ -18,4 +18,7 @@ public class CalendarService {
     public void saveEvent(Calendar calendar) {
         calendarRepository.save(calendar);
     }
+    public List<Calendar> getAllEvents() {
+        return calendarRepository.findAll();
+    }
 }

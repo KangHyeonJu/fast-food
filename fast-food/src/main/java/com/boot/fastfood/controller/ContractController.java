@@ -3,6 +3,7 @@ package com.boot.fastfood.controller;
 import com.boot.fastfood.dto.ContractDto;
 import com.boot.fastfood.dto.ContractSearchDto;
 import com.boot.fastfood.entity.*;
+import com.boot.fastfood.repository.CalendarRepository;
 import com.boot.fastfood.repository.ContractRepository;
 import com.boot.fastfood.service.*;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,6 +37,8 @@ public class ContractController {
 
     @Autowired
     private ContractRepository contractRepository;
+    @Autowired
+    private CalendarService calendarService;
 
     @GetMapping("/contract")
     public String contract(Model model) {
@@ -50,6 +53,11 @@ public class ContractController {
         model.addAttribute("clients", clients);
         model.addAttribute("items", items);
         model.addAttribute("employees", employees);
+
+
+        List<Calendar> calendars = calendarService.getAllEvents();
+        model.addAttribute("calendars", calendars);
+
 
         return "contract/Contract"; // 초기에 모든 수주가 보이는 페이지로 이동
     }
@@ -80,6 +88,10 @@ public class ContractController {
         model.addAttribute("clients", clients);
         model.addAttribute("items", items);
         model.addAttribute("employees", employees);
+
+        List<Calendar> calendars = calendarService.getAllEvents();
+
+        model.addAttribute("calendars", calendars);
 
         return "contract/Contract"; // 검색 결과가 보이는 페이지로 이동
     }
