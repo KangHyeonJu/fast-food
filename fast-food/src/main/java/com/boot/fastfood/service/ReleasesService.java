@@ -66,7 +66,6 @@ public class ReleasesService {
 
                 releasesRepository.save(release);
 
-                releasesRepository.save(release);
             }
         } else {
             throw new IllegalArgumentException("해당 작업 코드나 직원 코드를 찾을 수 없습니다.");

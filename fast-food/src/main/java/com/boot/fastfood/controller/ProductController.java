@@ -2,6 +2,8 @@ package com.boot.fastfood.controller;
 
 import com.boot.fastfood.dto.ProductionDto;
 import com.boot.fastfood.entity.Works;
+import com.boot.fastfood.repository.ProcessRepository;
+import com.boot.fastfood.repository.ProductionRepository;
 import com.boot.fastfood.service.ProductionService;
 import com.boot.fastfood.service.WorksService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -18,6 +22,7 @@ import java.util.List;
 public class ProductController {
     private final ProductionService productionService;
     private final WorksService worksService;
+    private final ProductionRepository productionRepository;
 
     @GetMapping("/productPlan")
     public String productPlan(Model model){
@@ -28,6 +33,12 @@ public class ProductController {
         return "ProductPages/productionPlan";
     }
 
+    @GetMapping("/getWorks")
+    @ResponseBody
+    public List<Works> getWorksByPmCode(@RequestParam(name ="pmCode") String pmCode) {
+        List<Works> works = worksService.findByPmCode(pmCode);
+        return works;
+    }
     @GetMapping("/wash")
     public String wash(){
         return "ProductPages/Machine/wash";

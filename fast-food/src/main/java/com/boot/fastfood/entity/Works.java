@@ -18,7 +18,7 @@ public class Works {
     @Column(name = "wkCode")
     private String wkCode;
 
-    //수주 코드
+    //생산 코드
     @ManyToOne
     @JoinColumn(name = "pmCode")
     private Production production;
@@ -53,6 +53,6 @@ public class Works {
     private Employee employee;
 
     //공정 코드
-    @OneToMany(mappedBy = "pcCode")
-    private List<Process> process;
+    @ManyToOne
+    private Process process;
 }

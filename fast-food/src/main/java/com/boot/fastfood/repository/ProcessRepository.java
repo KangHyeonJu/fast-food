@@ -36,5 +36,4 @@ public interface ProcessRepository extends JpaRepository<Process, String> {
     @Query("SELECT p.pcName FROM Process p WHERE p.pcCode = :pcCode")
     String findPcNameByPcCode(@Param("pcCode") String pcCode);
 
-
 }

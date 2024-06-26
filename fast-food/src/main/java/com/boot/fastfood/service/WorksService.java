@@ -18,4 +18,7 @@ public class WorksService {
         return worksRepository.findAll();
     }
 
+    public List<Works> findByPmCode(String pmCode) {
+        return (List<Works>) worksRepository.findByWkCode(pmCode);
+    }
 }
