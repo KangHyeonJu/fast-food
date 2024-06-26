@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -43,4 +45,15 @@ public class FacilityService {
 
         return facility;
     }
+    public Facility findByFcCode(String fcCode) {
+        Facility facility = facilityRepository.findById(fcCode)
+                .orElseThrow(() -> new IllegalArgumentException("not found : " + fcCode));
+
+        return facility;
+    }
+
+    public List<Facility> findAll() {
+        return facilityRepository.findAll();
+    }
+
 }

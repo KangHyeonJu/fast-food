@@ -14,9 +14,13 @@ public class MaterialsDTO {
 
     private String mtCode;
     private String mtName;
+    private int mtAmount;
+    private String vdCode;
+    private String vdName;
 
     public MaterialsDTO(Materials materials) {
         this.mtCode = materials.getMtCode();
         this.mtName = materials.getMtName();
     }
+
 }

@@ -1,5 +1,6 @@
 package com.boot.fastfood.service;
 
+import com.boot.fastfood.entity.Facility;
 import com.boot.fastfood.entity.Vendor;
 import com.boot.fastfood.repository.VendorRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,13 @@ public class VendorService {
     public Optional<Vendor> findByVdCode(String vdCode) {
 
         return Optional.ofNullable(vendorRepository.findByVdCode(vdCode));
+
+    }
+    
+    public Vendor findByVdCode(String vdCode) {
+        Vendor vendor = vendorRepository.findById(vdCode)
+                .orElseThrow(() -> new IllegalArgumentException("not found : " + vdCode));
+
+        return vendor;
     }
 }

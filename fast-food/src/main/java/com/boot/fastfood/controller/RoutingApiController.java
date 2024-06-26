@@ -52,6 +52,7 @@ public class RoutingApiController {
             dto.setPcCode(process.getPcCode());
             dto.setPcName(process.getPcName());
             dto.setPcCnt(process.getPcCnt());
+            dto.setFcName(process.getFacilities().getFcName());
             listDTO.addProcess(dto);
         }
 
