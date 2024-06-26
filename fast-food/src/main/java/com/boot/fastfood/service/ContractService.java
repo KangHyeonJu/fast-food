@@ -319,7 +319,8 @@ public class ContractService {
                 currentWorks.setWkInput(input);
 
                 // eDate
-                currentWorks.setEDate(sDate.plusHours(2));
+                eDate = sDate.plusHours(2);
+                currentWorks.setEDate(eDate);
                 sDate = eDate;
 
                 // wkOutput
@@ -344,12 +345,14 @@ public class ContractService {
                 if (itType.contains("즙")) {
                     currentWorks.setWkCode("A6" + date);
                     time = (int) Math.ceil(input * 0.048);
-                    currentWorks.setEDate(sDate.plusMinutes(time));
+                    eDate = sDate.plusMinutes(time);
+                    currentWorks.setEDate(eDate);
                     sDate = eDate;
                 } else {
                     currentWorks.setWkCode("B4" + date);
                     time = (int) Math.ceil(input * 0.03);
-                    currentWorks.setEDate(sDate.plusMinutes(time));
+                    eDate = sDate.plusMinutes(time);
+                    currentWorks.setEDate(eDate);
                     sDate = eDate;
                 }
 
@@ -388,7 +391,8 @@ public class ContractService {
 
                 // eDate
                 int time = (int)Math.ceil(input * 0.012);
-                currentWorks.setEDate(sDate.plusMinutes(time));
+                eDate = sDate.plusMinutes(time);
+                currentWorks.setEDate(eDate);
                 sDate = eDate;
 
                 // wkOutput
@@ -402,6 +406,7 @@ public class ContractService {
 
                 // wkInput
                 int pa = input - production.getPmAmount();
+                item.setItStock(pa);
                 currentWorks.setWkInput(production.getPmAmount());
 
                 // def
@@ -412,7 +417,8 @@ public class ContractService {
 
                 // eDate
                 int time = (int)Math.ceil(((double) production.getPmAmount() / 30) * 0.375);
-                currentWorks.setEDate(sDate.plusMinutes(time));
+                eDate = sDate.plusMinutes(time);
+                currentWorks.setEDate(eDate);
                 sDate = eDate;
 
                 // wkCode
