@@ -1,14 +1,23 @@
 package com.boot.fastfood.controller;
 
 import com.boot.fastfood.dto.ProductionDto;
+import com.boot.fastfood.entity.Production;
 import com.boot.fastfood.entity.Works;
+import com.boot.fastfood.repository.ProductionRepository;
+import com.boot.fastfood.repository.WorksRepository;
 import com.boot.fastfood.service.ProductionService;
 import com.boot.fastfood.service.WorksService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -18,6 +27,8 @@ import java.util.List;
 public class ProductController {
     private final ProductionService productionService;
     private final WorksService worksService;
+    private final WorksRepository worksRepository;
+    private final ProductionRepository productionRepository;
 
     @GetMapping("/productPlan")
     public String productPlan(Model model){
@@ -26,6 +37,22 @@ public class ProductController {
         model.addAttribute("works", works);
         model.addAttribute("productions", productions);
         return "ProductPages/productionPlan";
+    }
+
+    @GetMapping("/productPlan/{pmCode}")
+    @ResponseBody
+    public ResponseEntity<?> wkList(@PathVariable String pmCode){
+        Production production = productionRepository.findByPmCode(pmCode);
+        List<Works> worksList = worksRepository.findByProduction(production);
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String jsonResponse = mapper.writeValueAsString(worksList);
+            return ResponseEntity.status(HttpStatus.OK).body(jsonResponse);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing JSON response");
+        }
     }
 
     @GetMapping("/wash")
