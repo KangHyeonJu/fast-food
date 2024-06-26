@@ -13,11 +13,11 @@
 <th:block layout:fragment="script">
     <script>
 
-        // var message = [[${message}]]
-        //
-        // if (message) {
-        //     alert(message);
-        // }
+        var message = /*[[${message}]]*/ "" || "";
+
+        if (message) {
+            alert(message);
+        }
 
 
         function orders(){
@@ -31,13 +31,15 @@
                     headers: {
                         "Content-Type": 'application/json',
                     },
-                }).then(response => {
-                    if(response.ok){
-                        alert('발주등록되었습니다.');
-                        window.location.href = '/order_plan';
-                    }else {
-                        alert('발주등록에 실패했습니다.');
-                    }
+                }).then(response => response.json())
+                    .then(data  => {
+                        if(data.message === '발주등록되었습니다.'){
+                            alert(data.message);
+                            window.location.href = '/order_plan';
+                        }else if (data.message === '오늘 발주내역이 있습니다.') {
+                            alert(data.message);
+                            window.location.href = '/order_plan';
+                        }
                 }).catch(error => {
                     console.error('error: ', error);
                     alert('발주등록 중 오류가 발생했습니다.');
@@ -63,12 +65,14 @@
                         "Content-Type": 'application/json',
                     },
                     body: JSON.stringify(param),
-                }).then(response => {
-                    if(response.ok){
-                        alert('발주등록되었습니다.');
+                }).then(response => response.json())
+                    .then(data  => {
+                    if(data.message === '발주등록되었습니다.'){
+                        alert(data.message);
                         window.location.href = '/order_plan';
-                    }else {
-                        alert('발주등록에 실패했습니다.');
+                    }else if (data.message === '오늘 발주내역이 있습니다.') {
+                        alert(data.message);
+                        window.location.href = '/order_plan';
                     }
                 }).catch(error => {
                     console.error('error: ', error);

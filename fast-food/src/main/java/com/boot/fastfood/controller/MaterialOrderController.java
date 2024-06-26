@@ -84,40 +84,42 @@ public class MaterialOrderController {
 
     //박스 발주
     @PostMapping("/order_plan/box")
-    public String orderBox(@RequestBody Map<String, Object> paramMap, RedirectAttributes redirectAttributes){
+    @ResponseBody
+    public Map<String, String> orderBox(@RequestBody Map<String, Object> paramMap){
         String emName = (String)paramMap.get("emName");
         String boxNum = (String)paramMap.get("boxNum");
 
         Materials box = materialRepository.findByMtName("Box");
         Orders orders = ordersRepository.findByOdDateAndMaterials(LocalDate.now(), box);
 
-        if (orders != null){
+        Map<String, String> response = new HashMap<>();
+        if (orders == null){
             materialService.orderBox(emName, Integer.parseInt(boxNum));
-            redirectAttributes.addFlashAttribute("message", "발주등록되었습니다.");
+            response.put("message", "발주등록되었습니다.");
         }else {
-            redirectAttributes.addFlashAttribute("message", "오늘 발주내역이 있습니다.");
+            response.put("message", "오늘 발주내역이 있습니다.");
         }
-        return "redirect:/order_plan";
+        return response;
     }
 
     //포장지 발주
     @PostMapping("/order_plan/wrap")
-    public String orderWrap(@RequestBody Map<String, Object> paramMap, RedirectAttributes redirectAttributes){
+    @ResponseBody
+    public Map<String, String> orderWrap(@RequestBody Map<String, Object> paramMap){
         String emName = (String)paramMap.get("emName");
         String wrapNum = (String)paramMap.get("wrapNum");
 
         Materials wrap = materialRepository.findByMtName("포장지");
         Orders orders = ordersRepository.findByOdDateAndMaterials(LocalDate.now(), wrap);
 
-        if (orders != null){
+        Map<String, String> response = new HashMap<>();
+        if (orders == null){
             materialService.orderWrap(emName, Integer.parseInt(wrapNum));
-            redirectAttributes.addFlashAttribute("message", "발주등록되었습니다.");
+            response.put("message", "발주등록되었습니다.");
         }else {
-            redirectAttributes.addFlashAttribute("message", "오늘 발주내역이 있습니다.");
+            response.put("message", "오늘 발주내역이 있습니다.");
         }
-
-
-        return "redirect:/order_plan";
+        return response;
     }
 
 }
