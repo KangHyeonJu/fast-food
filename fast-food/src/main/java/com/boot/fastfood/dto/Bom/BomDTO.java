@@ -13,5 +13,5 @@ public class BomDTO {
 
     private String mtCode;
     private String mtName;
-    private int mtAmount;
+    private float mtAmount;
 }

@@ -54,6 +54,7 @@ public class MaterialsService {
 
         String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
         materials.setMtCode("MT" + nowTime);
+        materials.setMtStock(0);
 
         Vendor vendor = vendorService.findByVdCode(dto.getVdCode());
         materials.setVendor(vendor);

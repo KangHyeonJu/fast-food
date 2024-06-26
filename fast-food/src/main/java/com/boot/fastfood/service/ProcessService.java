@@ -30,7 +30,7 @@ public class ProcessService {
         String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
         process.setPcCode("PC" + nowTime);
 
-        Facility facility = facilityService.findByFcCode(dto.getFcCode());
+        Facility facility = facilityService.findByFcName(dto.getFcCode());
         process.setFacilities(facility);
 
         return processRepository.save(process);
@@ -49,7 +49,7 @@ public class ProcessService {
             dto.setPcName(pro.getPcName());
             dto.setPcCode(pro.getPcCode());
             dto.setPcCnt(pro.getPcCnt());
-            dto.setFcName(pro.getFacilities().getFcName());
+            dto.setFacility(pro.getFacilities());
             processListDTO.addProcess(dto);
         }
         return processListDTO;

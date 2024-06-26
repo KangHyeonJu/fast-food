@@ -56,15 +56,21 @@ public class MaterialOrderController {
 
     //발주 등록
     @PostMapping("/order_plan/add/{emName}")
-    public String orderAdd(@PathVariable String emName){
-        try {
-            List<Orders> orderToday = ordersRepository.findByOdDateAndOdState(LocalDate.now(), false);
+    @ResponseBody
+    public Map<String, String> orderAdd(@PathVariable String emName){
+        List<Orders> orderToday = ordersRepository.findByOdDateAndOdState(LocalDate.now(), false);
 
+        List<Orders> orders = ordersRepository.findByOdStateAndOdDate(true, LocalDate.now());
+
+        Map<String, String> response = new HashMap<>();
+
+        if (orders.isEmpty()){
             materialService.orderAdd(emName, orderToday);
-            return "redirect:/order_plan";
-        }catch (Exception e){
-            return "redirect:/order_plan";
+            response.put("message", "발주등록되었습니다.");
+        }else {
+            response.put("message", "오늘 발주내역이 있습니다.");
         }
+        return response;
     }
 
     //발주 내역 조회

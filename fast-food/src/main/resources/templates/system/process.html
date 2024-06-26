@@ -256,6 +256,9 @@
                         <div class="item">
                             <label class="item-title">최소 주문량</label><input class="form-control" id="mtMinId" th:type="number" >
                         </div>
+                        <div class="item">
+                            <label class="item-title">Lead Time</label><input class="form-control" id="mtLeadTime" th:type="number" >
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -282,6 +285,7 @@
             //itemList 클릭 이벤트 끝
 
             let selectCheck = [];
+
 
             <!--체크박스를 누른 순서로 배열 입력-->
             //bom 등록
@@ -333,7 +337,7 @@
                                 "<td>" + (index + 1) + "</td>" +
                                 "<td class='mtCodeList'>" + item.mtCode + "</td>" +
                                 "<td>" + item.mtName + "</td>" +
-                                "<td>" + "<input type='number' id='mtAmount' style='border:0; background-color: #fafafa' value='" + parseInt(item.mtAmount) + "'>" + "</td>" +
+                                "<td>" + "<input type='number' id='mtAmount' style='border:0; background-color: #fafafa' value='" + parseFloat(item.mtAmount) + "'>" + "</td>" +
                                 "</tr>";
                         });
                         $("#itemInfo").html(tableContent);
@@ -383,7 +387,8 @@
                     var mtMin = document.getElementById("mtMinId").value
                     var mtMax = document.getElementById("mtMaxId").value
                     var vdCode = document.getElementById("mtVendorId").value
-                    if(!mtName || !mtMax || !mtMin ||!vdCode) {
+                    var leadTime = document.getElementById("mtLeadTime").value
+                    if(!mtName || !mtMax || !mtMin ||!vdCode ||!leadTime) {
                         alert("모두 입력해주세요. ");
                         return;
                     }
@@ -396,7 +401,8 @@
                             mtName: mtName,
                             mtMin : mtMin,
                             mtMax : mtMax,
-                            vdCode : vdCode
+                            vdCode : vdCode,
+                            leadTime : leadTime
                         }),
                     }).then(() => {
                         alert("등록 완료되었습니다. ");
@@ -425,13 +431,15 @@
                 $("#itemInfo tr").each(function() {
                     var mtCode = $(this).find(".mtCodeList").text().trim();
                     var mtAmount = $(this).find("#mtAmount").val();
+
+                    console.log(mtAmount);
                     if (mtCode && mtAmount) {
                         fetch("/bom/" + itCode + "/" + mtCode, {
                             method: "PUT",
                             headers: {
                                 "Content-Type": "application/json",
                             },
-                            body: JSON.stringify({ mtAmount: parseInt(mtAmount) })
+                            body: JSON.stringify({ mtAmount: parseFloat(mtAmount) })
                         })
                             .then(response => {
                                 if (!response.ok) {

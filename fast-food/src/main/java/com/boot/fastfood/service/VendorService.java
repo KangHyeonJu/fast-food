@@ -19,7 +19,7 @@ public class VendorService {
         return vendorRepository.findAll();
     }
 
-    public Optional<Vendor> findByVdCode(String vdCode) {
+    public Optional<Vendor> findByVdCodeOptional(String vdCode) {
 
         return Optional.ofNullable(vendorRepository.findByVdCode(vdCode));
 

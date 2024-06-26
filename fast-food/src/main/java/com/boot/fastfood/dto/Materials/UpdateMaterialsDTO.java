@@ -12,5 +12,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdateMaterialsDTO {
 
-    private int mtAmount;
+    private float mtAmount;
 }

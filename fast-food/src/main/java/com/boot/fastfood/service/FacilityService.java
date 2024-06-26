@@ -46,7 +46,7 @@ public class FacilityService {
         return facility;
     }
     public Facility findByFcCode(String fcCode) {
-        Facility facility = facilityRepository.findById(fcCode)
+        Facility facility = facilityRepository.findById(Long.valueOf(fcCode))
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + fcCode));
 
         return facility;

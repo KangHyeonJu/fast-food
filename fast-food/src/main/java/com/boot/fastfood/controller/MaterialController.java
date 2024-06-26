@@ -166,7 +166,7 @@ public class MaterialController {
 
             warehousing.setEmployee(employee);
 
-            Optional<Vendor> VendorOptional = vendorService.findByVdCode(vdCode);
+            Optional<Vendor> VendorOptional = vendorService.findByVdCodeOptional(vdCode);
 
             if (VendorOptional.isPresent()) {
                 warehousing.setVendor(VendorOptional.get());

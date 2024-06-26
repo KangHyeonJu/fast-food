@@ -46,6 +46,7 @@ public class BomApiController {
     @PutMapping("/bom/{itCode}/{mtCode}")
     public ResponseEntity<?> bomInputAdd(@PathVariable String itCode, @PathVariable String mtCode,
                                          @RequestBody UpdateMaterialsDTO mtAmount) {
+        System.out.println(mtAmount.getMtAmount() + ":mtAmount");
         BOM bom = bomService.saveById(itCode, mtCode, mtAmount);
 
         return ResponseEntity.status(HttpStatus.CREATED)

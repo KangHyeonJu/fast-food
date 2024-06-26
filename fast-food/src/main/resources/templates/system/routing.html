@@ -241,7 +241,7 @@
 
                             <select class="form-control" id="facility">
                                 <option value="">설비없음</option>
-                                <th:block th:each="facility : ${facilities}">
+                                <th:block th:each="facility : ${facilityList}">
                                     <option th:value="${facility.fcName}" th:text="${facility.fcName}"></option>
                                 </th:block>
                             </select>
@@ -327,7 +327,7 @@
                                 "<td>" + item.pcCode + "</td>" +
                                 "<td>" + item.pcName + "</td>" +
                                 "<td>" + item.pcCnt + "</td>" +
-                                "<td>" + item.fcName + "</td>" +
+                                "<td>" + item.facility.fcName + "</td>" +
                                 "</tr>";
 
                         });
@@ -357,7 +357,7 @@
                     var itType = document.getElementById("itType").value;
                     var itEa = document.getElementById("itEa").value;
 
-                    if(!itName || !itCnt || !itType) {
+                    if(!itName || !itEa || !itType) {
                         alert("모두 입력해주세요. ");
                         return;
                     }

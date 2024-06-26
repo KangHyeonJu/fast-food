@@ -18,12 +18,14 @@ public class AddMaterialsDTO {
     private int mtMin;
     private int mtMax;
     private String vdCode;
+    private int leadTime;
 
     public Materials toEntity() {
         return Materials.builder()
                 .mtName(mtName)
                 .mtMax(mtMax)
                 .mtMin(mtMin)
+                .leadTime(leadTime)
                 .build();
     }
 }

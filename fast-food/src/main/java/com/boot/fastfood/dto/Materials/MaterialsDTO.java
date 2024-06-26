@@ -14,7 +14,7 @@ public class MaterialsDTO {
 
     private String mtCode;
     private String mtName;
-    private int mtAmount;
+    private float mtAmount;
     private String vdCode;
     private String vdName;
 
