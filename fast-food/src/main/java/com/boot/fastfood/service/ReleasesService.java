@@ -31,6 +31,7 @@ public class ReleasesService {
         Works work = worksRepository.findByWkCode(wkCode);
         Optional<Employee> employeeOptional = employeeRepository.findByEmCode(emCode);
 
+
         if (work != null && employeeOptional.isPresent()) {
             Employee employee = employeeOptional.get();
             Production production = productionRepository.findByPmCode(work.getProduction().getPmCode());
@@ -43,6 +44,12 @@ public class ReleasesService {
 
             for (BOM bom : boms) {
                 String rsCode = rsCodeBase + bom.getMaterials().getMtCode();
+
+                Releases existingRelease = releasesRepository.findByWorksAndMaterials(work, bom.getMaterials());
+                if (existingRelease != null) {
+                    throw new IllegalArgumentException("이미 존재하는 작업 코드입니다.");
+                }
+
 
                 Releases release = new Releases();
                 release.setWorks(work);
@@ -57,6 +64,11 @@ public class ReleasesService {
 
                 Materials materials = bom.getMaterials();
                 int newStock = materials.getMtStock() - release.getRsAmount();
+
+                System.out.println("11111111111"+materials.getMtStock());
+                System.out.println("22222222222"+release.getRsAmount());
+                System.out.println("33333333333"+newStock);
+
                 if (newStock < 0) {
                     throw new IllegalArgumentException("재고가 부족합니다");
                 }
@@ -78,15 +90,17 @@ public class ReleasesService {
         switch (mtName) {
             case "양배추":
             case "흑마늘":
-            case "석류농축액":
-            case "매실농축액":
                 releaseAmount = (((pmAmount * itEa) * 1.04) * 0.01 * 10 * 1.4);
                 break;
+            case "석류농축액":
+            case "매실농축액":
+                releaseAmount = (((pmAmount * itEa) * 1.04)*0.05);
+                break;
             case "벌꿀":
-                releaseAmount = (((pmAmount * itEa)  * 1.04) * 0.01 * 10 * 1.4 * 0.05);
+                releaseAmount = (((pmAmount * itEa)  * 1.04) * 0.005);
                 break;
             case "콜라겐":
-                releaseAmount = ((pmAmount * itEa) * 1.04) * 0.01 * 10 * 1.4 * 0.002;
+                releaseAmount = (((pmAmount * itEa) * 1.04) * 0.002);
                 break;
             case "포장지":
                 releaseAmount = pmAmount * 1.04 * itEa;

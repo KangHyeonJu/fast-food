@@ -9,12 +9,15 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -313,17 +316,15 @@ public class MaterialController {
     }
 
     @PostMapping("/release/save")
-    public String saveRelease(
-            @RequestParam("wkCode") String wkCode,
-            @RequestParam("emCode") String emCode,
-            Model model) {
+    @ResponseBody
+    public ResponseEntity<String> saveRelease(@RequestParam("wkCode") String wkCode, @RequestParam("emCode") String emCode) {
         try {
             releasesService.saveRelease(wkCode, emCode);
-            model.addAttribute("successMessage", "자재 출고가 성공적으로 등록되었습니다.");
+            return ResponseEntity.ok("자재 출고가 성공적으로 등록되었습니다.");
         } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage());
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return "redirect:/release";
     }
 
     @GetMapping("/searchRelease")
