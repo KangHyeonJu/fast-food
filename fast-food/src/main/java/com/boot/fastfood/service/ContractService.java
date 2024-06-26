@@ -149,8 +149,11 @@ public class ContractService {
         LocalDate deliveryDate = contract.getDeliveryDate();
         LocalDate productionEndDate = deliveryDate.minusDays(1);
 
+
+
         // 생산 시작일 계산
         LocalDate productionStartDate = null;
+
         if (itType.equals("즙")){
             if (production.getPmAmount() <= 10000){
                 productionStartDate = productionEndDate.minusDays(3);

@@ -120,22 +120,24 @@
                                     <tr class="itemList" th:each="item : ${items}">
                                         <td><input type="checkbox" id="itemCheck" th:value="${item.itCode}"></td>
                                         <td th:text="${item.itCode}" id="showPanel" th:value="${item.itCode}"></td>
-                                        <td class="center" th:text="${item.itName}" ></td>
+                                        <td class="center" th:text="${item.itName}" id="showPanel2" th:value="${item.itName}"></td>
                                         <td class="center" th:text="${item.itType}"></td>
-                                        <td class="center" th:text="${item.itCnt}"></td>
+                                        <td class="center" th:text="${item.itEa}"></td>
                                     </tr>
                                     </tbody>
 
                             </table>
-                            <hr style="height: 0.1px; border: none; border-top: dotted #cecece;"></hr>
+                            <hr style="height: 0.1px; border: none; border-top: dotted #cecece; margin: 50px 0;">
 
                             <div class="col-lg-12">
                                 <div class="button-container">
-                                    <div  class="button-group">
+                                    <div class="button-group">
+
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#materials">자재 등록</button>
                                     </div>
                                 </div>
                             </div>
+                            <h4>원자재 목록</h4>
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
@@ -157,11 +159,14 @@
                                 </tbody>
 
                             </table>
+
+                            <hr style="height: 0.1px; border: none; border-top: dotted #cecece; margin: 50px 0;">
+
                             <div class="col-lg-12">
                                 <div class="panel panel-default" id="panelshow" style="display: none">
                                     <div class="panel-body">
                                         <!-- /.table-responsive -->
-
+                                        <h4 id="itCodeDisplay"></h4>
                                         <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                             <thead>
                                             <tr>
@@ -279,8 +284,10 @@
             // 품목을 클릭했을 때 bom 목록 출력됨
             $(".itemList").on("click", function() {
                 var itCode = $(this).find("#showPanel").text().trim();
+                var itName = $(this).find("#showPanel2").text().trim();
                 $("#hiddenItCode").val(itCode);
                 getBOM(itCode);
+                $("#itCodeDisplay").text(itName + ' BOM 내역');
             });
             //itemList 클릭 이벤트 끝
 
