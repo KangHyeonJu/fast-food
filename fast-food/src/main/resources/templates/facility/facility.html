@@ -74,6 +74,19 @@
             $('#checkall').click(function () {
                 $('input:checkbox').not(this).prop('checked', this.checked);
             });
+            $(function () {
+                $('#facilitySubmitBtn').click(function () {
+                    var fcName = $("#fcName").val();
+                    var fcCapa = $("#fcCapa").val();
+                    var fcPreTime = $("#fcPreTime").val();
+                    var fcDate = $("#fcDate").val();
+
+                    if (!fcName || !fcCapa || !fcPreTime || !fcDate) {
+                        alert('모든 칸을 입력해야 합니다.');
+                        return false;
+                    }
+                });
+            });
         });
     </script>
 </th:block>
@@ -128,11 +141,11 @@
                                 </div>
                                 <div class="form-group input-group">
                                     <label>설비입고일</label>
-                                    <input type="text" class="form-control" th:field="*{fcDate}">
+                                    <input type="date" class="form-control" th:field="*{fcDate}">
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">등록</button>
+                                <button type="submit" class="btn btn-primary" id="facilitySubmitBtn">등록</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                             </div>
                         </div>
