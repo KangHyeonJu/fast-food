@@ -84,7 +84,7 @@
                                             </th:block>
                                         </select>
                                     </td>
-                                    <td th:if="${work.RSDate != null}" th:text="${work.employee.emName}"></td>
+                                    <td th:if="${work.RSDate} != null" th:text="${work.employee.emName}"></td>
                                     <td th:if="${work.RSDate} == null"><button class="btn btn-success" id="wkStartBtn" th:wkCode="${work.wkCode}"  th:onclick="wkStartBtn(this.getAttribute('wkCode'))">작업 시작</button></td>
                                     <td th:if="${work.RSDate} != null" th:text="${work.RSDate}" id="RSDate"></td>
                                     <td th:if="${work.REDate} == null"><button class="btn btn-danger" id="wkEndBtn" th:wkCode="${work.wkCode}"  th:onclick="wkEndBtn(this.getAttribute('wkCode'))">작업 종료</button></td>
