@@ -179,7 +179,10 @@ public class ContractService {
         // 생산량 등 다른 필요한 정보 설정
         productionRepository.save(production);
 
+        //자재 발주
         mtOrderPlan(contract, production, i);
+
+
         //작업 계획 생성
         Works works = new Works();
         registerProductionsWorks(production, works, i);

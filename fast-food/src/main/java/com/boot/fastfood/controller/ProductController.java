@@ -7,8 +7,6 @@ import com.boot.fastfood.repository.ProductionRepository;
 import com.boot.fastfood.repository.WorksRepository;
 import com.boot.fastfood.service.ProductionService;
 import com.boot.fastfood.service.WorksService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,14 +43,8 @@ public class ProductController {
         Production production = productionRepository.findByPmCode(pmCode);
         List<Works> worksList = worksRepository.findByProduction(production);
 
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String jsonResponse = mapper.writeValueAsString(worksList);
-            return ResponseEntity.status(HttpStatus.OK).body(jsonResponse);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing JSON response");
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(worksList);
     }
 
     @GetMapping("/wash")

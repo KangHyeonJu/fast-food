@@ -157,13 +157,14 @@
                 method: "GET",
                 success: function (data) {
                     console.log("data: " + data);
+                    var worksArray = Array.isArray(data) ? data : [data];
                     var tableContent = "";
-                    data.forEach((work) => {
+                    worksArray.forEach((work) => {
                         console.log("work: " + work);
                         tableContent += "<tr>" +
-                            "<td>" + work.production.pmCode + "</td>" +
-                            "<td>" + work.sDate + "</td>" +
-                            "<td>" + work.eDate + "</td>" +
+                            "<td>" + (work.production ? work.production.pmCode : "") + "</td>" +
+                            "<td>" + (work.sDate || "") + "</td>" +
+                            "<td>" + (work.eDate || "") + "</td>" +
                             "</tr>";
 
                     });
