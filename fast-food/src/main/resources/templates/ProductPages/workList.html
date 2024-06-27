@@ -87,7 +87,7 @@
                                     <td th:text="${work.SDate}"></td>
                                     <td th:text="${work.EDate}"></td>
                                     <td>
-                                        <select name="emName">
+                                        <select name="emName" th:id="${work.wkCode}">
                                             <option th:each="employees : ${employees}" th:value="${employees.emName}" th:text="${employees.emName}"></option>
                                         </select>
                                     </td>
@@ -118,10 +118,13 @@
     <script>
         function wkStartBtn(wkCode){
             var url = "/works/addRSDate"
+            var selectedEmployee = $(`select[id=` + wkCode + `] option:selected`).val();
+
+            console.log(selectedEmployee);
             $.ajax({
                 url: url,
                 type: "POST",
-                data: JSON.stringify({ wkCode: wkCode }),
+                data: JSON.stringify({ wkCode: wkCode, emName: selectedEmployee }),
                 contentType: "application/json; charset=UTF-8",
                 cache: false,
                 success: function (){
@@ -134,10 +137,11 @@
 
         function wkEndBtn(wkCode){
             var url = "/works/addREDate"
+            var selectedEmployee = $(`select[id=` + wkCode + `] option:selected`).val();
             $.ajax({
                 url: url,
                 type: "POST",
-                data: JSON.stringify({ wkCode: wkCode }),
+                data: JSON.stringify({ wkCode: wkCode, emName: selectedEmployee }),
                 contentType: "application/json; charset=UTF-8",
                 cache: false,
                 success: function (){
