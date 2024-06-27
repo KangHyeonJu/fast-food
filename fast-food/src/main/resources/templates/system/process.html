@@ -168,6 +168,8 @@
                                                 <th width="3%">번호</th>
                                                 <th width="15%">자재코드</th>
                                                 <th width="15%">자재명</th>
+                                                <th width="20%">업체코드</th>
+                                                <th width="20%">업체명</th>
                                                 <th width="15%">자재 투입량 (kg, L)</th>
                                             </tr>
                                             </thead>
@@ -333,6 +335,8 @@
                                 "<td>" + (index + 1) + "</td>" +
                                 "<td class='mtCodeList'>" + item.mtCode + "</td>" +
                                 "<td>" + item.mtName + "</td>" +
+                                "<td>" + item.vdCode + "</td>" +
+                                "<td>" + item.vdName + "</td>" +
                                 "<td>" + "<input type='number' id='mtAmount' style='border:0; background-color: #fafafa' value='" + parseInt(item.mtAmount) + "'>" + "</td>" +
                                 "</tr>";
                         });

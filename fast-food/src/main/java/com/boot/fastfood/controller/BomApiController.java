@@ -65,6 +65,8 @@ public class BomApiController {
             dto.setMtCode(materials.getMtCode());
             dto.setMtName(materials.getMtName());
             dto.setMtAmount(bom.getMtAmount());
+            dto.setVdCode(materials.getVendor().getVdCode());
+            dto.setVdName(materials.getVendor().getVdName());
             listDTO.addProcess(dto);
         }
         //bom에서 투입량, 코드 조회

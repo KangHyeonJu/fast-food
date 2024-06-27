@@ -234,7 +234,7 @@
                             <label class="item-title">공정명</label><input class="form-control" id="pcName" >
                         </div>
                         <div class="item">
-                            <label class="item-title">공정내용</label><input class="form-control" id="pcCnt">
+                            <label class="item-title">공정내용</label><input class="form-control" type="" id="pcCnt">
                         </div>
                         <div class="item">
                             <label class="item-title">설비</label>
@@ -329,7 +329,7 @@
                         });
                         $("#itemInfo").html(tableContent);
                         $("#panelshow").show();
-                        /*
+
                         $("#processList .checkbox").each(function() {
                             var pc = $(this).val();
                             if(pcCodes.includes(pc)) {
@@ -337,7 +337,6 @@
                             }
                         })
 
-                         */
                     },
                     error: function () {
                         alert("품목 정보를 불러오는 데 실패했습니다.");
