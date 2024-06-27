@@ -243,6 +243,10 @@ public class ContractService {
         // 공정코드 준비
         String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + i;
 
+        //실생산 시간 저장
+        works.setRSDate(null);
+        works.setREDate(null);
+
         int input = 0;
         int output = 0;
 

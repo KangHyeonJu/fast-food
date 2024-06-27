@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -21,8 +23,19 @@ public class WorksService {
 
     public List<Works> findByProductionPmCode(String pmCode) {
 
-        System.out.println("22222222222222" + pmCode);
-
         return worksRepository.findByProductionPmCode(pmCode);
     }
+    
+    public void saveRSDate(Works works){
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        works.setRSDate(time);
+        worksRepository.save(works);
+    }
+
+    public void saveREDate(Works works){
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        works.setREDate(time);
+        worksRepository.save(works);
+    }
+
 }

@@ -39,6 +39,7 @@ public class ProductController {
     private final WorksService worksService;
     private final WorksRepository worksRepository;
     private final ProductionRepository productionRepository;
+    private final ItemsRepository itemsRepository;
 
     @GetMapping("/productPlan")
     public String productPlan(Model model){
@@ -128,7 +129,11 @@ public class ProductController {
     }
 
     @GetMapping("/endProcess")
-    public String endProcess(){
+    public String endProcess(Model model){
+        List<ProductionDto> productions = productionService.getAllProductions();
+        List<Items> items = itemsRepository.findAll();
+        model.addAttribute("productions", productions);
+        model.addAttribute("items", items);
         return "ProductPages/endProcess";
     }
 

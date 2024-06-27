@@ -8,12 +8,14 @@ import com.boot.fastfood.service.WorksService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @AllArgsConstructor
@@ -39,4 +41,21 @@ public class WorksController {
         model.addAttribute("today", today);
         return "ProductPages/workList";
     }
+
+    @PostMapping("/addRSDate")
+    @ResponseBody
+    public void saveRSDate(@RequestBody Map<String, Object> data){
+        String wkCode = (String) data.get("wkCode");
+        Works works = worksRepository.findByWkCode(wkCode);
+        worksService.saveRSDate(works);
+    }
+
+    @PostMapping("/addREDate")
+    @ResponseBody
+    public void saveREDate(@RequestBody Map<String, Object> data){
+        String wkCode = (String) data.get("wkCode");
+        Works works = worksRepository.findByWkCode(wkCode);
+        worksService.saveREDate(works);
+    }
+
 }
