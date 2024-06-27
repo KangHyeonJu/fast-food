@@ -220,13 +220,13 @@
                                         <td th:text="${facilitys.fcPreTime}"></td>
                                         <td th:text="${facilitys.cycleHour}"></td>
                                         <td th:text="${facilitys.fcDate}"></td>
-                                        <td th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).WORK}">
+                                        <td th:if="${facilitys.fcStatus == 'WORK'}">
                                             <div id="circle_green"></div>
                                         </td>
-                                        <td th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).STANDBY}">
+                                        <td th:if="${facilitys.fcStatus == 'STANDBY'}">
                                             <div id="circle_yellow"></div>
                                         </td>
-                                        <td th:if="${facilitys.fcStatus == T(com.boot.fastfood.constant.FcStatus).STOP}">
+                                        <td th:if="${facilitys.fcStatus == 'STOP'}">
                                             <div id="circle_red"></div>
                                         </td>
                                     </tr>

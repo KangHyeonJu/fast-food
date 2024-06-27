@@ -597,7 +597,12 @@ public class ContractService {
                 sumAmount += findOrder.getOdAmount();
             }
 
-            if(sumAmount + odAmount > maxOrder){
+            if (sumAmount + odAmount < minOrder){
+                orders.setOdAmount(minOrder);
+
+                ordersRepository.save(orders);
+            }
+            else if(sumAmount + odAmount > maxOrder){
                 int excessAmount = sumAmount + odAmount - maxOrder;
                 orders.setOdAmount(odAmount - excessAmount);
 
@@ -608,7 +613,12 @@ public class ContractService {
                 ordersRepository.save(orders);
             }
         }else {
-            if(odAmount > maxOrder){
+            if (odAmount < minOrder){
+                orders.setOdAmount(minOrder);
+
+                ordersRepository.save(orders);
+            }
+            else if(odAmount > maxOrder){
                 int excessAmount = odAmount - maxOrder;
                 orders.setOdAmount(odAmount - excessAmount);
 

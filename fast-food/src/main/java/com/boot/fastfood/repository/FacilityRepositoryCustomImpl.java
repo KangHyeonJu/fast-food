@@ -1,6 +1,5 @@
 package com.boot.fastfood.repository;
 
-import com.boot.fastfood.constant.FcStatus;
 import com.boot.fastfood.dto.FacilitySearchDto;
 import com.boot.fastfood.entity.Facility;
 import com.boot.fastfood.entity.QFacility;
@@ -16,8 +15,11 @@ public class FacilityRepositoryCustomImpl implements FacilityRepositoryCustom{
 
     private final QFacility facility = QFacility.facility;
 
-    private BooleanExpression searchStatus(FcStatus searchStatus){
-        return searchStatus == null ? null : facility.fcStatus.eq(searchStatus);
+    private BooleanExpression searchStatus(String searchStatus){
+        if (searchStatus == null){
+            return null;
+        }
+        return facility.fcStatus.like("%" + searchStatus + "%");
     }
 
     private BooleanExpression searchByFcCode(String fcCode){

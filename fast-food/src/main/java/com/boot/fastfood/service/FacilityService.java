@@ -1,6 +1,5 @@
 package com.boot.fastfood.service;
 
-import com.boot.fastfood.constant.FcStatus;
 import com.boot.fastfood.dto.FacilityDto;
 import com.boot.fastfood.dto.FacilitySearchDto;
 import com.boot.fastfood.entity.Facility;
@@ -32,7 +31,7 @@ public class FacilityService {
         String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
         facility.setFcCode("FC" + nowTime);
-        facility.setFcStatus(FcStatus.STOP);
+        facility.setFcStatus("STOP");
         facilityRepository.save(facility);
     }
 

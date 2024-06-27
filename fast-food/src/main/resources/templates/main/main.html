@@ -78,13 +78,13 @@
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td th:if="${facility.fcStatus == T(com.boot.fastfood.constant.FcStatus).WORK}">
+                                            <td th:if="${facility.fcStatus == 'WORK'}">
                                                 <div id="circle_green" style="margin: auto">가동중</div>
                                             </td>
-                                            <td th:if="${facility.fcStatus == T(com.boot.fastfood.constant.FcStatus).STANDBY}">
+                                            <td th:if="${facility.fcStatus == 'STANDBY'}">
                                                 <div id="circle_yellow" style="margin: auto">대기중</div>
                                             </td>
-                                            <td th:if="${facility.fcStatus == T(com.boot.fastfood.constant.FcStatus).STOP}">
+                                            <td th:if="${facility.fcStatus == 'STOP'}">
                                                 <div id="circle_red" style="margin: auto">비가동</div>
                                             </td>
                                         </tr>

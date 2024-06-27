@@ -84,8 +84,8 @@
                                     <td th:text="${work.wkCode}"></td>
                                     <td th:text="${work.wkInput}"></td>
                                     <td th:text="${work.wkOutput}"></td>
-                                    <td th:text="${work.SDate}"></td>
-                                    <td th:text="${work.EDate}"></td>
+                                    <td class="date-format" th:text="${work.SDate}"></td>
+                                    <td class="date-format" th:text="${work.EDate}"></td>
                                     <td>
                                         <select name="emName" th:id="${work.wkCode}">
                                             <option value="null">선택</option>
@@ -119,6 +119,25 @@
 
 <th:block layout:fragment="script">
     <script>
+        function formatDateTime(dateTimeStr) {
+            const date = new Date(dateTimeStr);
+            const year = date.getFullYear();
+            const month = ('0' + (date.getMonth() + 1)).slice(-2);
+            const day = ('0' + date.getDate()).slice(-2);
+            const hours = ('0' + date.getHours()).slice(-2);
+            const minutes = ('0' + date.getMinutes()).slice(-2);
+
+            return `${year}-${month}-${day} ${hours}:${minutes}`;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const dateElements = document.querySelectorAll('.date-format');
+            dateElements.forEach(element => {
+                const formattedDate = formatDateTime(element.textContent);
+                element.textContent = formattedDate;
+            });
+        });
+
         function wkStartBtn(wkCode){
             var emName = $("#" + wkCode).val();
             var url = "/works/addRSDate"

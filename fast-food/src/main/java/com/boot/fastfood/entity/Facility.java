@@ -1,6 +1,5 @@
 package com.boot.fastfood.entity;
 
-import com.boot.fastfood.constant.FcStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,8 +32,7 @@ public class Facility {
     @Column(name = "fcDate")
     private LocalDate fcDate;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "fcStatus")
-    private FcStatus fcStatus;
+    private String fcStatus;
 
 }

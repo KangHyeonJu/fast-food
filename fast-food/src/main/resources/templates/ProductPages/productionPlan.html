@@ -215,6 +215,17 @@
                 data: {pmCode: pmCode},
                 contentType : 'application/json',
                 success: function (response) {
+                    function formatDateTime(dateTimeStr) {
+                        const date = new Date(dateTimeStr);
+                        const year = date.getFullYear();
+                        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+                        const day = ('0' + date.getDate()).slice(-2);
+                        const hours = ('0' + date.getHours()).slice(-2);
+                        const minutes = ('0' + date.getMinutes()).slice(-2);
+
+                        return `${year}-${month}-${day} ${hours}:${minutes}`;
+                    }
+
                     var tableBody = document.getElementById("table3-body").getElementsByTagName('tbody')[0];
                     tableBody.innerHTML = ""; // 기존 데이터 지우기
 
@@ -223,11 +234,17 @@
                         console.log(index);
                         console.log(work);
                         var row = "<tr>" +
-                            "<td>" + index.production.pmCode + "</td>" +
-                            "<td>" + index.sdate + "</td>" +
-                            "<td>" + index.edate + "</td>" +
+                            "<td>" + index.wkCode + "</td>" +
+                            "<td class='date-format'>" + index.sdate + "</td>" +
+                            "<td class='date-format'>" + index.edate + "</td>" +
                             "</tr>";
                         tableBody.innerHTML += row;
+
+                        const dateElements = document.querySelectorAll('.date-format');
+                        dateElements.forEach(element => {
+                            const formattedDate = formatDateTime(element.textContent);
+                            element.textContent = formattedDate;
+                        });
                     });
                 },
                 error: function (request, status, error) {

@@ -142,7 +142,12 @@
                                     <td th:text="${process.pcCode}"></td>
                                     <td class="center" th:text="${process.pcName}"></td>
                                     <td class="center" th:text="${process.pcCnt}"></td>
-                                    <td class="center" th:text="${process.facility.fcName}"></td>
+                                    <th:block th:if="${process.facility} != null">
+                                        <td class="center" th:text="${process.facility.fcName}"></td>
+                                    </th:block>
+                                    <th:block th:if="${process.facility} == null">
+                                        <td></td>
+                                    </th:block>
                                 </tr>
                                 </tbody>
 
@@ -242,7 +247,7 @@
                             <label class="item-title">설비</label>
 
                             <select class="form-control" id="facility">
-                                <!-- <option value="">설비없음</option> -->
+                                <option value="">설비없음</option>
                                 <th:block th:each="facility : ${facilityList}">
                                     <option th:value="${facility.fcName}" th:text="${facility.fcName}"></option>
                                 </th:block>
@@ -352,9 +357,14 @@
                                 "<td>" + (index + 1) + "</td>" +
                                 "<td>" + item.pcCode + "</td>" +
                                 "<td>" + item.pcName + "</td>" +
-                                "<td>" + item.pcCnt + "</td>" +
-                                "<td>" + item.facility.fcName + "</td>" +
-                                "</tr>";
+                                "<td>" + item.pcCnt + "</td>";
+                            if(item.facility != null){
+                                tableContent += "<td>" + item.facility.fcName + "</td>";
+                            } else {
+                                tableContent += "<td></td>";
+                            }
+
+                            tableContent +=  "</tr>";
 
                         });
                         $("#itemInfo").html(tableContent);
@@ -412,7 +422,7 @@
                     var pcCnt= document.getElementById("pcCnt").value;
                     var fcCode= document.getElementById("facility").value
 
-                    if(!pcName || !pcCnt || !fcCode) {
+                    if(!pcName || !pcCnt) {
                         alert("모두 입력해주세요. ");
                         return;
                     }
@@ -436,9 +446,9 @@
             }
 
             $("#itemSearchBtn").on("click", function() {
-                    var itCode= $("#itCodeSearch").val();
-                    var itName= $("#itNameSearch").val();
-                    var itType= $("#itTypeSearch").val();
+                var itCode= $("#itCodeSearch").val();
+                var itName= $("#itNameSearch").val();
+                var itType= $("#itTypeSearch").val();
 
                 var queryParams = [
                     'itCode=' + itCode,

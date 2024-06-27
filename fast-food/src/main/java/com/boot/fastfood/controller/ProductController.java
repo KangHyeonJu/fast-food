@@ -55,19 +55,24 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<List<Works>> fetchWorksData(@RequestParam(name = "pmCode") String pmCode) {
 
-        System.out.println("11111111111111" + pmCode);
-
         List<Works> worksList = worksService.findByProductionPmCode(pmCode);
 
-//        List<Works> worksList = new ArrayList<>();
-//
-//        Works works = new Works();
-//        works.setDef(123);
-//        works.setEDate(LocalDateTime.now());
-//
-//        worksList.add(works);
-
         return ResponseEntity.ok(worksList);
+    }
+
+    @GetMapping("/endWork")
+    @ResponseBody
+    public ResponseEntity<List<Works>> endWork(@RequestParam(name = "pmCode") String pmCode) {
+        List<Works> worksList = worksService.findByProductionPmCode(pmCode);
+
+        List<Works> endWordList = new ArrayList<>();
+        for (Works works : worksList){
+            if(works.getREDate() != null){
+                endWordList.add(works);
+            }
+        }
+
+        return ResponseEntity.ok(endWordList);
     }
 
     @GetMapping("/productPlan/{pmCode}")

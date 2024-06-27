@@ -1,6 +1,5 @@
 package com.boot.fastfood.dto;
 
-import com.boot.fastfood.constant.FcStatus;
 import com.boot.fastfood.entity.Facility;
 import lombok.Getter;
 import lombok.Setter;
