@@ -108,9 +108,5 @@ public class ProductController {
         return "ProductPages/calender";
     }
 
-    @PostMapping("/productionPlan/{savePmCode}")
-    public void showDetail(){
-        worksService.
-    }
 
 }

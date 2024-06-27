@@ -60,4 +60,9 @@ public class OrdersService {
                 .collect(Collectors.toList());
     }
 
+    public List<Orders> getOrdersByStateAndDate(boolean state, LocalDate date) {
+        return ordersRepository.findByOdStateAndOdDate(state, date);
+    }
+
+
 }

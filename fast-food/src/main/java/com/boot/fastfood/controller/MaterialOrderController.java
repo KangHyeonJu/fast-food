@@ -60,7 +60,7 @@ public class MaterialOrderController {
     public Map<String, String> orderAdd(@PathVariable String emName){
         List<Orders> orderToday = ordersRepository.findByOdDateAndOdState(LocalDate.now(), false);
 
-        List<Orders> orders = ordersRepository.findByOdStateAndOdDate(true, LocalDate.now());
+        List<Orders> orders = ordersService.getOrdersByStateAndDate(true, LocalDate.now());
 
         Map<String, String> response = new HashMap<>();
 

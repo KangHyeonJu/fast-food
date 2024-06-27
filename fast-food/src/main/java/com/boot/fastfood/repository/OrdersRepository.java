@@ -4,6 +4,7 @@ import com.boot.fastfood.entity.Materials;
 import com.boot.fastfood.entity.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,8 +12,11 @@ import java.util.List;
 public interface OrdersRepository extends JpaRepository<Orders, String>, OrdersRepositoryCustom {
     List<Orders> findByOdDateAndOdState(LocalDate date, boolean state);
 
-    @Query("SELECT o FROM Orders o WHERE o.materials.mtName != 'Box' AND o.materials.mtName != '포장지' AND o.odState = true ")
-    List<Orders> findByOdStateAndOdDate(boolean state, LocalDate date);
+//    @Query("SELECT o FROM Orders o WHERE o.materials.mtName != 'Box' AND o.materials.mtName != '포장지' AND o.odState = true ")
+//    List<Orders> findByOdStateAndOdDate(boolean state, LocalDate date);
+
+    @Query("SELECT o FROM Orders o WHERE o.materials.mtName != 'Box' AND o.materials.mtName != '포장지' AND o.odState = :state AND o.odDate = :date")
+    List<Orders> findByOdStateAndOdDate(@Param("state") boolean state, @Param("date") LocalDate date);
 
     Orders findByOdDateAndMaterials(LocalDate date, Materials materials);
 

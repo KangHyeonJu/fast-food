@@ -33,6 +33,7 @@ public class ContractService {
     private final RoutingRepository routingRepository;
     private final WorksRepository worksRepository;
     private final ProcessRepository processRepository;
+    private final ShipmentRepository shipmentRepository;
 
     public void saveContract(ContractDto contractDto) {
         // 고객 정보 설정
@@ -152,6 +153,8 @@ public class ContractService {
         LocalDate deliveryDate = contract.getDeliveryDate();
         LocalDate productionEndDate = deliveryDate.minusDays(1);
 
+
+        createShipment(contract, productionEndDate);
 
 
         // 생산 시작일 계산
@@ -511,7 +514,6 @@ public class ContractService {
 
                 // defRate
                 currentWorks.setDefRate(0);
-
             }
 
                 worksRepository.save(currentWorks);
@@ -613,6 +615,19 @@ public class ContractService {
 
     public List<Contract> searchContracts(ContractSearchDto searchDto) {
         return contractRepository.searchContracts(searchDto);
+    }
+
+    public void createShipment(Contract contract, LocalDate productionEndDate){
+        System.out.println("출하 시작");
+        Shipment shipment = new Shipment();
+        String smCode = "SH" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+        shipment.setSmCode(smCode);
+        shipment.setContract(contract);
+        shipment.setSmDate(productionEndDate);
+        shipment.setSmStatues(false);
+
+        shipmentRepository.save(shipment);
     }
 
 }
