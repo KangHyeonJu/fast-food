@@ -88,14 +88,13 @@
                                     <td th:text="${work.EDate}"></td>
                                     <td>
                                         <select name="emName">
-                                            <option th:each="employees : ${employees}" th:value="${employees.emName}"
-                                                    th:text="${employees.emName}"></option>
+                                            <option th:each="employees : ${employees}" th:value="${employees.emName}" th:text="${employees.emName}"></option>
                                         </select>
                                     </td>
                                     <td th:if="${work.RSDate} == null"><button class="btn btn-success" id="wkStartBtn" th:wkCode="${work.wkCode}"  th:onclick="wkStartBtn(this.getAttribute('wkCode'))">작업 시작</button></td>
                                     <td th:if="${work.RSDate} != null" th:text="${work.RSDate}" id="RSDate"></td>
                                     <td th:if="${work.REDate} == null"><button class="btn btn-danger" id="wkEndBtn" th:wkCode="${work.wkCode}"  th:onclick="wkEndBtn(this.getAttribute('wkCode'))">작업 종료</button></td>
-                                    <td th:if="${work.REDate} != null" th:text="${work.RSDate}" id="REDate"></td>
+                                    <td th:if="${work.REDate} != null" th:text="${work.REDate}" id="REDate"></td>
                                 </tr>
                                 </tbody>
                             </table>

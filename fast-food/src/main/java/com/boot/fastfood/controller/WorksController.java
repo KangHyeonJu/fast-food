@@ -14,6 +14,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @AllArgsConstructor
@@ -42,17 +44,17 @@ public class WorksController {
 
     @PostMapping("/addRSDate")
     @ResponseBody
-    public void saveRSDate(@RequestBody String wkCode){
+    public void saveRSDate(@RequestBody Map<String, Object> data){
+        String wkCode = (String) data.get("wkCode");
         Works works = worksRepository.findByWkCode(wkCode);
-
-         worksService.saveRSDate(works);
+        worksService.saveRSDate(works);
     }
 
     @PostMapping("/addREDate")
     @ResponseBody
-    public void saveREDate(@RequestBody String wkCode){
+    public void saveREDate(@RequestBody Map<String, Object> data){
+        String wkCode = (String) data.get("wkCode");
         Works works = worksRepository.findByWkCode(wkCode);
-
         worksService.saveREDate(works);
     }
 

@@ -63,4 +63,5 @@ public class Works {
     //실 종료 시간
     @Column(name = "realEDate")
     private String rEDate;
+
 }
