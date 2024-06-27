@@ -40,8 +40,6 @@ public class QContract extends EntityPathBase<Contract> {
 
     public final QItems items;
 
-    public final ListPath<Production, QProduction> productions = this.<Production, QProduction>createList("productions", Production.class, QProduction.class, PathInits.DIRECT2);
-
     public QContract(String variable) {
         this(Contract.class, forVariable(variable), INITS);
     }

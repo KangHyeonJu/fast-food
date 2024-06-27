@@ -42,8 +42,8 @@ public class Contract {
     @JoinColumn(name = "emCode")
     private Employee employee;
 
-    @OneToMany(mappedBy = "contract")
-    private List<Production> productions;
+//    @OneToMany(mappedBy = "contract")
+//    private List<Production> productions;
 
     @Column(name = "ctStatus")
     private String ctStatus; // 수주 상태 필드새로 추가

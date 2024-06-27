@@ -8,4 +8,5 @@ import java.util.List;
 public interface WorksRepository extends JpaRepository<Works, String> {
     Works findByWkCode(String wkCode);
 
+    List<Works> findByProductionPmCode(String pmCode);
 }
