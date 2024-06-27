@@ -1,5 +1,6 @@
 package com.boot.fastfood.service;
 
+import com.boot.fastfood.entity.Employee;
 import com.boot.fastfood.entity.Works;
 import com.boot.fastfood.repository.WorksRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,10 @@ public class WorksService {
         return worksRepository.findByProductionPmCode(pmCode);
     }
     
-    public void saveRSDate(Works works){
+    public void saveRSDate(Works works, Employee employee){
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         works.setRSDate(time);
+        works.setEmployee(employee);
         worksRepository.save(works);
     }
 

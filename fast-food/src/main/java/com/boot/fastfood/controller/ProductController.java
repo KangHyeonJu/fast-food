@@ -1,8 +1,10 @@
 package com.boot.fastfood.controller;
 
 import com.boot.fastfood.dto.ProductionDto;
+import com.boot.fastfood.entity.Items;
 import com.boot.fastfood.entity.Production;
 import com.boot.fastfood.entity.Works;
+import com.boot.fastfood.repository.ItemsRepository;
 import com.boot.fastfood.repository.ProductionRepository;
 import com.boot.fastfood.repository.WorksRepository;
 import com.boot.fastfood.service.ProductionService;

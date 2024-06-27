@@ -2,6 +2,7 @@ package com.boot.fastfood.controller;
 
 import com.boot.fastfood.entity.Employee;
 import com.boot.fastfood.entity.Works;
+import com.boot.fastfood.repository.EmployeeRepository;
 import com.boot.fastfood.repository.WorksRepository;
 import com.boot.fastfood.service.EmployeeService;
 import com.boot.fastfood.service.WorksService;
@@ -24,6 +25,7 @@ public class WorksController {
     private final WorksService worksService;
     private final WorksRepository worksRepository;
     private final EmployeeService employeeService;
+    private final EmployeeRepository employeeRepository;
 
 
     @GetMapping("/workList")
@@ -46,8 +48,12 @@ public class WorksController {
     @ResponseBody
     public void saveRSDate(@RequestBody Map<String, Object> data){
         String wkCode = (String) data.get("wkCode");
+        String emName = (String) data.get("emName");
+
         Works works = worksRepository.findByWkCode(wkCode);
-        worksService.saveRSDate(works);
+        Employee employee = employeeRepository.findByEmName(emName);
+
+        worksService.saveRSDate(works, employee);
     }
 
     @PostMapping("/addREDate")
