@@ -5,7 +5,9 @@ import com.boot.fastfood.dto.Process.ProcessDTO;
 import com.boot.fastfood.dto.Process.ProcessListDTO;
 import com.boot.fastfood.entity.Facility;
 import com.boot.fastfood.entity.Items;
+import com.boot.fastfood.entity.Works;
 import com.boot.fastfood.repository.ProcessRepository;
+import com.boot.fastfood.repository.WorksRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class ProcessService {
 
     private final ProcessRepository processRepository;
     private final FacilityService facilityService;
+    private final WorksRepository worksRepository;
 
     public Process save(AddProcessDTO dto) {
 
@@ -85,4 +89,5 @@ public class ProcessService {
         return processRepository.findById(pcCode)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + pcCode));
     }
+
 }

@@ -18,4 +18,11 @@ public class WorksService {
         return worksRepository.findAll();
     }
 
+
+    public List<Works> findByProductionPmCode(String pmCode) {
+
+        System.out.println("22222222222222" + pmCode);
+
+        return worksRepository.findByProductionPmCode(pmCode);
+    }
 }

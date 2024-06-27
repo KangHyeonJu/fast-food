@@ -10,4 +10,6 @@ public interface WorksRepository extends JpaRepository<Works, String> {
     Works findByWkCode(String wkCode);
 
     List<Works> findByProduction(Production production);
+    
+    List<Works> findByProductionPmCode(String pmCode);
 }
