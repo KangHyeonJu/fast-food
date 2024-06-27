@@ -55,4 +55,12 @@ public class Works {
     //공정 코드
     @OneToMany(mappedBy = "pcCode")
     private List<Process> process;
+
+    //실 시작 시간
+    @Column(name = "realSDate")
+    private String rSDate;
+
+    //실 종료 시간
+    @Column(name = "realEDate")
+    private String rEDate;
 }

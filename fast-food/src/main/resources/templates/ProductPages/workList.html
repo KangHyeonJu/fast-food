@@ -92,8 +92,10 @@
                                                     th:text="${employees.emName}"></option>
                                         </select>
                                     </td>
-                                    <td><button class="btn btn-success" onclick="wkStartBtn()">작업 시작</button></td>
-                                    <td><button class="btn btn-danger" onclick="wkEndBtn()">작업 종료</button></td>
+                                    <td th:if="${work.RSDate} == null"><button class="btn btn-success" id="wkStartBtn" th:wkCode="${work.wkCode}"  th:onclick="wkStartBtn(this.getAttribute('wkCode'))">작업 시작</button></td>
+                                    <td th:if="${work.RSDate} != null" th:text="${work.RSDate}" id="RSDate"></td>
+                                    <td th:if="${work.REDate} == null"><button class="btn btn-danger" id="wkEndBtn" th:wkCode="${work.wkCode}"  th:onclick="wkEndBtn(this.getAttribute('wkCode'))">작업 종료</button></td>
+                                    <td th:if="${work.REDate} != null" th:text="${work.RSDate}" id="REDate"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -115,8 +117,36 @@
 
 <th:block layout:fragment="script">
     <script>
-        function wkStartBtn(){
+        function wkStartBtn(wkCode){
+            var url = "/works/addRSDate"
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: JSON.stringify({ wkCode: wkCode }),
+                contentType: "application/json; charset=UTF-8",
+                cache: false,
+                success: function (){
+                    window.location.reload();
+                }, error: function (error){
+                    alert("시작 실패" + error);
+                }
+            });
+        }
 
+        function wkEndBtn(wkCode){
+            var url = "/works/addREDate"
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: JSON.stringify({ wkCode: wkCode }),
+                contentType: "application/json; charset=UTF-8",
+                cache: false,
+                success: function (){
+                    window.location.reload();
+                }, error: function (error){
+                    alert("시작 실패" + error);
+                }
+            });
         }
     </script>
 </th:block>

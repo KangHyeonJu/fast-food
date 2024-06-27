@@ -28,35 +28,10 @@
                             </h4>
                         </li>
                         <li>
-                            <h4>생산품 코드 : <input name="#"> </h4>
-                        </li>
-                        <li>
                             <h4>생산품 :
-                                <select>
-                                    <option>양배추즙</option>
-                                    <option>흑마늘즙</option>
-                                    <option>석류젤리스틱</option>
-                                    <option>매실젤리스틱</option>
-                                </select>
-                            </h4>
-                        </li>
-                    </ul>
-                    <hr style="border-color: #1ab7ea; margin: 3px">
-                    <ul class="list-inline">
-                        <li>
-                            <h4>작업지시 코드 <input name="#"></h4>
-                        </li>
-                        <li>
-                            <h4>공정 :
-                                <select>
-                                    <option>세척</option>
-                                    <option>추출</option>
-                                    <option>여과</option>
-                                    <option>살균</option>
-                                    <option>충진</option>
-                                    <option>냉각</option>
-                                    <option>검사</option>
-                                    <option>포장</option>
+                                <select name="itName">
+                                    <option th:each="items : ${items}" th:value="${items.itName}"
+                                            th:text="${items.itName}"></option>
                                 </select>
                             </h4>
                         </li>
@@ -92,26 +67,22 @@
                                 <tr>
                                     <th><input type="checkbox"></th>
                                     <th>생산 계획 코드</th>
-                                    <th>생산 시작 예상</th>
-                                    <th>생산 종료 예상</th>
-                                    <th>생산 시작 시간</th>
-                                    <th>생산 종료 시간</th>
-                                    <th>생산품 코드</th>
+                                    <th>수주 코드</th>
                                     <th>생산품</th>
-                                    <th>생산량</th>
+                                    <th>생산량 [ea]</th>
+                                    <th>생산 시작 일시</th>
+                                    <th>생산 종료 일시</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                <tr th:each="productions : ${productions}">
                                     <td><input type="checkbox"></td>
-                                    <td>PM123456</td>
-                                    <td class="center">2024-06-10 09:00</td>
-                                    <td class="center">2024-06-10 11:00</td>
-                                    <td class="center">2024-06-10 09:01</td>
-                                    <td class="center">2024-06-10 11:01</td>
-                                    <td class="center">p123456</td>
-                                    <td class="center">양배추즙</td>
-                                    <td class="center">1000Box</td>
+                                    <td th:text="${productions.pmCode}"></td>
+                                    <td th:text="${productions.ctCode}"></td>
+                                    <td class="center" th:text="${productions.itName}"></td>
+                                    <td class="center" th:text="${productions.pmAmount}"></td>
+                                    <td class="center" th:text="${productions.pmSDate}"></td>
+                                    <td class="center" th:text="${productions.pmEDate}"></td>
                                 </tr>
                                 </tbody>
                             </table>

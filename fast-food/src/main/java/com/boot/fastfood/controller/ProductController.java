@@ -1,7 +1,10 @@
 package com.boot.fastfood.controller;
 
 import com.boot.fastfood.dto.ProductionDto;
+import com.boot.fastfood.entity.Items;
+import com.boot.fastfood.entity.Production;
 import com.boot.fastfood.entity.Works;
+import com.boot.fastfood.repository.ItemsRepository;
 import com.boot.fastfood.service.ProductionService;
 import com.boot.fastfood.service.WorksService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import java.util.List;
 public class ProductController {
     private final ProductionService productionService;
     private final WorksService worksService;
+    private final ItemsRepository itemsRepository;
 
     @GetMapping("/productPlan")
     public String productPlan(Model model){
@@ -80,7 +84,11 @@ public class ProductController {
     }
 
     @GetMapping("/endProcess")
-    public String endProcess(){
+    public String endProcess(Model model){
+        List<ProductionDto> productions = productionService.getAllProductions();
+        List<Items> items = itemsRepository.findAll();
+        model.addAttribute("productions", productions);
+        model.addAttribute("items", items);
         return "ProductPages/endProcess";
     }
 
@@ -89,9 +97,5 @@ public class ProductController {
         return "ProductPages/calender";
     }
 
-    @PostMapping("/productionPlan/{savePmCode}")
-    public void showDetail(){
-        worksService.
-    }
 
 }
