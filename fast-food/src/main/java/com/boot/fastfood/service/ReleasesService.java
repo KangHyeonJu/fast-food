@@ -90,20 +90,20 @@ public class ReleasesService {
         switch (mtName) {
             case "양배추":
             case "흑마늘":
-                releaseAmount = (((pmAmount * itEa) * 1.04) * 0.01 * 10 * 1.4);
+                releaseAmount = ((pmAmount * 1.04) * 0.01 * 10 * 1.4);
                 break;
             case "석류농축액":
             case "매실농축액":
-                releaseAmount = (((pmAmount * itEa) * 1.04)*0.05);
+                releaseAmount = ((pmAmount * 1.04)*0.05);
                 break;
             case "벌꿀":
-                releaseAmount = (((pmAmount * itEa)  * 1.04) * 0.005);
+                releaseAmount = ((pmAmount  * 1.04) * 0.005);
                 break;
             case "콜라겐":
-                releaseAmount = (((pmAmount * itEa) * 1.04) * 0.002);
+                releaseAmount = ((pmAmount * 1.04) * 0.002);
                 break;
             case "포장지":
-                releaseAmount = pmAmount * 1.04 * itEa;
+                releaseAmount = pmAmount * 1.04 ;
                 break;
             case "Box":
                 releaseAmount = (double) pmAmount * 1.04;
