@@ -138,7 +138,7 @@
             <!--테이블 2 -->
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="panel panel-default"  id="panelshow" style="display: none">
+                    <div class="panel panel-default"  id="panelshow" >
                         <div class="panel-heading">
                             작업 계획 테이블
                         </div>
@@ -154,6 +154,7 @@
                                 </tr>
                                 </thead>
                                 <tbody >
+
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
@@ -171,6 +172,9 @@
 
 </div>
 <!-- /#wrapper -->
+
+
+
 <th:block layout:fragment="script">
     <script>
         $(document).ready(function () {
@@ -180,8 +184,26 @@
                     selectedproductPlan.push($(this).attr('value'));
                 });
 
-<th:block layout:fragment="script">
-    <script>
+                if (selectedproductPlan.length === 0) {
+                    alert('선택된 작업 계획이 없습니다.');
+                    return;
+                }
+
+                var form = $('<form action="/machine/productPlan/export/excel" method="POST"></form>');
+                for (var i = 0; i < selectedproductPlan.length; i++) {
+                    form.append('<input type="hidden" name="pmCode" value="' + selectedproductPlan[i] + '">');
+                }
+
+                $('body').append(form);
+
+                // 폼을 명시적으로 제출합니다.
+                form.submit();
+            });
+            $('#checkall').click(function () {
+                $('input:checkbox').not(this).prop('checked', this.checked);
+            });
+        });
+
         function fetchWorksData(cell) {
             var pmCode = cell.textContent.trim(); // 클릭된 셀의 pmCode 값 가져오기
             var data = {pmCode: pmCode};
@@ -196,7 +218,6 @@
                     var tableBody = document.getElementById("table3-body").getElementsByTagName('tbody')[0];
                     tableBody.innerHTML = ""; // 기존 데이터 지우기
 
-                    console.log(pmCode + "111111111111111");
                     console.log(response);
                     $.each(response, function (work, index) {
                         console.log(index);
@@ -216,6 +237,5 @@
             });
         }
     </script>
-<!--</th:block>-->
 </th:block>
 </html>
