@@ -29,20 +29,10 @@
                 <div class="col-lg-12" style="border: 1px solid black">
                     <ul class="list-inline" style="margin-bottom: 0">
                         <li>
-                            <h4>작업계획 코드 : <input name="#"></h4>
+                            <h4>작업지시 코드 : <input name="#"></h4>
                         </li>
                         <li>
-                            <h4>지시 일자 : <input type="date" id="startTime"> ~ <input type="date" id="endTime"></h4>
-                        </li>
-                        <li>
-                            <h4>생산품 :
-                                <select>
-                                    <option>양배추즙</option>
-                                    <option>흑마늘즙</option>
-                                    <option>석류젤리스틱</option>
-                                    <option>매실젤리스틱</option>
-                                </select>
-                            </h4>
+                            <h4>지시 일자 : <input type="date" id="startTime"></h4>
                         </li>
                         <li style="float: right;">
                             <button class="btn btn-primary" style="margin: 5px; width: 100px;">검색</button>
@@ -78,7 +68,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-<!--                                th:if="${work.SDate == today}"-->
+                                <!--th:if="${work.SDate == today}"-->
                                 <tr th:each="work : ${works}">
                                     <td><input type="checkbox" class=""></td>
                                     <td th:text="${work.wkCode}"></td>
@@ -86,7 +76,7 @@
                                     <td th:text="${work.wkOutput}"></td>
                                     <td th:text="${work.SDate}"></td>
                                     <td th:text="${work.EDate}"></td>
-                                    <td>
+                                    <td th:if="${work.RSDate == null}">
                                         <select name="emName" th:id="${work.wkCode}">
                                             <option value="null">선택</option>
                                             <th:block th:each="employees : ${employees}">
@@ -94,6 +84,7 @@
                                             </th:block>
                                         </select>
                                     </td>
+                                    <td th:if="${work.RSDate != null}" th:text="${work.employee.emName}"></td>
                                     <td th:if="${work.RSDate} == null"><button class="btn btn-success" id="wkStartBtn" th:wkCode="${work.wkCode}"  th:onclick="wkStartBtn(this.getAttribute('wkCode'))">작업 시작</button></td>
                                     <td th:if="${work.RSDate} != null" th:text="${work.RSDate}" id="RSDate"></td>
                                     <td th:if="${work.REDate} == null"><button class="btn btn-danger" id="wkEndBtn" th:wkCode="${work.wkCode}"  th:onclick="wkEndBtn(this.getAttribute('wkCode'))">작업 종료</button></td>
@@ -159,8 +150,4 @@
         }
     </script>
 </th:block>
-
-
-
-
 </html>

@@ -302,15 +302,8 @@ public class ContractService {
                 // wkInput
                 currentWorks.setWkInput(input);
 
-                int plusDays = 0;
-
                 // eDate
-                if (input > 1000){
-                    plusDays = (int)Math.ceil((double) input /1000);
-                }else {
-                    plusDays = 1;
-                }
-                eDate = sDate.plusDays(plusDays);
+                eDate = sDate.plusDays(1);
                 currentWorks.setEDate(eDate);
                 sDate = eDate;
 
@@ -392,7 +385,7 @@ public class ContractService {
                 int time = 0;
                 if (itType.contains("즙")) {
                     currentWorks.setWkCode("A6" + date);
-                    time = (int) Math.ceil(input * 0.048);
+                    time = (int) Math.ceil(input * 4.8);
                     eDate = sDate.plusMinutes(time);
                     currentWorks.setEDate(eDate);
                     sDate = eDate;
@@ -401,7 +394,7 @@ public class ContractService {
                     input = output;
                 } else {
                     currentWorks.setWkCode("B4" + date);
-                    time = (int) Math.ceil(input * 0.03);
+                    time = (int) Math.ceil(input * 3);
                     eDate = sDate.plusMinutes(time);
                     currentWorks.setEDate(eDate);
                     sDate = eDate;
