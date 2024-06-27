@@ -164,8 +164,8 @@ public class MaterialOrderController {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(order.getOdCode());
 
-            if (order.getContract() != null && order.getContract().getCtCode() != null) {
-                row.createCell(1).setCellValue(order.getContract().getCtCode());
+            if (order.getProduction().getContract() != null && order.getProduction().getContract().getCtCode() != null) {
+                row.createCell(1).setCellValue(order.getProduction().getContract().getCtCode());
             } else {
                 row.createCell(1).setCellValue("");
             }

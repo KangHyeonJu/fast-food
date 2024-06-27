@@ -33,6 +33,7 @@ public class ContractService {
     private final WorksRepository worksRepository;
     private final ProcessRepository processRepository;
     private final ShipmentRepository shipmentRepository;
+    private final CalendarRepository calendarRepository;
     
 
     public void saveContract(ContractDto contractDto) {
@@ -67,12 +68,13 @@ public class ContractService {
 
 
             //해당 부분 발주 등록으로 이동
-            Calendar calendar = new Calendar();
-            calendar.setTitle(contract.getClients().getClName() + ", " + contract.getItems().getItName());
-            calendar.setSDate(contract.getCtDate());
-            calendar.setEDate(contract.getDeliveryDate());
-
-            calendarRepository.save(calendar);
+//            Calendar calendar = new Calendar();
+//            calendar.setTitle(contract.getClients().getClName() + ", " + contract.getItems().getItName());
+//
+//            calendar.setSDate(contract.getCtDate());
+//            calendar.setEDate(contract.getDeliveryDate());
+//
+//            calendarRepository.save(calendar);
 
 
             Clients clients = contract.getClients();
@@ -570,6 +572,15 @@ public class ContractService {
         orders.setOdState(false);
         orders.setWhStatus(0);
         orders.setProduction(production);
+
+        //해당 부분 발주 등록으로 이동
+        Calendar calendar = new Calendar();
+        calendar.setTitle(production.getContract().getClients().getClName() + ", " + production.getContract().getItems().getItName());
+
+        calendar.setSDate(production.getPmSDate().minusDays(leadTime + minusDay));
+        calendar.setEDate(production.getContract().getDeliveryDate());
+
+        calendarRepository.save(calendar);
 
         int minOrder = materials.getMtMin();
         int maxOrder = materials.getMtMax();
