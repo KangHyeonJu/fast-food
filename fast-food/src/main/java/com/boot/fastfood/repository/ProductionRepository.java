@@ -10,4 +10,6 @@ public interface ProductionRepository extends JpaRepository<Production, String> 
     Production findByContract(Contract contract);
     
     Production findByPmCode(String pmCode);
+
+    List<Production> findByPmCodeIn(List<String> pmCode);
 }

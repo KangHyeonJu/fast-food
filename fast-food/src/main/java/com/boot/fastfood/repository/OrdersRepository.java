@@ -33,4 +33,8 @@ public interface OrdersRepository extends JpaRepository<Orders, String>, OrdersR
     List<Orders> findByOdState(boolean state);
 
     List<Orders> findByOdDateAndMaterialsAndOdState(LocalDate date, Materials materials, boolean state);
+    
+    Orders findFirstByOdCode(String odCode);
+
+    List<Orders> findByOdCodeIn(List<String> odCode);
 }

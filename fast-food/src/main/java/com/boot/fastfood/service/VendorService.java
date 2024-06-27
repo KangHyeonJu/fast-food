@@ -4,6 +4,7 @@ import com.boot.fastfood.entity.Facility;
 import com.boot.fastfood.entity.Vendor;
 import com.boot.fastfood.repository.VendorRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,5 +31,11 @@ public class VendorService {
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + vdCode));
 
         return vendor;
+    }
+
+    public List<Vendor> findAllVendorsWithMaterials() {
+        List<Vendor> vendors = vendorRepository.findAll();
+        vendors.forEach(vendor -> Hibernate.initialize(vendor.getMaterials()));
+        return vendors;
     }
 }

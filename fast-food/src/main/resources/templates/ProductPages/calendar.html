@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout1}">
+
+<div layout:fragment="content">
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">일정 관리</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="text-center" style="width: 100%; margin: 0 auto;">
+                <div name='calendar'></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div layout:fragment="script">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(function () {
+            var calendarEl = $('[name="calendar"]')[0];
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                height: '700px',
+                expandRows: true,
+                slotMinTime: '08:00',
+                slotMaxTime: '20:00',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                initialView: 'dayGridMonth',
+                // initialDate: '2021-07-15',
+                navLinks: true,
+                editable: true,
+                selectable: true,
+                nowIndicator: true,
+                dayMaxEvents: true,
+                locale: 'ko',
+                events: [
+                    /*[# th:each="calendar : ${calendars}"]*/
+                    {
+                        title: /*[[${calendar.title}]]*/,
+                        start: /*[[${calendar.sDate}]]*/,
+                        end: /*[[${calendar.eDate}]]*/,
+                        color: '#' + Math.round(Math.random() * 0xffffff).toString(16)
+                    },
+                    /*[/]*/
+                ]
+            });
+            calendar.render();
+        });
+        /*]]>*/
+    </script>
+</div>
+
+</html>

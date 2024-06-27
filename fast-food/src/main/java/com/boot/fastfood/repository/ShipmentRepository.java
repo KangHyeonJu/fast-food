@@ -12,4 +12,6 @@ public interface ShipmentRepository extends JpaRepository<Shipment, String>, Shi
     List<Shipment> findAllByContract_DeliveryDateAndSmStatues(LocalDate today, boolean smStatues);
 
     Shipment findBySmCode(String smCode);
+
+    List<Shipment> findBySmCodeIn(List<String> smCode);
 }

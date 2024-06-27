@@ -25,7 +25,7 @@ public class ItemApiController {
     }
 
     @DeleteMapping("/items/{itemCheck}")
-    public ResponseEntity<?> deleteById(@PathVariable String itemCheck) {
+    public ResponseEntity<?> deleteById(@PathVariable("itemCheck") String itemCheck) {
         itemService.deleteById(itemCheck);
 
         return new ResponseEntity<>(HttpStatus.OK);

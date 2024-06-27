@@ -17,8 +17,8 @@
 
             <!-- 버튼 모음 -->
             <div class="list-inline text-right">
-                <a class="btn btn-warning" href="/machine/calender">캘린더</a>
-                <button type="button" class="btn btn-success">엑셀 저장</button>
+                <a class="btn btn-warning" href="/machine/Calendar">캘린더</a>
+                <button id="excelExportBtn" class="btn btn-success">엑셀 저장</button>
             </div>
             <!--버튼끝-->
 
@@ -63,10 +63,11 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body" style="height: 200px; overflow: auto">
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="width: 100%;">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example"
+                                   style="width: 100%;">
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox"></th>
+                                    <th><input type="checkbox" id="checkall"></th>
                                     <th>생산 코드</th>
                                     <th>생산 시작일</th>
                                     <th>생산 종료일</th>
@@ -140,6 +141,14 @@
 
 </div>
 <!-- /#wrapper -->
+<th:block layout:fragment="script">
+    <script>
+        $(document).ready(function () {
+            $('#excelExportBtn').click(function () {
+                var selectedproductPlan = [];
+                $('input.productionPlan-checkbox:checked').each(function () {
+                    selectedproductPlan.push($(this).attr('value'));
+                });
 
 <th:block layout:fragment="script">
 <script>

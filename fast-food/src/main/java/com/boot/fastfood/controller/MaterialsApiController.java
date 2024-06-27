@@ -18,7 +18,7 @@ public class MaterialsApiController {
     private final MaterialsService materialsService;
 
     @GetMapping("/materials/{mtCode}")
-    public ResponseEntity<?> findById(@PathVariable String mtCode) {
+    public ResponseEntity<?> findById(@PathVariable("mtCode") String mtCode) {
         Materials materials = materialsService.findById(mtCode);
         MaterialsDTO dto = new MaterialsDTO();
         dto.setMtCode(materials.getMtCode());

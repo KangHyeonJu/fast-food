@@ -14,4 +14,6 @@ public interface ContractRepository extends JpaRepository<Contract, String> {
     List<Contract> findByCtStatus(String ctStatus);
 
     List<Contract> searchContracts(ContractSearchDto searchDto);
+
+    List<Contract> findByCtCodeIn(List<String> ctCodes);
 }

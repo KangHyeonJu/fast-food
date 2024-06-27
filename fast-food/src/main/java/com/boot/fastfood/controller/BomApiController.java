@@ -44,7 +44,7 @@ public class BomApiController {
 
     //bom 투입량 등록
     @PutMapping("/bom/{itCode}/{mtCode}")
-    public ResponseEntity<?> bomInputAdd(@PathVariable String itCode, @PathVariable String mtCode,
+    public ResponseEntity<?> bomInputAdd(@PathVariable("itCode") String itCode, @PathVariable("mtCode") String mtCode,
                                          @RequestBody UpdateMaterialsDTO mtAmount) {
         System.out.println(mtAmount.getMtAmount() + ":mtAmount");
         BOM bom = bomService.saveById(itCode, mtCode, mtAmount);
@@ -55,7 +55,7 @@ public class BomApiController {
 
     //bom 조회
     @GetMapping("/bom/{itCode}")
-    public ResponseEntity<?> item(@PathVariable String itCode) {
+    public ResponseEntity<?> item(@PathVariable("itCode") String itCode) {
 
         List<BOM> bomList = bomService.findByid(itCode);
         MaterialsListDTO listDTO = new MaterialsListDTO();
@@ -93,7 +93,7 @@ public class BomApiController {
 
     //bom 삭제
     @DeleteMapping("/bom/{itCode}/{mtCode}")
-    public ResponseEntity<?> deleteRouting(@PathVariable String itCode, @PathVariable String mtCode) {
+    public ResponseEntity<?> deleteRouting(@PathVariable("itCode") String itCode, @PathVariable("mtCode") String mtCode) {
         bomService.deleteById(itCode, mtCode);
 
         return new ResponseEntity<>(HttpStatus.OK);

@@ -20,7 +20,6 @@ public class ReleasesService {
     private final MaterialRepository materialRepository;
     private final EmployeeRepository employeeRepository;
     private final BOMRepository bomRepository;
-    private final ItemsRepository itemsRepository;
 
     private final ProductionRepository productionRepository;
     public List<Releases> findAll() {
@@ -31,6 +30,7 @@ public class ReleasesService {
     public void saveRelease(String wkCode, String emCode) {
         Works work = worksRepository.findByWkCode(wkCode);
         Optional<Employee> employeeOptional = employeeRepository.findByEmCode(emCode);
+
 
         if (work != null && employeeOptional.isPresent()) {
             Employee employee = employeeOptional.get();
@@ -45,6 +45,12 @@ public class ReleasesService {
             for (BOM bom : boms) {
                 String rsCode = rsCodeBase + bom.getMaterials().getMtCode();
 
+                Releases existingRelease = releasesRepository.findByWorksAndMaterials(work, bom.getMaterials());
+                if (existingRelease != null) {
+                    throw new IllegalArgumentException("이미 존재하는 작업 코드입니다.");
+                }
+
+
                 Releases release = new Releases();
                 release.setWorks(work);
                 release.setMaterials(bom.getMaterials());
@@ -58,13 +64,16 @@ public class ReleasesService {
 
                 Materials materials = bom.getMaterials();
                 int newStock = materials.getMtStock() - release.getRsAmount();
+
+                System.out.println("11111111111"+materials.getMtStock());
+                System.out.println("22222222222"+release.getRsAmount());
+                System.out.println("33333333333"+newStock);
+
                 if (newStock < 0) {
                     throw new IllegalArgumentException("재고가 부족합니다");
                 }
                 materials.setMtStock(newStock);
                 materialRepository.save(materials);
-
-                releasesRepository.save(release);
 
                 releasesRepository.save(release);
             }
@@ -83,15 +92,15 @@ public class ReleasesService {
             case "흑마늘":
                 releaseAmount = (((pmAmount * itEa) * 1.04) * 0.01 * 10 * 1.4);
                 break;
-            case "석류(농축액)":
-            case "매실(농축액)":
-                releaseAmount = (((pmAmount * itEa) * 1.04) * 0.01 * 10 * 1.4);
+            case "석류농축액":
+            case "매실농축액":
+                releaseAmount = (((pmAmount * itEa) * 1.04)*0.05);
                 break;
             case "벌꿀":
-                releaseAmount = (((pmAmount * itEa)  * 1.04) * 0.01 * 10 * 1.4 * 0.05);
+                releaseAmount = (((pmAmount * itEa)  * 1.04) * 0.005);
                 break;
             case "콜라겐":
-                releaseAmount = ((pmAmount * itEa) * 1.04) * 0.01 * 10 * 1.4 * 0.002;
+                releaseAmount = (((pmAmount * itEa) * 1.04) * 0.002);
                 break;
             case "포장지":
                 releaseAmount = pmAmount * 1.04 * itEa;
@@ -100,7 +109,7 @@ public class ReleasesService {
                 releaseAmount = (double) pmAmount * 1.04;
                 break;
             default:
-                throw new IllegalArgumentException("해당 재료 이름에 대한 계산식이 없습니다.");
+                throw new IllegalArgumentException("존재하지 않는 재료입니다.");
         }
 
         // 올림 처리

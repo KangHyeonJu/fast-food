@@ -3,6 +3,23 @@
       layout:decorate="~{layout/layout1}">
 
 <div layout:fragment="content">
+
+    <style>
+        .button-container button {
+            margin-left: 10px; /* 버튼 사이의 간격 조정 */
+        }
+
+        .form-group label {
+            margin-right: 10px;
+        }
+
+        .form-control {
+            width: 150px;
+            margin-right: 10px;
+            display: inline-block;
+        }
+    </style>
+
     <div id="page-wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -11,28 +28,32 @@
                 </div>
             </div>
             <!--검색-->
-            <div class="row">
-                <div class="col-lg-12" style="border: 1px solid black">
-                    <form th:action="@{/searchMaterial}" method="get">
-                        <ul class="list-inline">
-                            <li>
-                                <h4>발주 코드 : <input type="text" name="odCode"></h4>
-                            </li>
-                            <li>
-                                <h4>원자재명 :
-                                    <select name="mtName">
-                                        <option value="">전체</option>
-                                        <option th:each="material : ${materials}" th:value="${material.mtName}"
-                                                th:text="${material.mtName}"></option>
-                                    </select>
-                                </h4>
-                            </li>
-                            <li>
-                                <h4>입고 예정일 : <input type="date" name="odDueDate"></h4>
-                            </li>
-                            <button class="btn btn-primary" style="float: right" type="submit">조회</button>
-                        </ul>
-                    </form>
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <form th:action="@{/searchMaterial}" method="get">
+                                <ul class="list-inline">
+                                    <li>
+                                        <label>발주 코드 : <input type="text" name="odCode"></label>
+                                    </li>
+                                    <li>
+                                        <label>원자재명 :
+                                            <select name="mtName">
+                                                <option value="">전체</option>
+                                                <option th:each="material : ${materials}" th:value="${material.mtName}"
+                                                        th:text="${material.mtName}"></option>
+                                            </select>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label>입고 예정일 : <input type="date" name="odDueDate"></label>
+                                    </li>
+                                    <button class="btn btn-primary" type="submit">조회</button>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!--검색 끝-->
@@ -164,7 +185,7 @@
 
                 if (confirm('정말 등록하시겠습니까? 자재 입고 등록시 취소가 불가능합니다.')) {
 
-                    if (emName === ""){
+                    if (emName === "") {
                         alert("작업자를 선택해주세요");
                         return;
                     }

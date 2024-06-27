@@ -1,9 +1,12 @@
 package com.boot.fastfood.repository;
 
 import com.boot.fastfood.entity.Items;
+import com.boot.fastfood.entity.Routing;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 import java.util.List;
 
@@ -31,5 +34,7 @@ public interface ItemRepository extends JpaRepository<Items, String> {
 
     @Query(value = "SELECT i FROM Items i WHERE i.itType LIKE %:itType% AND i.itName LIKE %:itName%")
     List<Items> findByItTypeAndItName(@Param("itType") String itType, @Param("itName") String itName);
+    
+    List<Items> findByItCodeIn(List<String> itCode);
 }
 

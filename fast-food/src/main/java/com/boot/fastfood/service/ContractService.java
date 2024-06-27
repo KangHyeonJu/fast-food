@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +33,7 @@ public class ContractService {
     private final WorksRepository worksRepository;
     private final ProcessRepository processRepository;
     private final ShipmentRepository shipmentRepository;
+    
 
     public void saveContract(ContractDto contractDto) {
         // 고객 정보 설정
@@ -43,6 +43,7 @@ public class ContractService {
         Items item = itemsRepository.findByItName(contractDto.getItName());
         //작업자 정보 설정
         Employee employee = employeeRepository.findByEmName(contractDto.getEmName());
+
 
         if (item != null) {
             // 작업자 정보 설정
@@ -64,9 +65,24 @@ public class ContractService {
             contract.setDeliveryDate(contractDto.getDeliveryDate());
             contract.setCtStatus("준비중");
 
-            // 저장
+
+            //해당 부분 발주 등록으로 이동
+            Calendar calendar = new Calendar();
+            calendar.setTitle(contract.getClients().getClName() + ", " + contract.getItems().getItName());
+            calendar.setSDate(contract.getCtDate());
+            calendar.setEDate(contract.getDeliveryDate());
+
+            calendarRepository.save(calendar);
+
+
+            Clients clients = contract.getClients();
+            clients.setClAmount(clients.getClAmount() + contract.getCtAmount());
+
+            clientsRepository.save(clients); // 저장
+
+
+
             contractRepository.save(contract);
-            System.out.println("수주가 저장되었습니다.");
 
             //생산 계획 생성
             Production production = new Production();

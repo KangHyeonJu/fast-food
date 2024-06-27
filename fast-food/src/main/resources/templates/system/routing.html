@@ -268,6 +268,27 @@
 <th:block layout:fragment="script">
     <script>
         $(document).ready(function() {
+            $('#excel-btn').click(function () {
+                var selectedItems = [];
+                $('input.routing-checkbox:checked').each(function () {
+                    selectedItems.push($(this).val());
+                });
+
+                if (selectedItems.length === 0) {
+                    alert('선택된 품목이 없습니다.');
+                    return;
+                }
+
+                var form = $('<form action="/routing/export/excel" method="POST"></form>');
+                for (var i = 0; i < selectedItems.length; i++) {
+                    form.append('<input type="hidden" name="itCode" value="' + selectedItems[i] + '">');
+                }
+
+                $('body').append(form);
+
+                // 폼을 명시적으로 제출합니다.
+                form.submit();
+            });
 
             // 품목을 클릭했을 때 라우팅 목록 출력됨
             $(".itemList").on("click", function() {

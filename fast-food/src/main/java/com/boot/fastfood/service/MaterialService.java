@@ -17,6 +17,8 @@ import java.util.*;
 public class MaterialService {
     private final OrdersRepository ordersRepository;
     private final EmployeeRepository employeeRepository;
+    private final VendorRepository vendorRepository;
+
 
     private final ContractService contractService;
     private final BomService bomService;
@@ -49,6 +51,12 @@ public class MaterialService {
         orders.setOdState(true);
         orders.setOdDueDate(LocalDate.now().plusDays(9));
 
+        Vendor vendor = materials.getVendor(); // 자재에 연결된 Vendor 가져오기
+        if (vendor != null) {
+            vendor.setAlAmount(vendor.getAlAmount() + boxNum);
+            vendorRepository.save(vendor);
+        }
+
         ordersRepository.save(orders);
     }
 
@@ -73,6 +81,12 @@ public class MaterialService {
             orders.setOdDueDate(LocalDate.now().plusDays(5));
         }
 
+
+        Vendor vendor = materials.getVendor(); // 자재에 연결된 Vendor 가져오기
+        if (vendor != null) {
+            vendor.setAlAmount(vendor.getAlAmount() + wrapNum);
+            vendorRepository.save(vendor);
+        }
 
         ordersRepository.save(orders);
     }

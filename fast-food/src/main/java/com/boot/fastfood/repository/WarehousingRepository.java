@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface WarehousingRepository extends JpaRepository<Warehousing, Long> {
 
+    List<Warehousing> findByWhCodeIn(List<String> whCode);
 }

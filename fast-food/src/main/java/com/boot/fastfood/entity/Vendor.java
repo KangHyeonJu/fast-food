@@ -1,11 +1,10 @@
 package com.boot.fastfood.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,5 +18,9 @@ public class Vendor {
     @Column(name = "vdName")
     private String vdName;
 
+    @Column(name = "alAmount")
+    private Integer alAmount;
 
+    @OneToMany(mappedBy = "vendor")
+    private List<Materials> materials;
 }

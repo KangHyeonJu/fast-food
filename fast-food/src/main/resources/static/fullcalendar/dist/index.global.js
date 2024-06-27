@@ -2233,7 +2233,7 @@ var FullCalendar = (function (exports) {
 
     /*
     NOTE: this can be a public API, especially createElement for hooks.
-    See examples/typescript-scheduler/src/index.ts
+    See examples/typescript-Calendarr/src/index.ts
     */
     function flushSync(runBeforeFlush) {
         runBeforeFlush();

@@ -56,6 +56,9 @@ dependencies {
     implementation 'org.json:json:20231013'
     implementation 'com.google.code.gson:gson:2.10.1'
 
+    //엑셀
+    implementation 'org.apache.poi:poi:5.2.2'
+    implementation 'org.apache.poi:poi-ooxml:5.2.2'
 }
 
 tasks.named('test') {

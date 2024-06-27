@@ -4,6 +4,44 @@
       layout:decorate="~{layout/layout1}">
 
 <div layout:fragment="content">
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: flex-end; /* 왼쪽 정렬 */
+            margin-bottom: 10px;
+        }
+
+        .button-container button {
+            margin-left: 10px; /* 버튼 사이의 간격 조정 */
+        }
+
+        #excelExportBtn {
+            background-color: #2b542c;
+        }
+
+        .form-group label {
+            margin-right: 10px;
+        }
+
+        .form-control {
+            width: 150px;
+            margin-right: 10px;
+            display: inline-block;
+        }
+
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .calendar-table th, .calendar-table td {
+            border: 1px solid #ddd;
+            width: 14.28%;
+            height: 80px;
+            text-align: center;
+            vertical-align: top;
+        }
+    </style>
 
     <!-- Page Content -->
     <div id="page-wrapper">
@@ -11,52 +49,61 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">수주 등록</h1>
+                    <div class="col-lg-12 text-right mb-20">
+                        <div class="button-container">
+                            <button id="excelExportBtn" class="btn btn-success">엑셀 저장</button>
+                            <button id="addOrderBtn" data-toggle="modal" data-target="#addOrderModal"
+                                    class="btn btn-primary">수주
+                                등록
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <!-- 검색 -->
-                <div class="col-lg-12 text-right mb-20">
-                    <button class="btn btn-success">엑셀 저장 버튼</button>
-                    <button id="addOrderBtn" data-toggle="modal" data-target="#addOrderModal" class="btn btn-primary">수주
-                        등록
-                    </button>
-                </div>
                 <form th:action="@{/searchcontract}" method="get">
-                    <div class="row">
-                        <div class="col-lg-12" style="border: 1px solid black">
-                            <ul class="list-inline">
-                                <li>
-                                    <h4>수주 코드 : <input name="ctCode" type="text"></h4>
-                                </li>
-                                <li>
-                                    <h4>고객 업체 :
-                                        <select name="clName">
-                                            <option value="">전체</option>
-                                            <option th:each="client : ${clients}" th:value="${client.clName}"
-                                                    th:text="${client.clName}"></option>
-                                        </select>
-                                    </h4>
-                                </li>
-                                <li>
-                                    <h4>수주일 : <input type="date" name="ctDate"></h4>
-                                </li>
-                                <li>
-                                    <h4>제품명 :
-                                        <select name="itName">
-                                            <option value="">전체</option>
-                                            <option th:each="item : ${items}" th:value="${item.itName}"
-                                                    th:text="${item.itName}"></option>
-                                        </select>
-                                    </h4>
-                                </li>
-                                <li>
-                                    <h4> 작업자 : <select name="emName">
-                                        <option value="">전체</option>
-                                        <option th:each="employees : ${employees}" th:value="${employees.emName}"
-                                                th:text="${employees.emName}"></option>
-                                    </select></h4>
-                                </li>
-                                <button class="btn btn-primary" style="float: right">조회
-                                </button>
-                            </ul>
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <ul class="list-inline">
+                                        <li>
+                                            <label>수주 코드 : <input name="ctCode" type="text"
+                                                                  class="form-control"></label>
+                                        </li>
+                                        <li>
+                                            <label>고객 업체 :
+                                                <select name="clName" class="form-control">
+                                                    <option value="">전체</option>
+                                                    <option th:each="client : ${clients}" th:value="${client.clName}"
+                                                            th:text="${client.clName}"></option>
+                                                </select>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>수주일 : <input type="date" name="ctDate" class="form-control"></label>
+                                        </li>
+                                        <li>
+                                            <label>제품명 :
+                                                <select name="itName" class="form-control">
+                                                    <option value="">전체</option>
+                                                    <option th:each="item : ${items}" th:value="${item.itName}"
+                                                            th:text="${item.itName}"></option>
+                                                </select>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label> 작업자 : <select name="emName" class="form-control">
+                                                <option value="">전체</option>
+                                                <option th:each="employees : ${employees}"
+                                                        th:value="${employees.emName}"
+                                                        th:text="${employees.emName}"></option>
+                                            </select></label>
+                                        </li>
+                                        <button class="btn btn-primary">조회
+                                        </button>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- 검색 끝-->
@@ -75,7 +122,7 @@
                                            id="dataTables-example">
                                         <thead>
                                         <tr>
-                                            <th><input id="checkall" type="checkbox"></th>
+                                            <th><input type="checkbox" id="checkall"></th>
                                             <th>수주 코드</th>
                                             <th>고객 업체</th>
                                             <th>제품명</th>
@@ -89,7 +136,8 @@
                                         </thead>
                                         <tbody>
                                         <tr th:each="contract, staus : ${contracts}">
-                                            <td><input type="checkbox"></td>
+                                            <td><input type="checkbox" class="contract-checkbox"
+                                                       th:value="${contract.ctCode}"></td>
                                             <td th:text="${contract.ctCode}"></td>
                                             <td th:text="${contract.clients.clName}"></td>
                                             <td th:text="${contract.items.itName}"></td>
@@ -102,25 +150,23 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <!-- /.table-responsive -->
                                 </div>
-                                <!-- /.panel-body -->
                             </div>
-                            <!-- /.panel -->
                         </div>
-                        <!-- /.col-lg-12 -->
                     </div>
                 </form>
             </div>
-            <!-- 테이블 1 끝-->
         </div>
-        <div style="text-align : center;">
-            <img src="/image/Plan.png" style="width: 70%; height: 500px">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                </div>
+            </div>
+            <div class="text-center" style="width: 100%; margin: 0 auto;">
+                <div name='calendar'></div>
+            </div>
         </div>
-        <!-- /.container-fluid -->
     </div>
-    <!-- /#page-wrapper -->
-
     <div class="modal fade" id="addOrderModal" tabindex="-1" role="dialog" aria-labelledby="addOrderModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -128,46 +174,46 @@
                 <form id="addOrderForm" action="/contract/add" method="post">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="addOrderModalLabel">수주 등록</h4>
+                        <h5 class="modal-title" id="addOrderModalLabel">수주 등록</h5>
                     </div>
                     <div class="col-lg-12" style="border: 1px solid black">
                         <ul class="list-inline">
                             <li>
-                                <h4>작업자 :
+                                <h5>작업자 :
                                     <select name="emName" id="emName">
-                                        <option value="">전체</option>
+                                        <option value="">선택</option>
                                         <option th:each="employees : ${employees}" th:value="${employees.emName}"
                                                 th:text="${employees.emName}"></option>
                                     </select>
-                                </h4>
+                                </h5>
                             </li>
                             <li>
-                                <h4>고객 업체 :
+                                <h5>고객 업체 :
                                     <select name="clName" id="clName">
-                                        <option value="">전체</option>
+                                        <option value="">선택</option>
                                         <option th:each="client : ${clients}" th:value="${client.clName}"
                                                 th:text="${client.clName}"></option>
                                     </select>
-                                </h4>
+                                </h5>
 
                             </li>
                             <li>
-                                <h4>제품명 :
+                                <h5>제품명 :
                                     <select name="itName" id="itName">
-                                        <option value="">전체</option>
+                                        <option value="">선택</option>
                                         <option th:each="item : ${items}" th:value="${item.itName}"
                                                 th:text="${item.itName}"></option>
                                     </select>
-                                </h4>
+                                </h5>
                             </li>
                             <li>
-                                <h4>수주수량 : <input name="ctAmount" id="orderQuantity" type="number"></h4>
+                                <h5>수주수량 : <input name="ctAmount" id="orderQuantity" type="number"></h5>
                             </li>
                             <li>
-                                <h4>납품일 : <input type="date" id="deliveryDate" name="deliveryDate"></h4>
+                                <h5>납품일 : <input type="date" id="deliveryDate" name="deliveryDate"></h5>
                             </li>
                             <li>
-                                <h4>납품 장소 : <input id="deliveryPlace" name="deliveryPlace"></h4>
+                                <h5>납품 장소 : <input id="deliveryPlace" name="deliveryPlace"></h5>
                             </li>
                         </ul>
                     </div>
@@ -184,8 +230,8 @@
 </div>
 <!-- /#wrapper -->
 <th:block layout:fragment="script">
-
-    <script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
+    <script th:inline="javascript">
         $(document).ready(function () {
             $('#checkall').click(function () {
                 $('input:checkbox').not(this).prop('checked', this.checked);
@@ -280,6 +326,7 @@
                     event.preventDefault(); // 등록 이벤트 막기
                 }
             });
+
             $('#addOrderForm').submit(function (event) {
                 event.preventDefault();
 
@@ -308,9 +355,67 @@
                     alert('수주 완료가 완료되었습니다.');
                 }
             });
-        });
-    </script>
 
+            $('#excelExportBtn').click(function () {
+                var selectedContracts = [];
+                $('input.contract-checkbox:checked').each(function () {
+                    selectedContracts.push($(this).attr('value'));
+                });
+
+                if (selectedContracts.length === 0) {
+                    alert('선택된 수주가 없습니다.');
+                    return;
+                }
+
+                var form = $('<form action="/contract/export/excel" method="POST"></form>');
+                for (var i = 0; i < selectedContracts.length; i++) {
+                    form.append('<input type="hidden" name="ctCode" value="' + selectedContracts[i] + '">');
+                }
+
+                $('body').append(form);
+
+                // 폼을 명시적으로 제출합니다.
+                form.submit();
+            });
+        });
+
+        /*<![CDATA[*/
+        $(function () {
+
+            var calendarEl = $('[name="calendar"]')[0];
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                height: '700px',
+                expandRows: true,
+                slotMinTime: '08:00',
+                slotMaxTime: '20:00',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                initialView: 'dayGridMonth',
+                // initialDate: '2021-07-15',
+                navLinks: true,
+                editable: true,
+                selectable: true,
+                nowIndicator: true,
+                dayMaxEvents: true,
+                locale: 'ko',
+                events: [
+                    /*[# th:each="calendar : ${calendars}"]*/
+                    {
+                        title: /*[[${calendar.title}]]*/,
+                        start: /*[[${calendar.sDate}]]*/,
+                        end: /*[[${calendar.eDate}]]*/,
+                        color: '#' + Math.round(Math.random() * 0xffffff).toString(16)
+                    },
+                    /*[/]*/
+                ]
+            });
+            calendar.render();
+        });
+        /*]]>*/
+    </script>
 
 </th:block>
 </html>

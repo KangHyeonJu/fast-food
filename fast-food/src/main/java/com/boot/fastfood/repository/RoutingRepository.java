@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface RoutingRepository extends JpaRepository<Routing, Long> {
@@ -25,5 +26,7 @@ public interface RoutingRepository extends JpaRepository<Routing, Long> {
     Routing findByItCodeAndPcCode(@Param("itCode") String itCode, @Param("pcCode") String pcCode);
 
     List<Routing> findByItems_ItCodeOrderBySequenceAsc(String itCode);
+    
+    List<Routing> findByItemsIn(List<Items> items);
 }
 

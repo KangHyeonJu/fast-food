@@ -105,7 +105,7 @@
                                    id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox"></th>
+                                    <th><input type="checkbox" id="checkall"></th>
                                     <th>고객코드</th>
                                     <th>고객명</th>
                                     <th>고객분류</th>
@@ -115,7 +115,8 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="client : ${clients}">
-                                    <td><input type="checkbox" class="clientCheckbox"></td>
+                                    <td><input type="checkbox" class="client-checkbox"
+                                               th:value="${client.clCode}"></td>
                                     <td th:text="${client.clCode}" onclick="clientDetail('${client.clCode}')"></td>
                                     <td th:text="${client.clName}"></td>
                                     <td th:text="${client.clType}"></td>
@@ -318,6 +319,33 @@
             tbody.appendChild(row);
         });
     }
+
+    $(document).ready(function() {
+        $('#excel-btn').click(function () {
+            var selectedItems = [];
+            $('input.client-checkbox:checked').each(function () {
+                selectedItems.push($(this).val());
+            });
+
+            if (selectedItems.length === 0) {
+                alert('선택된 코드가 없습니다.');
+                return;
+            }
+
+            var form = $('<form action="/client/export/excel" method="POST"></form>');
+            for (var i = 0; i < selectedItems.length; i++) {
+                form.append('<input type="hidden" name="clCode" value="' + selectedItems[i] + '">');
+            }
+
+            $('body').append(form);
+            form.submit();
+        });
+
+        $('#checkall').click(function () {
+            $('input:checkbox').not(this).prop('checked', this.checked);
+        });
+    });
+
 </script>
 </th:block>
 
