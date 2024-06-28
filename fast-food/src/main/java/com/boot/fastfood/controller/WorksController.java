@@ -115,7 +115,7 @@ public class WorksController {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Codes");
 
-        String[] headers = {"작업 지시 코드", "작업 투입량", "작업 완료량", "작업 시작 일시", "작업 종료 일시"};
+        String[] headers = {"w작업 지시 코드", "작업 투입량", "작업 완료량", "작업 시작 일시", "작업 종료 일시"};
         Row headerRow = sheet.createRow(0);
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
