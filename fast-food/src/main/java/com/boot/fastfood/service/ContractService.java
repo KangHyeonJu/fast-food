@@ -438,6 +438,9 @@ public class ContractService {
 
                 // wkInput
                 int pa = input - production.getPmAmount();
+                if (pa < 0){
+                    pa = 0;
+                }
                 item.setItStock(pa);
                 currentWorks.setWkInput(production.getPmAmount());
 
