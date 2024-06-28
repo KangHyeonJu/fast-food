@@ -70,13 +70,13 @@ public class ContractController {
                                   @RequestParam(name = "emName", required = false) String emName,
                                   Model model) {
 
-        // 검색 조건을 객체에 설정
+        // 조회 조건을 객체에 설정
         ContractSearchDto searchDto = new ContractSearchDto(ctCode, clName, ctDate, itName, emName);
 
-        // 검색 결과 조회
+        // 조회 결과 조회
         List<Contract> searchcontracts = contractService.searchContracts(searchDto);
 
-        // 검색 결과와 검색 조건을 모델에 추가
+        // 조회 결과와 조회 조건을 모델에 추가
         model.addAttribute("contracts", searchcontracts);
         model.addAttribute("searchDto", searchDto);
 
@@ -93,7 +93,7 @@ public class ContractController {
 
         model.addAttribute("calendars", calendars);
 
-        return "contract/Contract"; // 검색 결과가 보이는 페이지로 이동
+        return "contract/Contract"; // 조회 결과가 보이는 페이지로 이동
     }
 
     @PostMapping("/contract/add")

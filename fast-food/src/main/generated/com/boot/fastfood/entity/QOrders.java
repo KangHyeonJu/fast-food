@@ -22,8 +22,6 @@ public class QOrders extends EntityPathBase<Orders> {
 
     public static final QOrders orders = new QOrders("orders");
 
-    public final QContract contract;
-
     public final QEmployee employee;
 
     public final QMaterials materials;
@@ -35,6 +33,10 @@ public class QOrders extends EntityPathBase<Orders> {
     public final DatePath<java.time.LocalDate> odDate = createDate("odDate", java.time.LocalDate.class);
 
     public final DatePath<java.time.LocalDate> odDueDate = createDate("odDueDate", java.time.LocalDate.class);
+
+    public final BooleanPath odState = createBoolean("odState");
+
+    public final QProduction production;
 
     public final NumberPath<Integer> whStatus = createNumber("whStatus", Integer.class);
 
@@ -56,9 +58,9 @@ public class QOrders extends EntityPathBase<Orders> {
 
     public QOrders(Class<? extends Orders> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.contract = inits.isInitialized("contract") ? new QContract(forProperty("contract"), inits.get("contract")) : null;
         this.employee = inits.isInitialized("employee") ? new QEmployee(forProperty("employee")) : null;
         this.materials = inits.isInitialized("materials") ? new QMaterials(forProperty("materials"), inits.get("materials")) : null;
+        this.production = inits.isInitialized("production") ? new QProduction(forProperty("production"), inits.get("production")) : null;
     }
 
 }

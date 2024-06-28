@@ -3,7 +3,31 @@
       layout:decorate="~{layout/layout1}">
 
 <div layout:fragment="content">
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: flex-end; /* 왼쪽 정렬 */
+            margin-bottom: 10px;
+        }
 
+        .button-container button {
+            margin-left: 10px; /* 버튼 사이의 간격 조정 */
+        }
+
+        .form-group label {
+            margin-right: 10px;
+        }
+
+        .form-control {
+            width: 150px;
+            margin-right: 10px;
+            display: inline-block;
+        }
+
+        hr {
+            margin-top: 10px;
+        }
+    </style>
     <!-- Page Content -->
     <div id="page-wrapper">
         <div class="container-fluid">
@@ -24,33 +48,32 @@
 
             <br/>
 
-            <!-- 검색 -->
+            <!-- 조회 -->
             <div class="row">
-                <div class="col-lg-12" style="border: 1px solid black">
-                    <ul class="list-inline" style="margin-bottom: 0">
-                        <li>
-                            <h4>작업계획 코드 : <input name="#"></h4>
-                        </li>
-                        <li>
-                            <h4>지시 일자 : <input type="date" id="startTime"> ~ <input type="date" id="endTime"></h4>
-                        </li>
-                        <li>
-                            <h4>생산품 :
-                                <select>
-                                    <option>양배추즙</option>
-                                    <option>흑마늘즙</option>
-                                    <option>석류젤리스틱</option>
-                                    <option>매실젤리스틱</option>
-                                </select>
-                            </h4>
-                        </li>
-                        <li style="float: right;">
-                            <button class="btn btn-primary" style="margin: 5px; width: 100px;">검색</button>
-                        </li>
-                    </ul>
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form th:action="@{/works/searchWorkList}" method="get">
+                                <div class="form-group">
+                                    <ul class="list-inline" style="margin-bottom: 0">
+                                        <li>
+                                            <label>작업계획 코드 : <input name="wkCode"></label>
+                                        </li>
+                                        <li>
+                                            <label>작업 시작 일시 : <input type="date" name="startTime" id="startTime"></label>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-primary">조회</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- 검색 끝-->
+
+            <!-- 조회 끝-->
 
             <br/>
 
@@ -59,11 +82,12 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            생산 계획 테이블
+                            <h4>생산 계획 테이블</h4>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body" style="height: 80%; overflow: auto">
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="width: 100%;">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example"
+                                   style="width: 100%; font-size: large;">
                                 <thead>
                                 <tr>
                                     <th class="text-center"><input type="checkbox"></th>
@@ -78,7 +102,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-<!--                                th:if="${work.SDate == today}"-->
+                                <!--                                th:if="${work.SDate == today}"-->
                                 <tr th:each="work : ${works}">
                                     <td><input type="checkbox" class=""></td>
                                     <td th:text="${work.wkCode}"></td>
@@ -88,12 +112,17 @@
                                     <td th:text="${work.EDate}"></td>
                                     <td>
                                         <select name="emName">
-                                            <option th:each="employees : ${employees}" th:value="${employees.emName}"
+                                            <option th:each="employees : ${employees}"
+                                                    th:value="${employees.emName}"
                                                     th:text="${employees.emName}"></option>
                                         </select>
                                     </td>
-                                    <td><button class="btn btn-success" onclick="wkStartBtn()">작업 시작</button></td>
-                                    <td><button class="btn btn-danger" onclick="wkEndBtn()">작업 종료</button></td>
+                                    <td>
+                                        <button class="btn btn-success" onclick="wkStartBtn()">작업 시작</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger" onclick="wkEndBtn()">작업 종료</button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -115,13 +144,11 @@
 
 <th:block layout:fragment="script">
     <script>
-        function wkStartBtn(){
+        function wkStartBtn() {
 
         }
     </script>
 </th:block>
-
-
 
 
 </html>

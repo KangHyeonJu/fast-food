@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/html"
       layout:decorate="~{layout/layout1}">
 <div layout:fragment="content">
 
@@ -12,10 +13,6 @@
 
         .button-container button {
             margin-left: 10px; /* 버튼 사이의 간격 조정 */
-        }
-
-        #excel-btn {
-            background-color: #2b542c;
         }
 
         .form-group label {
@@ -41,16 +38,17 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
-
-        <!--검색 패널-->
+        <!--조회 패널-->
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="form-group">
-                        <p class="fa fa-search"></p>
-                        <label>코드번호</label><input class="form-control">
-                        <label>코드명</label><input class="form-control">
-                        <button type="button" class="btn btn-primary">검색</button>
+                        <form th:action="@{/searchCode}" method="get">
+                            <p class="fa fa-search"></p>
+                            <label>코드번호</label><input class="form-control" name="cNo" type="text">
+                            <label>코드명</label><input class="form-control" name="cName" type="text">
+                            <button type="submit" class="btn btn-primary">조회</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -69,7 +67,7 @@
                     <button class="btn btn-danger" id="deleteBtn" onclick="deleteCodeBtn()">코드 삭제</button>
                 </div>
                 <div class="button-group">
-                    <button id="excel-btn" type="button" class="btn btn-primary">엑셀 저장</button>
+                    <button id="excel-btn" type="button" class="btn btn-success">엑셀 저장</button>
                 </div>
             </div>
         </div>
@@ -79,8 +77,9 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <table width="100%" class="table table-striped table-bordered table-hover"
+                        <div class="panel-body" style="height: 500px">
+                            <table style="width: 100%;font-size: large"
+                                   class="table table-striped table-bordered table-hover"
                                    id="dataTables-example">
                                 <thead>
                                 <tr>
@@ -91,12 +90,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="code : ${codes}">
-                                        <td><input type="checkbox" class="codeCheckbox" th:value="${code.cNo}"></td>
-                                        <td th:text="${code.cNo}"></td>
-                                        <td th:text="${code.cCode}"></td>
-                                        <td th:text="${code.cName}"></td>
-                                    </tr>
+                                <tr th:each="code : ${codes}">
+                                    <td><input type="checkbox" class="codeCheckbox" th:value="${code.cNo}"></td>
+                                    <td th:text="${code.cNo}"></td>
+                                    <td th:text="${code.cCode}"></td>
+                                    <td th:text="${code.cName}"></td>
+                                </tr>
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
@@ -149,12 +148,12 @@
 
 <th:block layout:fragment="script">
     <script>
-        function deleteCodeBtn(){
+        function deleteCodeBtn() {
             var selectedCodes = [];
             var checkbox = document.querySelectorAll('input[type="checkbox"]');
 
-            checkbox.forEach(function(box) {
-                if(box.checked) {
+            checkbox.forEach(function (box) {
+                if (box.checked) {
                     var row = box.closest('tr');
                     var firstCell = row.cells[1];
                     selectedCodes.push(firstCell.innerText);
@@ -163,19 +162,19 @@
 
             var codeId = selectedCodes[0];
 
-            if(selectedCodes.length !== 1){
+            if (selectedCodes.length !== 1) {
                 alert('삭제할 코드를 하나만 선택해주세요.');
-            }else if(confirm('코드를 삭제하시겠습니까?')){
-                    fetch('/code/delete/' + codeId, {
+            } else if (confirm('코드를 삭제하시겠습니까?')) {
+                fetch('/code/delete/' + codeId, {
                     method: 'POST',
                     headers: {
                         "Content-Type": 'application/json',
                     },
                 }).then(response => {
-                    if(response.ok){
+                    if (response.ok) {
                         alert('삭제되었습니다.');
                         window.location.href = '/code';
-                    }else {
+                    } else {
                         alert('삭제에 실패했습니다.');
                     }
                 }).catch(error => {
@@ -185,7 +184,7 @@
             }
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#excel-btn').click(function () {
                 var selectedItems = [];
                 $('input.code-checkbox:checked').each(function () {

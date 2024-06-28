@@ -22,6 +22,8 @@ public class QMaterials extends EntityPathBase<Materials> {
 
     public static final QMaterials materials = new QMaterials("materials");
 
+    public final NumberPath<Integer> leadTime = createNumber("leadTime", Integer.class);
+
     public final StringPath mtCode = createString("mtCode");
 
     public final NumberPath<Integer> mtMax = createNumber("mtMax", Integer.class);

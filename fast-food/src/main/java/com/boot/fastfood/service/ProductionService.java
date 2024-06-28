@@ -1,12 +1,16 @@
 package com.boot.fastfood.service;
 
 import com.boot.fastfood.dto.ProductionDto;
+import com.boot.fastfood.dto.ProductionSearchDto;
 import com.boot.fastfood.entity.Production;
 import com.boot.fastfood.repository.ProductionRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,5 +39,15 @@ public class ProductionService {
 //        dto.setItCode(production.getItName().getItCode());
         dto.setItName(production.getItName().getItName());
         return dto;
+    }
+
+    public List<Production> findAll() {
+        return productionRepository.findAll();
+    }
+
+    public List<Production> findAllProductionsWithItems() {
+        List<Production> productions = productionRepository.findAll();
+        productions.forEach(production -> Hibernate.initialize(production.getItName()));
+        return productions;
     }
 }

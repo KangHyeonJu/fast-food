@@ -1,11 +1,14 @@
 package com.boot.fastfood.service;
 
+import com.boot.fastfood.entity.Production;
 import com.boot.fastfood.entity.Works;
 import com.boot.fastfood.repository.WorksRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -25,4 +28,5 @@ public class WorksService {
 
         return worksRepository.findByProductionPmCode(pmCode);
     }
+
 }

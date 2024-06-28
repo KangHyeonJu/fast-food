@@ -13,10 +13,6 @@
             margin-left: 10px; /* 버튼 사이의 간격 조정 */
         }
 
-        #excel-btn {
-            background-color: #2b542c;
-        }
-
         .form-group label {
             margin-right: 10px;
         }
@@ -36,17 +32,19 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
-
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="form-group">
-                        <p class="fa fa-search"></p>
-                        <label>업체코드</label><input class="form-control">
-                        <label>업체명</label><input class="form-control">
-                        <label>업체분류</label><input class="form-control">
-                        <button type="button" class="btn btn-primary">검색</button>
-                    </div>
+                    <form th:action="@{/searchVendor}" method="get">
+                        <div class="form-group">
+                            <p class="fa fa-search"></p>
+                            <label>업체코드</label><input class="form-control" type="text" name="vdCode">
+                            <label>업체명</label><input class="form-control" type="text" name="vdName">
+                            <label>자재명</label><input class="form-control" type="text" name="mtName">
+                            <button type="submit" class="btn btn-primary">조회</button>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -56,7 +54,7 @@
             <div class="button-container">
 
                 <div class="button-group">
-                    <button id="excel-btn" type="button" class="btn btn-primary">엑셀 저장</button>
+                    <button id="excel-btn" type="button" class="btn btn-success">엑셀 저장</button>
                 </div>
             </div>
         </div>

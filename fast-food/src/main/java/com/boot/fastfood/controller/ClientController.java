@@ -1,8 +1,7 @@
 package com.boot.fastfood.controller;
 
 import com.boot.fastfood.dto.ClientDto;
-import com.boot.fastfood.entity.Clients;
-import com.boot.fastfood.entity.Codes;
+import com.boot.fastfood.entity.*;
 import com.boot.fastfood.repository.ClientRepository;
 import com.boot.fastfood.service.ClientService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -101,5 +103,59 @@ public class ClientController {
         workbook.write(response.getOutputStream());
         workbook.close();
     }
+    @GetMapping("/searchClient")
+    public String getSearchClient(@RequestParam(required = false, name = "clCode") String clCode,
+                                  @RequestParam(required = false, name = "clName") String clName,
+                                  @RequestParam(required = false, name = "clType") String clType,
+                                  Model model) {
+
+        List<Clients> clientsList;
+
+        // 고객 코드, 고객 명, 고객 분류가 모두 입력된 경우
+        if (clCode != null && !clCode.isEmpty() && clName != null && !clName.isEmpty() && clType != null && !clType.isEmpty()) {
+            clientsList = clientRepository.findByClCodeAndClNameAndClType(clCode, clName, clType);
+        }
+        // 고객 코드와 고객 명이 입력된 경우
+        else if (clCode != null && !clCode.isEmpty() && clName != null && !clName.isEmpty()) {
+            clientsList = clientRepository.findByClCodeAndClName(clCode, clName);
+        }
+        // 고객 코드와 고객 분류가 입력된 경우
+        else if (clCode != null && !clCode.isEmpty() && clType != null && !clType.isEmpty()) {
+            clientsList = clientRepository.findByClCodeAndClType(clCode, clType);
+        }
+        // 고객 명과 고객 분류가 입력된 경우
+        else if (clName != null && !clName.isEmpty() && clType != null && !clType.isEmpty()) {
+            clientsList = clientRepository.findByClNameAndClType(clName, clType);
+        }
+        // 고객 코드만 입력된 경우
+        else if (clCode != null && !clCode.isEmpty()) {
+            Clients client = clientRepository.findByClCode(clCode);
+            if (client != null) {
+                clientsList = Collections.singletonList(client);
+            } else {
+                clientsList = Collections.emptyList();
+            }
+        }
+        // 고객 명만 입력된 경우
+        else if (clName != null && !clName.isEmpty()) {
+            clientsList = clientRepository.findByClName(clName);
+        }
+        // 고객 분류만 입력된 경우
+        else if (clType != null && !clType.isEmpty()) {
+            clientsList = clientRepository.findByClType(clType);
+        }
+        // 모든 입력값이 없는 경우
+        else {
+            clientsList = clientRepository.findAll();
+        }
+
+        model.addAttribute("clients", clientsList);
+
+        // 기타 필요한 로직 추가 가능
+
+        return "system/client"; // 적절한 뷰 이름으로 변경
+    }
+
+
 
 }

@@ -37,4 +37,5 @@ public class Items {
         this.itType = itType;
         this.itEa = itEa;
     }
+
 }

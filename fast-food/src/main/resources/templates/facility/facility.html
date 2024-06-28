@@ -108,7 +108,7 @@
                 <button class="btn" type="button" style="background-color: rgb(189,215,238)" data-toggle="modal"
                         data-target="#facilityModal" id="facilityBtn">설비 등록
                 </button>
-                <button class="btn" id="excelExportBtn" style="background-color: rgb(197,224,180); margin-left: 5px" type="button">엑셀파일저장
+                <button class="btn btn-success" id="excelExportBtn" type="button">엑셀 저장
                 </button>
             </div>
             <!-- Modal -->
@@ -157,7 +157,7 @@
 
             <form role="form" method="get" th:object="${facility}" th:action="@{'/facility'}">
                 <th:block th:object="${facilitySearchDto}">
-                    <!-- 검색 -->
+                    <!-- 조회 -->
                     <div class="panel panel-default">
                         <ul class="list-inline" style="margin: 15px 10px 10px 10px;">
                             <li>
@@ -177,12 +177,12 @@
                                 </p>
                             </li>
                             <li style="float: right;">
-                                <button class="btn btn-primary" style="width: 60px;" id="searchBtn" type="submit">검색
+                                <button class="btn btn-primary" style="width: 60px;" id="searchBtn" type="submit">조회
                                 </button>
                             </li>
                         </ul>
                     </div>
-                    <!-- 검색 끝-->
+                    <!-- 조회 끝-->
                 </th:block>
 
                 <br/>
@@ -192,12 +192,12 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                설비 목록
+                                <h4>설비 목록</h4>
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body" style="height: 500px; overflow: auto">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example"
-                                       style="width: 100%;">
+                                       style="width: 100%; font-size: large;">
                                     <thead>
                                     <tr>
                                         <th><input type="checkbox" id="checkall"></th>

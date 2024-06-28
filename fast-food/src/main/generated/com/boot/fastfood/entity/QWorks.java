@@ -26,19 +26,21 @@ public class QWorks extends EntityPathBase<Works> {
 
     public final NumberPath<Integer> defRate = createNumber("defRate", Integer.class);
 
-    public final DateTimePath<java.util.Date> eDate = createDateTime("eDate", java.util.Date.class);
+    public final DateTimePath<java.time.LocalDateTime> eDate = createDateTime("eDate", java.time.LocalDateTime.class);
 
     public final QEmployee employee;
 
-    public final ListPath<Process, QProcess> process = this.<Process, QProcess>createList("process", Process.class, QProcess.class, PathInits.DIRECT2);
+    public final QProcess process;
 
     public final QProduction production;
 
-    public final DateTimePath<java.util.Date> sDate = createDateTime("sDate", java.util.Date.class);
+    public final DateTimePath<java.time.LocalDateTime> sDate = createDateTime("sDate", java.time.LocalDateTime.class);
 
     public final StringPath wkCode = createString("wkCode");
 
-    public final NumberPath<Integer> wkNo = createNumber("wkNo", Integer.class);
+    public final NumberPath<Integer> wkInput = createNumber("wkInput", Integer.class);
+
+    public final NumberPath<Integer> wkOutput = createNumber("wkOutput", Integer.class);
 
     public QWorks(String variable) {
         this(Works.class, forVariable(variable), INITS);
@@ -59,6 +61,7 @@ public class QWorks extends EntityPathBase<Works> {
     public QWorks(Class<? extends Works> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.employee = inits.isInitialized("employee") ? new QEmployee(forProperty("employee")) : null;
+        this.process = inits.isInitialized("process") ? new QProcess(forProperty("process"), inits.get("process")) : null;
         this.production = inits.isInitialized("production") ? new QProduction(forProperty("production"), inits.get("production")) : null;
     }
 

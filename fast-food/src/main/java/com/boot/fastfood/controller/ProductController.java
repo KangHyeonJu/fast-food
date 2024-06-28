@@ -1,12 +1,15 @@
 package com.boot.fastfood.controller;
 
+import com.boot.fastfood.dto.ContractSearchDto;
+import com.boot.fastfood.dto.Process.ProcessDTO;
 import com.boot.fastfood.dto.ProductionDto;
-import com.boot.fastfood.entity.Production;
-import com.boot.fastfood.entity.Works;
+import com.boot.fastfood.dto.ProductionSearchDto;
+import com.boot.fastfood.dto.Vendor.VendorListDTO;
+import com.boot.fastfood.entity.*;
+import com.boot.fastfood.entity.Process;
 import com.boot.fastfood.repository.ProductionRepository;
 import com.boot.fastfood.repository.WorksRepository;
-import com.boot.fastfood.service.ProductionService;
-import com.boot.fastfood.service.WorksService;
+import com.boot.fastfood.service.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
@@ -19,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,9 +31,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/machine")
@@ -39,15 +45,21 @@ public class ProductController {
     private final WorksService worksService;
     private final WorksRepository worksRepository;
     private final ProductionRepository productionRepository;
+    private final ItemService itemService;
+    private final ProcessService processService;
 
     @GetMapping("/productPlan")
-    public String productPlan(Model model){
+    public String productPlan(Model model) {
         List<ProductionDto> productions = productionService.getAllProductions();
         List<Works> works = worksService.findAll();
+        List<Items> items = itemService.findAll();
+
         model.addAttribute("works", works);
+        model.addAttribute("items", items);
         model.addAttribute("productions", productions);
         return "ProductPages/productionPlan";
     }
+
     @GetMapping("/fetchWorksData")
     @ResponseBody
     public ResponseEntity<List<Works>> fetchWorksData(@RequestParam(name = "pmCode") String pmCode) {
@@ -69,7 +81,7 @@ public class ProductController {
 
     @GetMapping("/productPlan/{pmCode}")
     @ResponseBody
-    public ResponseEntity<?> wkList(@PathVariable String pmCode){
+    public ResponseEntity<?> wkList(@PathVariable String pmCode) {
         Production production = productionRepository.findByPmCode(pmCode);
         List<Works> worksList = worksRepository.findByProduction(production);
 
@@ -78,62 +90,68 @@ public class ProductController {
     }
 
     @GetMapping("/wash")
-    public String wash(){
+    public String wash() {
         return "ProductPages/Machine/wash";
     }
 
     @GetMapping("/extractors")
-    public String extractors(){
+    public String extractors() {
         return "ProductPages/Machine/extractors";
     }
 
     @GetMapping("/extractors2")
-    public String extractors2(){
+    public String extractors2() {
         return "ProductPages/Machine/extractors2";
     }
 
     @GetMapping("/filters")
-    public String filters(){
+    public String filters() {
         return "ProductPages/Machine/filters";
     }
 
     @GetMapping("/sterilizer")
-    public String sterilizer(){
+    public String sterilizer() {
         return "ProductPages/Machine/sterilizer";
     }
 
     @GetMapping("/sterilizer2")
-    public String sterilizer2(){
+    public String sterilizer2() {
         return "ProductPages/Machine/sterilizer2";
     }
 
     @GetMapping("/fillings")
-    public String fillings(){
+    public String fillings() {
         return "ProductPages/Machine/fillings";
     }
 
     @GetMapping("/frezzer")
-    public String frezzer(){
+    public String frezzer() {
         return "ProductPages/Machine/frezzer";
     }
 
     @GetMapping("/checker")
-    public String checker(){
+    public String checker() {
         return "ProductPages/Machine/checker";
     }
 
     @GetMapping("/packing")
-    public String packing(){
+    public String packing() {
         return "ProductPages/Machine/packing";
     }
 
     @GetMapping("/endProcess")
-    public String endProcess(){
+    public String endProcess(Model model) {
+        List<Items> items = itemService.findAll();
+        model.addAttribute("items", items);
+
+        List<Process> processes = processService.findAll();
+        model.addAttribute("processes", processes);
+
         return "ProductPages/endProcess";
     }
 
     @GetMapping("/Calendar")
-    public String Calendar(){
+    public String Calendar() {
         return "ProductPages/Calendar";
     }
 
@@ -194,5 +212,57 @@ public class ProductController {
         workbook.write(response.getOutputStream());
         workbook.close();
     }
+
+    @GetMapping("/searchProductionPlan")
+    public String searchEmployee(
+            @RequestParam(required = false, name = "pmCode") String pmCode,
+            @RequestParam(required = false, name = "startTime") LocalDate startTime,
+            @RequestParam(required = false, name = "itName") String itName,
+            Model model) {
+
+        List<ProductionDto> productions = productionService.findAllProductionsWithItems()
+                .stream()
+                .map(production -> {
+                    ProductionDto dto = new ProductionDto();
+                    dto.setPmCode(production.getPmCode());
+                    dto.setCtCode(production.getContract() != null ? production.getContract().getCtCode() : null);
+                    dto.setPmSDate(production.getPmSDate());
+                    dto.setPmEDate(production.getPmEDate());
+                    dto.setPNo(production.getPNo());
+                    dto.setItCode(production.getItName() != null ? production.getItName().getItCode() : null);
+                    dto.setItName(production.getItName() != null ? production.getItName().getItName() : null);
+                    dto.setPmAmount(production.getPmAmount());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        // 필터링 조건에 따라 조회 처리
+        if (pmCode != null && !pmCode.isEmpty()) {
+            productions = productions.stream()
+                    .filter(dto -> dto.getPmCode() != null && dto.getPmCode().contains(pmCode))
+                    .toList();
+        }
+        if (startTime != null) {
+            productions = productions.stream()
+                    .filter(dto -> dto.getPmSDate() != null && dto.getPmSDate().equals(startTime))
+                    .toList();
+        }
+        if (itName != null && !itName.isEmpty()) {
+            productions = productions.stream()
+                    .filter(dto -> dto.getItName() != null && dto.getItName().contains(itName))
+                    .toList();
+        }
+        System.out.println("시간 : " + startTime);
+
+        List<Works> works = worksService.findAll();
+        List<Items> items = itemService.findAll();
+        model.addAttribute("works", works);
+        model.addAttribute("items", items);
+
+        model.addAttribute("productions", productions);
+
+        return "ProductPages/productionPlan";  // HTML 템플릿 파일 이름
+    }
+
 
 }

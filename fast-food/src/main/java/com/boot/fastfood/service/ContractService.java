@@ -67,16 +67,6 @@ public class ContractService {
             contract.setCtStatus("준비중");
 
 
-            //해당 부분 발주 등록으로 이동
-//            Calendar calendar = new Calendar();
-//            calendar.setTitle(contract.getClients().getClName() + ", " + contract.getItems().getItName());
-//
-//            calendar.setSDate(contract.getCtDate());
-//            calendar.setEDate(contract.getDeliveryDate());
-//
-//            calendarRepository.save(calendar);
-
-
             Clients clients = contract.getClients();
             clients.setClAmount(clients.getClAmount() + contract.getCtAmount());
 

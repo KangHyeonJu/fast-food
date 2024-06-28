@@ -14,4 +14,5 @@ public interface CodesRepository extends JpaRepository<Codes, Long> {
 
     List<Codes> findBycNoIn(Collection<Long> cNo);
 
+    List<Codes> findBycNameContaining(String cName);
 }
