@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ProductionRepository extends JpaRepository<Production, String> {
-    Production findByContract(Contract contract);
+    List<Production> findByContract(Contract contract);
     
     Production findByPmCode(String pmCode);
 

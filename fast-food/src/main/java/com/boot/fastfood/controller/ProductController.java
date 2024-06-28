@@ -97,56 +97,6 @@ public class ProductController {
                 .body(worksList);
     }
 
-    @GetMapping("/wash")
-    public String wash() {
-        return "ProductPages/Machine/wash";
-    }
-
-    @GetMapping("/extractors")
-    public String extractors() {
-        return "ProductPages/Machine/extractors";
-    }
-
-    @GetMapping("/extractors2")
-    public String extractors2() {
-        return "ProductPages/Machine/extractors2";
-    }
-
-    @GetMapping("/filters")
-    public String filters() {
-        return "ProductPages/Machine/filters";
-    }
-
-    @GetMapping("/sterilizer")
-    public String sterilizer() {
-        return "ProductPages/Machine/sterilizer";
-    }
-
-    @GetMapping("/sterilizer2")
-    public String sterilizer2() {
-        return "ProductPages/Machine/sterilizer2";
-    }
-
-    @GetMapping("/fillings")
-    public String fillings() {
-        return "ProductPages/Machine/fillings";
-    }
-
-    @GetMapping("/frezzer")
-    public String frezzer() {
-        return "ProductPages/Machine/frezzer";
-    }
-
-    @GetMapping("/checker")
-    public String checker() {
-        return "ProductPages/Machine/checker";
-    }
-
-    @GetMapping("/packing")
-    public String packing() {
-        return "ProductPages/Machine/packing";
-    }
-
     @GetMapping("/endProcess")
     public String endProcess(Model model){
         List<ProductionDto> productions = productionService.getAllProductions();

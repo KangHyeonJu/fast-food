@@ -1,15 +1,12 @@
 package com.boot.fastfood.controller;
 
+import com.boot.fastfood.dto.EndProductionSearchDto;
+import com.boot.fastfood.dto.ProductionDto;
 import com.boot.fastfood.dto.ShipSearchDto;
 import com.boot.fastfood.dto.ShipmentDto;
-import com.boot.fastfood.entity.Contract;
-import com.boot.fastfood.entity.Employee;
-import com.boot.fastfood.entity.Items;
-import com.boot.fastfood.entity.Shipment;
-import com.boot.fastfood.repository.ShipmentRepository;
-import com.boot.fastfood.service.EmployeeService;
-import com.boot.fastfood.service.ItemsService;
-import com.boot.fastfood.service.ShipmentService;
+import com.boot.fastfood.entity.*;
+import com.boot.fastfood.repository.*;
+import com.boot.fastfood.service.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
@@ -21,11 +18,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,6 +31,11 @@ public class ShipmentController {
     private final ItemsService itemsService;
     private final EmployeeService employeeService;
     private final ShipmentRepository shipmentRepository;
+    private final ContractRepository contractRepository;
+    private final ProductionRepository productionRepository;
+    private final WorksRepository worksRepository;
+    private final ProductionService productionService;
+    private final ItemsRepository itemsRepository;
 
     @GetMapping("/shipment")
     public String shipmentPage(ShipSearchDto shipSearchDto, Model model){
@@ -181,5 +183,80 @@ public class ShipmentController {
 
         workbook.write(response.getOutputStream());
         workbook.close();
+    }
+
+    @GetMapping("/endProduction")
+    public String searchEndProduction(@RequestParam(required = false, name = "pmCode") String pmCode,
+                                      @RequestParam(required = false, name = "ctCode") String ctCode,
+                                      @RequestParam(required = false, name = "itName") String itName,
+                                      @RequestParam(required = false, name = "clName") String clName,
+                                      Model model){
+
+        List<Production> endContract = new ArrayList<>();
+
+        List<Contract> contracts = contractRepository.findAll();
+        for(Contract contract : contracts){
+            int i = 0;
+            List<Production> productions = productionRepository.findByContract(contract);
+
+            for(Production production : productions){
+                List<Works> worksList = worksRepository.findByProduction(production);
+
+                for(Works works : worksList){
+                    if(works.getREDate() != null){
+                        i++;
+                    }
+                }
+
+                if(worksList.size() == i){
+                    endContract.add(production);
+                }
+            }
+        }
+
+        List<EndProductionSearchDto> productions = endContract
+                .stream()
+                .map(production -> {
+                    EndProductionSearchDto dto = new EndProductionSearchDto();
+                    dto.setPmCode(production.getPmCode());
+                    dto.setContract(production.getContract());
+                    dto.setPmEDate(production.getPmEDate());
+                    dto.setItems(production.getItName());
+                    dto.setPmAmount(production.getPmAmount());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        if (pmCode != null && !pmCode.isEmpty()) {
+            productions = productions.stream()
+                    .filter(dto -> dto.getPmCode() != null && dto.getPmCode().contains(pmCode))
+                    .toList();
+        }
+
+        if (ctCode != null && !ctCode.isEmpty()) {
+            productions = productions.stream()
+                    .filter(dto -> dto.getPmCode() != null && dto.getContract().getCtCode().contains(ctCode))
+                    .toList();
+        }
+
+        if (itName != null && !itName.isEmpty()) {
+            productions = productions.stream()
+                    .filter(dto -> dto.getItems().getItName() != null && dto.getItems().getItName().contains(itName))
+                    .toList();
+        }
+
+        if (clName != null && !clName.isEmpty()) {
+            productions = productions.stream()
+                    .filter(dto -> dto.getContract().getClients().getClName() != null && dto.getContract().getClients().getClName().contains(clName))
+                    .toList();
+        }
+
+        List<Items> items = itemsRepository.findAll();
+
+        model.addAttribute("items", items);
+
+        model.addAttribute("endContract", productions);
+
+        return "shipment/endProduction";
     }
 }
