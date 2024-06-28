@@ -41,4 +41,8 @@ public class WorksService {
         worksRepository.save(works);
     }
 
+    public void setFCState(Works works){
+
+    }
+
 }

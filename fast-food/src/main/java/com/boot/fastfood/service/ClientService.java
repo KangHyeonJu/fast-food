@@ -20,6 +20,7 @@ public class ClientService {
     public Clients saveClient(Clients clients){
         String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         clients.setClCode("CL"+ date);
+        clients.setClAmount(0L);
         return clientRepository.save(clients);
     }
 

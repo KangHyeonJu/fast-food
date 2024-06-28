@@ -15,6 +15,10 @@
             margin-left: 10px; /* 버튼 사이의 간격 조정 */
         }
 
+        #excel-btn {
+            background-color: #2b542c;
+        }
+
         .form-group label {
             margin-right: 10px;
         }
@@ -70,180 +74,179 @@
 
         <br/>
 
-        <!-- 조회 패널 -->
-        <form th:action="@{/searchClient}" method="get">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="form-group" style="margin-bottom : 0">
+        <!-- 검색 패널 -->
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group" style="margin-bottom : 0">
+                        <form th:action="@{/searchClient}" method="get">
                             <p class="fa fa-search"></p>
                             <label>고객코드</label><input class="form-control" name="clCode">
                             <label>고객명</label><input class="form-control" name="clName">
                             <label>고객분류</label><input class="form-control" name="clType">
-                            <button class="btn btn-primary" type="submit">조회</button>
+                            <button type="submit" class="btn btn-primary">검색</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /검색 -->
+
+        <br/>
+
+        <!-- 고객 조회 테이블 -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            고객 목록
+                        </div>
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover"
+                                   id="dataTables-example">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="checkall"></th>
+                                    <th>고객코드</th>
+                                    <th>고객명</th>
+                                    <th>고객분류</th>
+                                    <th>연락처</th>
+                                    <th>전체 수주량</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="client : ${clients}">
+                                    <td><input type="checkbox" class="client-checkbox"
+                                               th:value="${client.clCode}"></td>
+                                    <td th:text="${client.clCode}" onclick="clientDetail('${client.clCode}')"></td>
+                                    <td th:text="${client.clName}"></td>
+                                    <td th:text="${client.clType}"></td>
+                                    <td th:text="${client.clPhone}"></td>
+                                    <td th:text="${client.clAmount}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- /조회 -->
 
             <br/>
 
-            <!-- 고객 조회 테이블 -->
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4>고객 목록</h4>
-                            </div>
-                            <div class="panel-body" style="height: 300px">
-                                <table class="table table-striped table-bordered table-hover"
-                                       style="width: 100%;font-size: large" id="dataTables-example">
-                                    <thead>
-                                    <tr>
-                                        <th><input type="checkbox" id="checkall"></th>
-                                        <th>고객코드</th>
-                                        <th>고객명</th>
-                                        <th>고객분류</th>
-                                        <th>연락처</th>
-                                        <th>전체 수주량</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="client : ${clients}">
-                                        <td><input type="checkbox" class="client-checkbox"
-                                                   th:value="${client.clCode}"></td>
-                                        <td th:text="${client.clCode}" onclick="clientDetail('${client.clCode}')"></td>
-                                        <td th:text="${client.clName}"></td>
-                                        <td th:text="${client.clType}"></td>
-                                        <td th:text="${client.clPhone}"></td>
-                                        <td th:text="${client.clAmount}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+            <!--현황 테이블-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            고객 현황
+                        </div>
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover"
+                                   id="dataTables-example2">
+                                <thead>
+                                <tr>
+                                    <th>수주 코드</th>
+                                    <th>제품명</th>
+                                    <th>수주량</th>
+                                    <th>연간 수주량</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+
+    <!-- 고객 등록 모달창 -->
+    <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">고객등록</h4>
+                </div>
+                <form class="newClient" action="client/new" role="form" method="post">
+                    <div class="clientgroup">
+                        <div class="form-group input-group">
+                            <label>고객명</label>
+                            <input class="form-control" id="clName" name="clName">
+                        </div>
+                        <div class="form-group input-group">
+                            <label>고객분류</label>
+                            <select class="form-control" id="clType" name="clType">
+                                <option value="개인">개인</option>
+                                <option value="단체">단체</option>
+                            </select>
+                        </div>
+                        <div class="form-group input-group">
+                            <label>연락처</label>
+                            <input class="form-control" id="clPhone" name="clPhone">
                         </div>
                     </div>
-                </div>
-            </div>
-        </form>
-        <br/>
-
-        <!--현황 테이블-->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4>고객 현황</h4>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">등록</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                     </div>
-                    <div class="panel-body" style="height: 300px">
-                        <table style="width: 100%; font-size: large"
-                               class="table table-striped table-bordered table-hover"
-                               id="dataTables-example2">
-                            <thead>
-                            <tr>
-                                <th>수주 코드</th>
-                                <th>제품명</th>
-                                <th>수주량</th>
-                                <th>연간 수주량</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.panel-body -->
-                </div>
-                <!-- /.panel -->
+                </form>
             </div>
-            <!-- /.col-lg-12 -->
+            <!-- /.modal-content -->
         </div>
-        <!-- /.row -->
+        <!-- /.modal-dialog -->
     </div>
-    <!-- /.container-fluid -->
-</div>
-<!-- /#page-wrapper -->
+    <!-- /.modal -->
 
-<!-- 고객 등록 모달창 -->
-<div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                </button>
-                <h4 class="modal-title" id="myModalLabel">고객등록</h4>
+
+    <!-- 고객 수정 모달창 -->
+    <div class="modal fade" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                    </button>
+                    <h4 class="modal-title" id="modifyid">고객수정</h4>
+                </div>
+                <form class="updateClient" action="client/update" role="form" method="post">
+                    <input type="hidden" id="clientCode2" name="clCode">
+                    <div class="clientgroup">
+                        <div class="form-group input-group">
+                            <label>고객명</label>
+                            <input class="form-control" id="clName2" name="clName" readonly>
+                        </div>
+                        <div class="form-group input-group">
+                            <label>고객분류</label>
+                            <input class="form-control" id="clType2" name="clType" readonly>
+                        </div>
+                        <div class="form-group input-group">
+                            <label>연락처</label>
+                            <input class="form-control" id="clPhone2" name="clPhone">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">수정</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    </div>
+                </form>
             </div>
-            <form class="newClient" action="client/new" role="form" method="post">
-                <div class="clientgroup">
-                    <div class="form-group input-group">
-                        <label>고객명</label>
-                        <input class="form-control" id="clName" name="clName">
-                    </div>
-                    <div class="form-group input-group">
-                        <label>고객분류</label>
-                        <select class="form-control" id="clType" name="clType">
-                            <option value="개인">개인</option>
-                            <option value="단체">단체</option>
-                        </select>
-                    </div>
-                    <div class="form-group input-group">
-                        <label>연락처</label>
-                        <input class="form-control" id="clPhone" name="clPhone">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">등록</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                </div>
-            </form>
+            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-content -->
+        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-
-<!-- 고객 수정 모달창 -->
-<div class="modal fade" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                </button>
-                <h4 class="modal-title" id="modifyid">고객수정</h4>
-            </div>
-            <form class="updateClient" action="client/update" role="form" method="post">
-                <input type="hidden" id="clientCode2" name="clCode">
-                <div class="clientgroup">
-                    <div class="form-group input-group">
-                        <label>고객명</label>
-                        <input class="form-control" id="clName2" name="clName" readonly>
-                    </div>
-                    <div class="form-group input-group">
-                        <label>고객분류</label>
-                        <input class="form-control" id="clType2" name="clType" readonly>
-                    </div>
-                    <div class="form-group input-group">
-                        <label>연락처</label>
-                        <input class="form-control" id="clPhone2" name="clPhone">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">수정</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                </div>
-            </form>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+    <!-- /.modal -->
 
 </div>
 

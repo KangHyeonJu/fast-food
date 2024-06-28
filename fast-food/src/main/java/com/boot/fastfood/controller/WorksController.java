@@ -62,6 +62,8 @@ public class WorksController {
         Works works = worksRepository.findByWkCode(wkCode);
         Employee employee = employeeRepository.findByEmName(emName);
 
+        worksService.setFCState(works);
+
         worksService.saveRSDate(works, employee);
     }
 
@@ -70,6 +72,8 @@ public class WorksController {
     public void saveREDate(@RequestBody Map<String, Object> data){
         String wkCode = (String) data.get("wkCode");
         Works works = worksRepository.findByWkCode(wkCode);
+
+
         worksService.saveREDate(works);
     }
 
