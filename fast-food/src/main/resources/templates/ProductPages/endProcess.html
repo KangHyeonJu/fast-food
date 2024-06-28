@@ -80,7 +80,7 @@
 
             <!-- 버튼 모음 -->
             <div class="list-inline text-right">
-                <button type="button" class="btn btn-success">엑셀 저장</button>
+                <button id="excelExportBtn" class="btn btn-success">엑셀 저장</button>
             </div>
             <!--버튼끝-->
 
@@ -110,7 +110,7 @@
                                 </thead>
                                 <tbody>
                                 <tr class="pmList" th:each="productions : ${productions}">
-                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox" class="planCheckbox" th:value="${productions.pmCode}"></td>
                                     <td th:text="${productions.pmCode}" onclick="endWork(this);"></td>
                                     <td th:text="${productions.ctCode}"></td>
                                     <td class="center" th:text="${productions.itName}"></td>
@@ -238,6 +238,32 @@
                 }
             });
         }
+        $(document).ready(function () {
+            $('#excelExportBtn').click(function () {
+                var selectedproductPlan = [];
+                $('input.planCheckbox:checked').each(function () {
+                    selectedproductPlan.push($(this).attr('value'));
+                });
+
+                if (selectedproductPlan.length === 0) {
+                    alert('선택된 작업 실적이 없습니다.');
+                    return;
+                }
+
+                var form = $('<form action="/machine/endProcess/export/excel" method="POST"></form>');
+                for (var i = 0; i < selectedproductPlan.length; i++) {
+                    form.append('<input type="hidden" name="pmCode" value="' + selectedproductPlan[i] + '">');
+                }
+
+                $('body').append(form);
+
+                // 폼을 명시적으로 제출합니다.
+                form.submit();
+            });
+            $('#checkall').click(function () {
+                $('input:checkbox').not(this).prop('checked', this.checked);
+            });
+        });
     </script>
 </th:block>
 

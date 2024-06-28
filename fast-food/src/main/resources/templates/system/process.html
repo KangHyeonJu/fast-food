@@ -115,7 +115,7 @@
                                 </thead>
                                     <tbody class="scrollable-tbody">
                                     <tr class="itemList" th:each="item : ${items}">
-                                        <td><input type="checkbox" id="itemCheck" th:value="${item.itCode}"></td>
+                                        <td><input type="checkbox" class="itemCheck" id="itemCheck" th:value="${item.itCode}"></td>
                                         <td th:text="${item.itCode}" id="showPanel" th:value="${item.itCode}"></td>
                                         <td class="center" th:text="${item.itName}" id="showPanel2" th:value="${item.itName}"></td>
                                         <td class="center" th:text="${item.itType}"></td>
@@ -289,7 +289,7 @@
             //itemList 클릭 이벤트 끝
             $('#excel-btn').click(function () {
                 var selectedItems = [];
-                $('input.routing-checkbox:checked').each(function () {
+                $('input.itemCheck:checked').each(function () {
                     selectedItems.push($(this).val());
                 });
 

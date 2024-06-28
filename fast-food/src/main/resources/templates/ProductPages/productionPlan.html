@@ -41,7 +41,7 @@
 
             <!-- 버튼 모음 -->
             <div class="list-inline text-right">
-                <button id="excelExportBtn" class="btn btn-success">엑셀 저장</button>
+                <button id="excelExportBtn" type="button" class="btn btn-success">엑셀 저장</button>
             </div>
             <!--버튼끝-->
 
@@ -111,7 +111,7 @@
                                 <tbody>
                                 <!-- 생산계획만큼 반복문으로 데이터 받아옴 controller에서 받아와야함 -->
                                 <tr class="pmList" th:each="production : ${productions}">
-                                    <td><input type="checkbox" class="planCheckbox"></td>
+                                    <td><input type="checkbox" class="planCheckbox" th:value="${production.pmCode}"></td>
                                     <td th:text="${production.pmCode}" onclick="fetchWorksData(this);"></td>
                                     <!-- 생산 시작일 = (납품요청일) - 1일 - (생산 소요 시간)  -->
                                     <td th:text="${production.pmSDate}"></td>
@@ -214,8 +214,8 @@
         $(document).ready(function () {
             $('#excelExportBtn').click(function () {
                 var selectedproductPlan = [];
-                $('input.productionPlan-checkbox:checked').each(function () {
-                    selectedproductPlan.push($(this).attr('value'));
+                $('input.planCheckbox:checked').each(function () {
+                    selectedproductPlan.push($(this).val());
                 });
 
                 if (selectedproductPlan.length === 0) {
