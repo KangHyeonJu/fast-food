@@ -269,6 +269,56 @@ public class ProductController {
 
         return "ProductPages/productionPlan";  // HTML 템플릿 파일 이름
     }
+    @GetMapping("/searchEndProcess")
+    public String searchEndProcess(
+            @RequestParam(required = false, name = "pmCode") String pmCode,
+            @RequestParam(required = false, name = "startTime") LocalDate startTime,
+            @RequestParam(required = false, name = "itName") String itName,
+            Model model) {
+
+        List<ProductionDto> productions = productionService.findAllProductionsWithItems()
+                .stream()
+                .map(production -> {
+                    ProductionDto dto = new ProductionDto();
+                    dto.setPmCode(production.getPmCode());
+                    dto.setCtCode(production.getContract() != null ? production.getContract().getCtCode() : null);
+                    dto.setPmSDate(production.getPmSDate());
+                    dto.setPmEDate(production.getPmEDate());
+                    dto.setPNo(production.getPNo());
+                    dto.setItCode(production.getItName() != null ? production.getItName().getItCode() : null);
+                    dto.setItName(production.getItName() != null ? production.getItName().getItName() : null);
+                    dto.setPmAmount(production.getPmAmount());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        // 필터링 조건에 따라 조회 처리
+        if (pmCode != null && !pmCode.isEmpty()) {
+            productions = productions.stream()
+                    .filter(dto -> dto.getPmCode() != null && dto.getPmCode().contains(pmCode))
+                    .toList();
+        }
+        if (startTime != null) {
+            productions = productions.stream()
+                    .filter(dto -> dto.getPmSDate() != null && dto.getPmSDate().equals(startTime))
+                    .toList();
+        }
+        if (itName != null && !itName.isEmpty()) {
+            productions = productions.stream()
+                    .filter(dto -> dto.getItName() != null && dto.getItName().contains(itName))
+                    .toList();
+        }
+        System.out.println("시간 : " + startTime);
+
+        List<Works> works = worksService.findAll();
+        List<Items> items = itemService.findAll();
+        model.addAttribute("works", works);
+        model.addAttribute("items", items);
+
+        model.addAttribute("productions", productions);
+
+        return "ProductPages/endProcess";  // HTML 템플릿 파일 이름
+    }
 
 
 }
