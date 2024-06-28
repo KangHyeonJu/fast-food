@@ -51,6 +51,7 @@ public class WorksController {
         String emName = (String) data.get("emName");
 
         Works works = worksRepository.findByWkCode(wkCode);
+
         Employee employee = employeeRepository.findByEmName(emName);
 
         worksService.saveRSDate(works, employee);
