@@ -3,6 +3,7 @@ package com.boot.fastfood.controller;
 import com.boot.fastfood.dto.ClientDto;
 import com.boot.fastfood.entity.*;
 import com.boot.fastfood.repository.ClientRepository;
+import com.boot.fastfood.repository.ContractRepository;
 import com.boot.fastfood.service.ClientService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,12 +33,21 @@ import java.util.stream.Collectors;
 public class ClientController {
     private final ClientService clientService;
     private final ClientRepository clientRepository;
+    private final ContractRepository contractRepository;
 
     @GetMapping("/client")
     public String clientPage(Model model){
         List<Clients> clients = clientService.getAllClients();
         model.addAttribute("clients", clients);
         return "system/client";
+    }
+
+    @GetMapping("/client/detail")
+    public ResponseEntity<List<Contract>> clDetail(@RequestParam(name = "clCode") String clCode){
+        Clients clients = clientRepository.findByClCode(clCode);
+        List<Contract> contractList = contractRepository.findByClients(clients);
+
+        return ResponseEntity.ok(contractList);
     }
 
     @PostMapping("/client/new")
@@ -156,6 +167,7 @@ public class ClientController {
         return "system/client"; // 적절한 뷰 이름으로 변경
     }
 
+    //고객 상세
 
 
 }
