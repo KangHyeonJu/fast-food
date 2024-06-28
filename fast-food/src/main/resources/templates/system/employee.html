@@ -109,7 +109,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="employee : ${employee}" th:if="${employee.emCon == 0}">
-                                    <td><input type="checkbox" class="employee-checkbox"
+                                    <td><input type="checkbox" class="employeeCheckbox"
                                                th:value="${employee.emCode}"></td>
                                     <td th:text="${employee.emCode}"></td>
                                     <td th:text="${employee.emName}"></td>
@@ -154,45 +154,6 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal -->
-
-
-    <!-- 직원 수정 모달창 -->
-    <!--    <div class="modal fade" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"-->
-    <!--         aria-hidden="true">-->
-    <!--        <div class="modal-dialog">-->
-    <!--            <div class="modal-content">-->
-    <!--                <div class="modal-header">-->
-    <!--                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;-->
-    <!--                    </button>-->
-    <!--                    <h4 class="modal-title" id="modifyid">고객수정</h4>-->
-    <!--                </div>-->
-    <!--                <form class="updateClient" action="client/update" role="form" method="post">-->
-    <!--                    <input type="hidden" id="clientCode2" name="clCode">-->
-    <!--                    <div class="clientgroup">-->
-    <!--                        <div class="form-group input-group">-->
-    <!--                            <label>고객명</label>-->
-    <!--                            <input class="form-control" id="clName2" name="clName" readonly>-->
-    <!--                        </div>-->
-    <!--                        <div class="form-group input-group">-->
-    <!--                            <label>고객분류</label>-->
-    <!--                            <input class="form-control" id="clType2" name="clType" readonly>-->
-    <!--                        </div>-->
-    <!--                        <div class="form-group input-group">-->
-    <!--                            <label>연락처</label>-->
-    <!--                            <input class="form-control" id="clPhone2" name="clPhone">-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                    <div class="modal-footer">-->
-    <!--                        <button type="submit" class="btn btn-primary">수정</button>-->
-    <!--                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>-->
-    <!--                    </div>-->
-    <!--                </form>-->
-    <!--            </div>-->
-    <!--            &lt;!&ndash; /.modal-content &ndash;&gt;-->
-    <!--        </div>-->
-    <!--        &lt;!&ndash; /.modal-dialog &ndash;&gt;-->
-    <!--    </div>-->
     <!-- /.modal -->
 
 </div>
@@ -240,7 +201,7 @@
                 });
 
                 if (selectedEmployee.length === 0) {
-                    alert('선택된 코드가 없습니다.');
+                    alert('선택된 직원이 없습니다.');
                     return;
                 }
 
