@@ -119,7 +119,7 @@
                                 <tr th:each="client : ${clients}">
                                     <td><input type="checkbox" class="client-checkbox"
                                                th:value="${client.clCode}"></td>
-                                    <td th:text="${client.clCode}" onclick="clientDetail('${client.clCode}')"></td>
+                                    <td th:text="${client.clCode}" onclick="clientDetail(this);"></td>
                                     <td th:text="${client.clName}"></td>
                                     <td th:text="${client.clType}"></td>
                                     <td th:text="${client.clPhone}"></td>
@@ -149,7 +149,6 @@
                                     <th>수주 코드</th>
                                     <th>제품명</th>
                                     <th>수주량</th>
-                                    <th>연간 수주량</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -279,49 +278,35 @@
         }
 
         //고객 상세 조회
-        function clientDetail(clCode) {
-            // 수주 데이터를 저장할 데이터 가져와야함
-            const contracts = [
-                {}
-            ];
+        function clientDetail(cell) {
+            var clCode = cell.textContent.trim();
 
-            const filteredContracts = contracts.filter(contract => contract.clCode === clCode);
+            $.ajax({
+                type: "GET",
+                url: "/client/detail",
+                data: {clCode: clCode},
+                contentType: 'application/json',
+                success: function (response) {
+                    var tableBody = document.getElementById("dataTables-example2").getElementsByTagName('tbody')[0];
+                    tableBody.innerHTML = ""; // 기존 데이터 지우기
 
-            const annualSums = {};
-
-            filteredContracts.forEach(contract => {
-                const year = new Date(contract.ctDate).getFullYear();
-                if (!annualSums[year]) {
-                    annualSums[year] = 0;
+                    $.each(response, function (client, index) {
+                        var row = "<tr>" +
+                            "<td>" + index.ctCode + "</td>" +
+                            "<td>" + index.items.itName + "</td>" +
+                            "<td>" + index.ctAmount + "</td>" +
+                            "</tr>";
+                        tableBody.innerHTML += row;
+                    });
+                },
+                error: function (request, status, error) {
+                    alert("데이터를 가져오는 중 오류가 발생했습니다.");
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                 }
-                annualSums[year] += contract.orderAmount;
-            });
-
-            // 계산
-            filteredContracts.forEach(contract => {
-                const year = new Date(contract.ctDate).getFullYear();
-                contract.annualOrderAmount = (annualSums[year] / 12).toFixed(2);
-            });
-
-            // 두 번째 테이블의 tbody 요소를 가져옴
-            const tbody = document.querySelector('#dataTables-example2 tbody');
-
-            // 기존의 모든 행을 제거
-            tbody.innerHTML = '';
-
-            // 필터링된 수주 데이터를 기반으로 새로운 행을 추가
-            filteredContracts.forEach(contract => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-            <td>${contract.orderCode}</td>
-            <td>${contract.productName}</td>
-            <td>${contract.orderAmount}</td>
-            <td>${contract.annualOrderAmount}</td>
-        `;
-                tbody.appendChild(row);
             });
         }
 
+        //엑셀
         $(document).ready(function () {
             $('#excel-btn').click(function () {
                 var selectedItems = [];

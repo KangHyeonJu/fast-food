@@ -36,8 +36,11 @@ public class WorksController {
 
     @GetMapping("/workList")
     public String workList(Model model){
+        // 오늘 날짜 추가
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
         //공정 불러옴
-        List<Works> works = worksRepository.findAll();
+        List<Works> works = worksRepository.findBySDateOrEDate(today);
         model.addAttribute("works", works);
 
         //작업자 불러옴
@@ -47,9 +50,6 @@ public class WorksController {
         List<Items> items = itemsRepository.findAll();
         model.addAttribute("items", items);
 
-        // 오늘 날짜 추가
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        model.addAttribute("today", today);
         return "ProductPages/workList";
     }
 
