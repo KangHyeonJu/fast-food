@@ -300,7 +300,8 @@
 
                 var deliveryDate = new Date($('#deliveryDate').val());
                 var today = new Date();
-
+                var maxDeliveryDate = new Date();
+                maxDeliveryDate.setDate(today.getDate() + 7);
                 if (isNaN(deliveryDate)) {
                     alert('납품일을 입력해주세요.');
                     event.preventDefault(); // 등록 이벤트 막기
@@ -312,6 +313,12 @@
                     event.preventDefault(); // 등록 이벤트 막기
                     return;
                 }
+                if (deliveryDate <= maxDeliveryDate) {
+                    alert('납품일은 오늘로부터 일주일 후 선택 가능합니다.');
+                    event.preventDefault();
+                    return;
+                }
+
 
                 if ($('#deliveryPlace').val().trim() === "") {
                     alert('납품 장소를 입력해주세요.');

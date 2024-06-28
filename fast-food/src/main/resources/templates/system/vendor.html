@@ -64,8 +64,8 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <table width="100%" class="table table-striped table-bordered table-hover"
+                        <div class="panel-body" style="height: 80%; overflow: auto">
+                            <table style="width: 100%; font-size: large" class="table table-striped table-bordered table-hover"
                                    id="dataTables-example">
                                 <thead>
                                 <tr>
@@ -116,7 +116,7 @@
                 });
 
                 if (selectedVenders.length === 0) {
-                    alert('선택된 코드가 없습니다.');
+                    alert('선택된 원자재 업체가 없습니다.');
                     return;
                 }
 

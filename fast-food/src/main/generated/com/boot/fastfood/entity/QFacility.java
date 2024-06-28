@@ -31,7 +31,7 @@ public class QFacility extends EntityPathBase<Facility> {
 
     public final StringPath fcPreTime = createString("fcPreTime");
 
-    public final EnumPath<com.boot.fastfood.constant.FcStatus> fcStatus = createEnum("fcStatus", com.boot.fastfood.constant.FcStatus.class);
+    public final StringPath fcStatus = createString("fcStatus");
 
     public QFacility(String variable) {
         super(Facility.class, forVariable(variable));

@@ -30,9 +30,13 @@ public class QWorks extends EntityPathBase<Works> {
 
     public final QEmployee employee;
 
-    public final QProcess process;
+    public final ListPath<Process, QProcess> process = this.<Process, QProcess>createList("process", Process.class, QProcess.class, PathInits.DIRECT2);
 
     public final QProduction production;
+
+    public final StringPath rEDate = createString("rEDate");
+
+    public final StringPath rSDate = createString("rSDate");
 
     public final DateTimePath<java.time.LocalDateTime> sDate = createDateTime("sDate", java.time.LocalDateTime.class);
 
@@ -61,7 +65,6 @@ public class QWorks extends EntityPathBase<Works> {
     public QWorks(Class<? extends Works> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.employee = inits.isInitialized("employee") ? new QEmployee(forProperty("employee")) : null;
-        this.process = inits.isInitialized("process") ? new QProcess(forProperty("process"), inits.get("process")) : null;
         this.production = inits.isInitialized("production") ? new QProduction(forProperty("production"), inits.get("production")) : null;
     }
 

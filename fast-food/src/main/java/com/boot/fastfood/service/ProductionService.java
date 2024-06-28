@@ -50,4 +50,18 @@ public class ProductionService {
         productions.forEach(production -> Hibernate.initialize(production.getItName()));
         return productions;
     }
+
+    public List<ProductionDto> findByPmCodeIn(List<String> pmCode) {
+        List<Production> productions = productionRepository.findByPmCodeIn(pmCode);
+        return productions.stream().map(production -> {
+            ProductionDto dto = new ProductionDto();
+            dto.setPmCode(production.getPmCode());
+            dto.setPmSDate(production.getPmSDate());
+            dto.setPmEDate(production.getPmEDate());
+            dto.setItName(production.getItName().getItName());
+            dto.setPmAmount(production.getPmAmount());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
 }

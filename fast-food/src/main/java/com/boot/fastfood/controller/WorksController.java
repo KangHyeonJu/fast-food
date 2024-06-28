@@ -1,20 +1,26 @@
 package com.boot.fastfood.controller;
 
 import com.boot.fastfood.dto.ProductionDto;
-import com.boot.fastfood.entity.Employee;
-import com.boot.fastfood.entity.Items;
-import com.boot.fastfood.entity.Works;
+import com.boot.fastfood.entity.*;
 import com.boot.fastfood.repository.EmployeeRepository;
 import com.boot.fastfood.repository.ItemsRepository;
 import com.boot.fastfood.repository.WorksRepository;
 import com.boot.fastfood.service.EmployeeService;
 import com.boot.fastfood.service.WorksService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -64,7 +70,7 @@ public class WorksController {
 
     @PostMapping("/addRSDate")
     @ResponseBody
-    public void saveRSDate(@RequestBody Map<String, Object> data){
+    public void saveRSDate(@RequestBody Map<String, Object> data) {
         String wkCode = (String) data.get("wkCode");
         String emName = (String) data.get("emName");
 
@@ -81,7 +87,7 @@ public class WorksController {
 
     @PostMapping("/addREDate")
     @ResponseBody
-    public void saveREDate(@RequestBody Map<String, Object> data){
+    public void saveREDate(@RequestBody Map<String, Object> data) {
         String wkCode = (String) data.get("wkCode");
         Works works = worksRepository.findByWkCode(wkCode);
 
@@ -121,4 +127,43 @@ public class WorksController {
 
         return "ProductPages/workList";  // HTML 템플릿 파일 이름
     }
+
+    @PostMapping(value = "/workList/export/excel", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public void exportCodeToExcel(@RequestParam(name = "wkCode", required = false) List<String> wkCode, HttpServletResponse response) throws IOException {
+        List<Works> works = worksRepository.findByWkCodeIn(wkCode);
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Codes");
+
+        String[] headers = {"w작업 지시 코드", "작업 투입량", "작업 완료량", "작업 시작 일시", "작업 종료 일시"};
+        Row headerRow = sheet.createRow(0);
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        int rowNum = 1;
+        for (Works work : works) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(work.getWkCode());
+            row.createCell(1).setCellValue(work.getWkInput());
+            row.createCell(2).setCellValue(work.getWkOutput());
+            // Convert LocalDateTime to a formatted string before setting in the cell
+            row.createCell(3).setCellValue(work.getSDate().format(formatter));
+            row.createCell(4).setCellValue(work.getEDate().format(formatter));
+        }
+
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "attachment; filename=WorkList.xlsx");
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
+    }
 }
+

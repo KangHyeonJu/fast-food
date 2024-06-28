@@ -41,7 +41,7 @@
 
             <!-- 버튼 모음 -->
             <div class="list-inline text-right">
-                <button type="button" class="btn btn-success">엑셀 저장</button>
+                <button id="excel-btn" type="button" class="btn btn-success">엑셀 저장</button>
             </div>
             <!--버튼끝-->
 
@@ -56,10 +56,10 @@
                                 <div class="form-group">
                                     <ul class="list-inline" style="margin-bottom: 0">
                                         <li>
-                                            <label>작업계획 코드 : <input name="wkCode"></label>
+                                            <label>작업계획 코드 : <input class="form-control" name="wkCode"></label>
                                         </li>
                                         <li>
-                                            <label>작업 시작 일시 : <input type="date" name="startTime" id="startTime"></label>
+                                            <label>작업 시작 일시 : <input class="form-control" type="date" name="startTime" id="startTime"></label>
                                         </li>
                                         <li>
                                             <button class="btn btn-primary">조회</button>
@@ -89,7 +89,7 @@
                                    style="width: 100%; font-size: large;">
                                 <thead>
                                 <tr>
-                                    <th class="text-center"><input type="checkbox"></th>
+                                    <th class="text-center"><input type="checkbox" id="checkall"></th>
                                     <th class="text-center">작업 지시 코드</th>
                                     <th class="text-center">작업 투입량</th>
                                     <th class="text-center">작업 완료량</th>
@@ -103,7 +103,7 @@
                                 <tbody>
                                 <!--th:if="${work.SDate == today}"-->
                                 <tr th:each="work : ${works}">
-                                    <td><input type="checkbox" class=""></td>
+                                    <td><input type="checkbox" class="vendor-checkbox" th:value="${work.wkCode}"></td>
                                     <td th:text="${work.wkCode}"></td>
                                     <td th:text="${work.wkInput}"></td>
                                     <td th:text="${work.wkOutput}"></td>
@@ -200,6 +200,31 @@
                 }
             });
         }
+        $(document).ready(function () {
+            $('#excel-btn').click(function () {
+                var selectedVenders = [];
+                $('input.vendor-checkbox:checked').each(function () {
+                    selectedVenders.push($(this).val());
+                });
+
+                if (selectedVenders.length === 0) {
+                    alert('선택된 작업 지시가 없습니다.');
+                    return;
+                }
+
+                var form = $('<form action="/works/workList/export/excel" method="POST"></form>');
+                for (var i = 0; i < selectedVenders.length; i++) {
+                    form.append('<input type="hidden" name="wkCode" value="' + selectedVenders[i] + '">');
+                }
+
+                $('body').append(form);
+                form.submit();
+            });
+
+            $('#checkall').click(function () {
+                $('input:checkbox').not(this).prop('checked', this.checked);
+            });
+        });
     </script>
 </th:block>
 </html>
