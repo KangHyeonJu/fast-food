@@ -15,10 +15,6 @@
             margin-left: 10px; /* 버튼 사이의 간격 조정 */
         }
 
-        #excel-btn {
-            background-color: #2b542c;
-        }
-
         .form-group label {
             margin-right: 10px;
         }
@@ -66,7 +62,7 @@
                     </button>
                 </div>
                 <div class="button-group">
-                    <button id="excel-btn" type="button" class="btn btn-primary">엑셀 저장</button>
+                    <button id="excel-btn" type="button" class="btn btn-success">엑셀 저장</button>
                 </div>
             </div>
         </div>
@@ -74,281 +70,282 @@
 
         <br/>
 
-        <!-- 검색 패널 -->
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="form-group" style="margin-bottom : 0">
-                        <p class="fa fa-search"></p>
-                        <label>고객코드</label><input class="form-control">
-                        <label>고객명</label><input class="form-control">
-                        <label>고객분류</label><input class="form-control">
-                        <button type="button" class="btn btn-primary">검색</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /검색 -->
-
-        <br/>
-
-        <!-- 고객 조회 테이블 -->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            고객 목록
-                        </div>
-                        <div class="panel-body">
-                            <table width="100%" class="table table-striped table-bordered table-hover"
-                                   id="dataTables-example">
-                                <thead>
-                                <tr>
-                                    <th><input type="checkbox" id="checkall"></th>
-                                    <th>고객코드</th>
-                                    <th>고객명</th>
-                                    <th>고객분류</th>
-                                    <th>연락처</th>
-                                    <th>전체 수주량</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="client : ${clients}">
-                                    <td><input type="checkbox" class="client-checkbox"
-                                               th:value="${client.clCode}"></td>
-                                    <td th:text="${client.clCode}" onclick="clientDetail('${client.clCode}')"></td>
-                                    <td th:text="${client.clName}"></td>
-                                    <td th:text="${client.clType}"></td>
-                                    <td th:text="${client.clPhone}"></td>
-                                    <td th:text="${client.clAmount}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
+        <!-- 조회 패널 -->
+        <form th:action="@{/searchClient}" method="get">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group" style="margin-bottom : 0">
+                            <p class="fa fa-search"></p>
+                            <label>고객코드</label><input class="form-control" name="clCode">
+                            <label>고객명</label><input class="form-control" name="clName">
+                            <label>고객분류</label><input class="form-control" name="clType">
+                            <button class="btn btn-primary" type="submit">조회</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- /조회 -->
 
             <br/>
 
-            <!--현황 테이블-->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            고객 현황
+            <!-- 고객 조회 테이블 -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4>고객 목록</h4>
+                            </div>
+                            <div class="panel-body" style="height: 300px">
+                                <table class="table table-striped table-bordered table-hover"
+                                       style="width: 100%;font-size: large" id="dataTables-example">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="checkall"></th>
+                                        <th>고객코드</th>
+                                        <th>고객명</th>
+                                        <th>고객분류</th>
+                                        <th>연락처</th>
+                                        <th>전체 수주량</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="client : ${clients}">
+                                        <td><input type="checkbox" class="client-checkbox"
+                                                   th:value="${client.clCode}"></td>
+                                        <td th:text="${client.clCode}" onclick="clientDetail('${client.clCode}')"></td>
+                                        <td th:text="${client.clName}"></td>
+                                        <td th:text="${client.clType}"></td>
+                                        <td th:text="${client.clPhone}"></td>
+                                        <td th:text="${client.clAmount}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div class="panel-body">
-                            <table width="100%" class="table table-striped table-bordered table-hover"
-                                   id="dataTables-example2">
-                                <thead>
-                                <tr>
-                                    <th>수주 코드</th>
-                                    <th>제품명</th>
-                                    <th>수주량</th>
-                                    <th>연간 수주량</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel -->
                 </div>
-                <!-- /.col-lg-12 -->
             </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
-    </div>
-    <!-- /#page-wrapper -->
+        </form>
+        <br/>
 
-    <!-- 고객 등록 모달창 -->
-    <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">고객등록</h4>
+        <!--현황 테이블-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>고객 현황</h4>
+                    </div>
+                    <div class="panel-body" style="height: 300px">
+                        <table style="width: 100%; font-size: large"
+                               class="table table-striped table-bordered table-hover"
+                               id="dataTables-example2">
+                            <thead>
+                            <tr>
+                                <th>수주 코드</th>
+                                <th>제품명</th>
+                                <th>수주량</th>
+                                <th>연간 수주량</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.panel-body -->
                 </div>
-                <form class="newClient" action="client/new" role="form" method="post">
-                    <div class="clientgroup">
-                        <div class="form-group input-group">
-                            <label>고객명</label>
-                            <input class="form-control" id="clName" name="clName">
-                        </div>
-                        <div class="form-group input-group">
-                            <label>고객분류</label>
-                            <select class="form-control" id="clType" name="clType">
-                                <option value="개인">개인</option>
-                                <option value="단체">단체</option>
-                            </select>
-                        </div>
-                        <div class="form-group input-group">
-                            <label>연락처</label>
-                            <input class="form-control" id="clPhone" name="clPhone">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">등록</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                    </div>
-                </form>
+                <!-- /.panel -->
             </div>
-            <!-- /.modal-content -->
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /.modal-dialog -->
+        <!-- /.row -->
     </div>
-    <!-- /.modal -->
-
-
-    <!-- 고객 수정 모달창 -->
-    <div class="modal fade" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                    </button>
-                    <h4 class="modal-title" id="modifyid">고객수정</h4>
-                </div>
-                <form class="updateClient" action="client/update" role="form" method="post">
-                    <input type="hidden" id="clientCode2" name="clCode">
-                    <div class="clientgroup">
-                        <div class="form-group input-group">
-                            <label>고객명</label>
-                            <input class="form-control" id="clName2" name="clName" readonly>
-                        </div>
-                        <div class="form-group input-group">
-                            <label>고객분류</label>
-                            <input class="form-control" id="clType2" name="clType" readonly>
-                        </div>
-                        <div class="form-group input-group">
-                            <label>연락처</label>
-                            <input class="form-control" id="clPhone2" name="clPhone">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">수정</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-
+    <!-- /.container-fluid -->
 </div>
+<!-- /#page-wrapper -->
+
+<!-- 고객 등록 모달창 -->
+<div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">고객등록</h4>
+            </div>
+            <form class="newClient" action="client/new" role="form" method="post">
+                <div class="clientgroup">
+                    <div class="form-group input-group">
+                        <label>고객명</label>
+                        <input class="form-control" id="clName" name="clName">
+                    </div>
+                    <div class="form-group input-group">
+                        <label>고객분류</label>
+                        <select class="form-control" id="clType" name="clType">
+                            <option value="개인">개인</option>
+                            <option value="단체">단체</option>
+                        </select>
+                    </div>
+                    <div class="form-group input-group">
+                        <label>연락처</label>
+                        <input class="form-control" id="clPhone" name="clPhone">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">등록</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+<!-- 고객 수정 모달창 -->
+<div class="modal fade" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                </button>
+                <h4 class="modal-title" id="modifyid">고객수정</h4>
+            </div>
+            <form class="updateClient" action="client/update" role="form" method="post">
+                <input type="hidden" id="clientCode2" name="clCode">
+                <div class="clientgroup">
+                    <div class="form-group input-group">
+                        <label>고객명</label>
+                        <input class="form-control" id="clName2" name="clName" readonly>
+                    </div>
+                    <div class="form-group input-group">
+                        <label>고객분류</label>
+                        <input class="form-control" id="clType2" name="clType" readonly>
+                    </div>
+                    <div class="form-group input-group">
+                        <label>연락처</label>
+                        <input class="form-control" id="clPhone2" name="clPhone">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">수정</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 
 <th:block layout:fragment="script">
-<script>
-    //고객 등록
-    function updateClientBtn() {
-        var checkboxes = document.querySelectorAll('.clientCheckbox:checked');
-        if (checkboxes.length === 0) {
-            alert('수정할 고객을 선택해 주세요.')
-            return;
-        }else if (checkboxes.length > 1){
-            alert('하나의 항목만 선택해주세요.')
-            return;
-        }
-        var selectedRow = checkboxes[0].closest('tr');
-        selectedClientId = selectedRow.cells[1].textContent;
-        var clientData = {
-            clName: selectedRow.cells[2].textContent,
-            clType: selectedRow.cells[3].textContent,
-            clPhone: selectedRow.cells[4].textContent
-        };
-
-        $("#modify").modal('show');
-
-        document.getElementById('clientCode2').value = selectedClientId;
-        document.getElementById('clName2').value = clientData.clName;
-        document.getElementById('clType2').value = clientData.clType;
-        document.getElementById('clPhone2').value = clientData.clPhone;
-    }
-
-    //고객 상세 조회
-    function clientDetail(clCode) {
-        // 수주 데이터를 저장할 데이터 가져와야함
-        const contracts = [
-            {}
-        ];
-
-        const filteredContracts = contracts.filter(contract => contract.clCode === clCode);
-
-        const annualSums = {};
-
-        filteredContracts.forEach(contract => {
-            const year = new Date(contract.ctDate).getFullYear();
-            if (!annualSums[year]) {
-                annualSums[year] = 0;
+    <script>
+        //고객 등록
+        function updateClientBtn() {
+            var checkboxes = document.querySelectorAll('.clientCheckbox:checked');
+            if (checkboxes.length === 0) {
+                alert('수정할 고객을 선택해 주세요.')
+                return;
+            } else if (checkboxes.length > 1) {
+                alert('하나의 항목만 선택해주세요.')
+                return;
             }
-            annualSums[year] += contract.orderAmount;
-        });
+            var selectedRow = checkboxes[0].closest('tr');
+            selectedClientId = selectedRow.cells[1].textContent;
+            var clientData = {
+                clName: selectedRow.cells[2].textContent,
+                clType: selectedRow.cells[3].textContent,
+                clPhone: selectedRow.cells[4].textContent
+            };
 
-        // 계산
-        filteredContracts.forEach(contract => {
-            const year = new Date(contract.ctDate).getFullYear();
-            contract.annualOrderAmount = (annualSums[year] / 12).toFixed(2);
-        });
+            $("#modify").modal('show');
 
-        // 두 번째 테이블의 tbody 요소를 가져옴
-        const tbody = document.querySelector('#dataTables-example2 tbody');
+            document.getElementById('clientCode2').value = selectedClientId;
+            document.getElementById('clName2').value = clientData.clName;
+            document.getElementById('clType2').value = clientData.clType;
+            document.getElementById('clPhone2').value = clientData.clPhone;
+        }
 
-        // 기존의 모든 행을 제거
-        tbody.innerHTML = '';
+        //고객 상세 조회
+        function clientDetail(clCode) {
+            // 수주 데이터를 저장할 데이터 가져와야함
+            const contracts = [
+                {}
+            ];
 
-        // 필터링된 수주 데이터를 기반으로 새로운 행을 추가
-        filteredContracts.forEach(contract => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
+            const filteredContracts = contracts.filter(contract => contract.clCode === clCode);
+
+            const annualSums = {};
+
+            filteredContracts.forEach(contract => {
+                const year = new Date(contract.ctDate).getFullYear();
+                if (!annualSums[year]) {
+                    annualSums[year] = 0;
+                }
+                annualSums[year] += contract.orderAmount;
+            });
+
+            // 계산
+            filteredContracts.forEach(contract => {
+                const year = new Date(contract.ctDate).getFullYear();
+                contract.annualOrderAmount = (annualSums[year] / 12).toFixed(2);
+            });
+
+            // 두 번째 테이블의 tbody 요소를 가져옴
+            const tbody = document.querySelector('#dataTables-example2 tbody');
+
+            // 기존의 모든 행을 제거
+            tbody.innerHTML = '';
+
+            // 필localdatetime을 localdate로 검색터링된 수주 데이터를 기반으로 새로운 행을 추가
+            filteredContracts.forEach(contract => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
             <td>${contract.orderCode}</td>
             <td>${contract.productName}</td>
             <td>${contract.orderAmount}</td>
             <td>${contract.annualOrderAmount}</td>
         `;
-            tbody.appendChild(row);
-        });
-    }
+                tbody.appendChild(row);
+            });
+        }
+        $(document).ready(function () {
+            $('#excel-btn').click(function () {
+                var selectedItems = [];
+                $('input.client-checkbox:checked').each(function () {
+                    selectedItems.push($(this).val());
+                });
 
-    $(document).ready(function() {
-        $('#excel-btn').click(function () {
-            var selectedItems = [];
-            $('input.client-checkbox:checked').each(function () {
-                selectedItems.push($(this).val());
+                if (selectedItems.length === 0) {
+                    alert('선택된 코드가 없습니다.');
+                    return;
+                }
+
+                var form = $('<form action="/client/export/excel" method="POST"></form>');
+                for (var i = 0; i < selectedItems.length; i++) {
+                    form.append('<input type="hidden" name="clCode" value="' + selectedItems[i] + '">');
+                }
+
+                $('body').append(form);
+                form.submit();
             });
 
-            if (selectedItems.length === 0) {
-                alert('선택된 코드가 없습니다.');
-                return;
-            }
-
-            var form = $('<form action="/client/export/excel" method="POST"></form>');
-            for (var i = 0; i < selectedItems.length; i++) {
-                form.append('<input type="hidden" name="clCode" value="' + selectedItems[i] + '">');
-            }
-
-            $('body').append(form);
-            form.submit();
+            $('#checkall').click(function () {
+                $('input:checkbox').not(this).prop('checked', this.checked);
+            });
         });
 
-        $('#checkall').click(function () {
-            $('input:checkbox').not(this).prop('checked', this.checked);
-        });
-    });
 
-</script>
+    </script>
 </th:block>
-
 
 
 </html>
