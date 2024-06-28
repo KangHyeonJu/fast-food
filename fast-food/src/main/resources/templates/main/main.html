@@ -27,18 +27,6 @@
             color: red;
             font-weight: bold;
         }
-
-        #circle_yellow {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 10px solid #ffcc00;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #ffcc00;
-            font-weight: bold;
-        }
     </style>
 </th:block>
 
@@ -80,9 +68,6 @@
                                         <tr>
                                             <td th:if="${facility.fcStatus == 'WORK'}">
                                                 <div id="circle_green" style="margin: auto">가동중</div>
-                                            </td>
-                                            <td th:if="${facility.fcStatus == 'STANDBY'}">
-                                                <div id="circle_yellow" style="margin: auto">대기중</div>
                                             </td>
                                             <td th:if="${facility.fcStatus == 'STOP'}">
                                                 <div id="circle_red" style="margin: auto">비가동</div>

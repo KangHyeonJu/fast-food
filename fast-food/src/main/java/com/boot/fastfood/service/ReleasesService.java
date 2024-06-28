@@ -20,7 +20,7 @@ public class ReleasesService {
     private final MaterialRepository materialRepository;
     private final EmployeeRepository employeeRepository;
     private final BOMRepository bomRepository;
-
+    private final OrdersRepository ordersRepository;
     private final ProductionRepository productionRepository;
     public List<Releases> findAll() {
         return releasesRepository.findAll();
@@ -36,6 +36,7 @@ public class ReleasesService {
             Employee employee = employeeOptional.get();
             Production production = productionRepository.findByPmCode(work.getProduction().getPmCode());
 
+
             List<BOM> boms = bomRepository.findByItems(production.getItName());
 
             LocalDateTime currentTime = LocalDateTime.now();
@@ -50,13 +51,11 @@ public class ReleasesService {
                     throw new IllegalArgumentException("이미 존재하는 작업 코드입니다.");
                 }
 
-
                 Releases release = new Releases();
                 release.setWorks(work);
                 release.setMaterials(bom.getMaterials());
 
-                release.setRsAmount(RSAmount(production.getPmAmount(),production.getItName().getItEa()
-                        , bom.getMaterials().getMtName()));
+                release.setRsAmount(RSAmount(production.getPmAmount(), bom.getMaterials().getMtName(), production.getItName().getItEa()));
 
                 release.setRsCode(rsCode);
                 release.setEmployee(employee);
@@ -85,19 +84,15 @@ public class ReleasesService {
 
 
     // 출고량 계산 메서드 추가 (재료 이름으로 구분)
-    private int RSAmount(int pmAmount,int itEa , String mtName) {
+    private int RSAmount(int pmAmount, String mtName, int itemEa) {
         double releaseAmount = 0.0;
         switch (mtName) {
             case "양배추":
             case "흑마늘":
-                releaseAmount = ((pmAmount * 1.04) * 0.01 * 10 * 1.4);
+                releaseAmount = ((pmAmount * 1.04) * 0.1);
                 break;
-            case "석류농축액":
-            case "매실농축액":
-                releaseAmount = ((pmAmount * 1.04)*0.05);
-                break;
-            case "벌꿀":
-                releaseAmount = ((pmAmount  * 1.04) * 0.005);
+            case "매실농축액", "벌꿀", "석류농축액":
+                releaseAmount = ((pmAmount * 1.04) * 0.005);
                 break;
             case "콜라겐":
                 releaseAmount = ((pmAmount * 1.04) * 0.002);
@@ -106,7 +101,7 @@ public class ReleasesService {
                 releaseAmount = pmAmount * 1.04 ;
                 break;
             case "Box":
-                releaseAmount = (double) pmAmount * 1.04;
+                releaseAmount = (double) pmAmount / itemEa * 1.04;
                 break;
             default:
                 throw new IllegalArgumentException("존재하지 않는 재료입니다.");

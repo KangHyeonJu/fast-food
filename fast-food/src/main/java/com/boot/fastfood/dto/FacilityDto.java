@@ -11,7 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class FacilityDto {
-    private Long fcCode;
+    private String fcCode;
 
     private String fcName;
 

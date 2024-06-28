@@ -541,7 +541,7 @@ public class ContractService {
 
         for (int i = 0; i < bomList.size(); i++) {
             System.out.println("잉1");
-            int odAmount = (int) Math.ceil(bomList.get(i).getMtAmount() * production.getPmAmount());
+            int odAmount = (int) Math.ceil(bomList.get(i).getMtAmount() * production.getPmAmount() * 1.04);
             int week = production.getPmSDate().getDayOfWeek().getValue();
 
             if (week == 1 || week == 2 || week == 3 || week == 7){

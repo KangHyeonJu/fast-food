@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -25,7 +26,8 @@ public class BomService {
     private final ItemRepository itemRepository;
 
     public List<BOM> getItemByBom(Items item){
-        return bomRepository.findByItems(item);
+        List<String> excludedMtNames = Arrays.asList("Box", "포장지");
+        return bomRepository.findByItemsAndExcludeMtNames(item, excludedMtNames);
     }
 
     @Transactional

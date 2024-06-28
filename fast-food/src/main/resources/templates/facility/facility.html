@@ -22,14 +22,6 @@
             border-radius: 50%;
             background-color: red;
         }
-
-        #circle_yellow {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-
-            background-color: #ffcc00;
-        }
     </style>
 </th:block>
 <th:block layout:fragment="script">
@@ -171,7 +163,6 @@
                                     <select th:field="*{searchStatus}">
                                         <option value="">전체</option>
                                         <option value="WORK">가동중</option>
-                                        <option value="STANDBY">대기중</option>
                                         <option value="STOP">비가동</option>
                                     </select>
                                 </p>
@@ -222,9 +213,6 @@
                                         <td th:text="${facilitys.fcDate}"></td>
                                         <td th:if="${facilitys.fcStatus == 'WORK'}">
                                             <div id="circle_green"></div>
-                                        </td>
-                                        <td th:if="${facilitys.fcStatus == 'STANDBY'}">
-                                            <div id="circle_yellow"></div>
                                         </td>
                                         <td th:if="${facilitys.fcStatus == 'STOP'}">
                                             <div id="circle_red"></div>

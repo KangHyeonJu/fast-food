@@ -12,6 +12,9 @@ public interface BOMRepository extends JpaRepository<BOM, Long> {
 
     List<BOM> findByItems(Items itCode);
 
+    @Query("SELECT b FROM BOM b WHERE b.items = :items AND b.materials.mtName NOT IN :excludedMtNames")
+    List<BOM> findByItemsAndExcludeMtNames(@Param("items") Items items, @Param("excludedMtNames") List<String> excludedMtNames);
+
     List<BOM> findByItems_ItCode(String itCode);
 
     @Query("SELECT r FROM BOM r WHERE r.items.itCode = :itCode AND r.materials.mtCode = :mtCode")
