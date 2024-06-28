@@ -84,7 +84,7 @@ public class MaterialController {
 
         List<Warehousing> warehousings = warehousingService.findAll();
 
-        // 필터링 조건에 따라 검색 처리
+        // 필터링 조건에 따라 조회 처리
         if (odCode != null && !odCode.isEmpty()) {
             warehousings = warehousings.stream()
                     .filter(wh -> wh.getOrders().getOdCode().contains(odCode))
@@ -337,7 +337,7 @@ public class MaterialController {
 
         List<Releases> releases = releasesService.findAll();
 
-        // 필터링 조건에 따라 검색 처리
+        // 필터링 조건에 따라 조회 처리
         if (rsDate != null) {
             releases = releases.stream()
                     .filter(release -> release.getRsDate().equals(rsDate))

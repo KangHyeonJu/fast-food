@@ -1,9 +1,7 @@
 package com.boot.fastfood.controller;
 
 import com.boot.fastfood.dto.CodesDto;
-import com.boot.fastfood.entity.Codes;
-import com.boot.fastfood.entity.Employee;
-import com.boot.fastfood.entity.Items;
+import com.boot.fastfood.entity.*;
 import com.boot.fastfood.repository.CodesRepository;
 import com.boot.fastfood.service.CodeService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -94,6 +95,31 @@ public class CodeController {
 
         workbook.write(response.getOutputStream());
         workbook.close();
+    }
+    @GetMapping("/searchCode")
+    public String getSearchCodes(@RequestParam(required = false, name = "cNo") Long cNo,
+                                 @RequestParam(required = false, name = "cName") String cName,
+                                 Model model) {
+
+        List<Codes> codes = codesRepository.findAll();
+
+
+        if (cNo != null) {
+            codes = codes.stream()
+                    .filter(wh -> wh.getCNo().equals(cNo))
+                    .collect(Collectors.toList());
+        }
+        if (cName != null && !cName.isEmpty()) {
+            codes = codes.stream()
+                    .filter(wh -> wh.getCName().contains(cName))
+                    .collect(Collectors.toList());
+        }
+        System.out.println("코드번호 : "+cNo);
+        System.out.println("코드 이름 : "+cName);
+
+        model.addAttribute("codes", codes);
+
+        return "system/code";
     }
 
 

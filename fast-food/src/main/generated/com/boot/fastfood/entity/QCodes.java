@@ -25,6 +25,8 @@ public class QCodes extends EntityPathBase<Codes> {
 
     public final NumberPath<Long> cNo = createNumber("cNo", Long.class);
 
+    public final BooleanPath cState = createBoolean("cState");
+
     public QCodes(String variable) {
         super(Codes.class, forVariable(variable));
     }

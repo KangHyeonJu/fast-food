@@ -25,4 +25,5 @@ public class VendorListDTO {
         this.alAmount = vendor.getAlAmount();
         this.materialsList = materialsList;
     }
+
 }

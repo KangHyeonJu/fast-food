@@ -27,7 +27,7 @@ public class ContractRepositoryImpl extends ContractRepositoryCustom {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        // 검색 조건 추가 예시 - 필드가 null이 아닐 경우에만 조건을 추가하도록 설정
+        // 조회 조건 추가 예시 - 필드가 null이 아닐 경우에만 조건을 추가하도록 설정
         if (searchDto.getCtCode() != null && !searchDto.getCtCode().isEmpty()) {
             predicates.add(criteriaBuilder.equal(root.get("ctCode"), searchDto.getCtCode()));
         }

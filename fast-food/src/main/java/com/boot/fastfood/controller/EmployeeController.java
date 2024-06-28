@@ -4,6 +4,7 @@ import com.boot.fastfood.dto.EmployeeDto;
 import com.boot.fastfood.entity.Clients;
 import com.boot.fastfood.entity.Employee;
 import com.boot.fastfood.entity.Vendor;
+import com.boot.fastfood.entity.Warehousing;
 import com.boot.fastfood.repository.EmployeeRepository;
 import com.boot.fastfood.service.EmployeeService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,22 +38,22 @@ public class EmployeeController {
     private final EmployeeRepository employeeRepository;
 
     @GetMapping("/employee")
-    public String employeePage(Model model){
+    public String employeePage(Model model) {
         List<Employee> employees = employeeService.getAllEmployees();
         model.addAttribute("employee", employees);
         return "system/employee";
     }
 
     @PostMapping("/employee/new")
-    public String newEmployee(EmployeeDto employeeDto, Model model, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
+    public String newEmployee(EmployeeDto employeeDto, Model model, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "system/employee";
         }
         try {
             Employee employee = Employee.createEmployee(employeeDto);
             employeeService.saveEmployee(employee);
-        }catch (IllegalStateException e){
-            model.addAttribute("errorMessage",e.getMessage());
+        } catch (IllegalStateException e) {
+            model.addAttribute("errorMessage", e.getMessage());
             return "system/employee";
         }
 
@@ -78,7 +81,7 @@ public class EmployeeController {
         Sheet sheet = workbook.createSheet("Codes");
 
         Row headerRow = sheet.createRow(0);
-        String[] headers = {"직원코드", "직원명" };
+        String[] headers = {"직원코드", "직원명"};
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(headers[i]);
@@ -101,5 +104,31 @@ public class EmployeeController {
         workbook.write(response.getOutputStream());
         workbook.close();
     }
+
+    @GetMapping("/searchEmployee")
+    public String searchEmployee(
+            @RequestParam(required = false, name = "emCode") String emCode,
+            @RequestParam(required = false, name = "emName") String emName,
+            Model model) {
+
+        List<Employee> employee = employeeRepository.findAll();
+
+        // 필터링 조건에 따라 조회 처리
+        if (emCode != null && !emCode.isEmpty()) {
+            employee = employee.stream()
+                    .filter(wh -> wh.getEmCode().contains(emCode))
+                    .collect(Collectors.toList());
+        }
+        if (emName != null && !emName.isEmpty()) {
+            employee = employee.stream()
+                    .filter(wh -> wh.getEmName().contains(emName))
+                    .collect(Collectors.toList());
+        }
+
+        model.addAttribute("employee", employee);
+
+        return "system/employee";  // HTML 템플릿 파일 이름
+    }
+
 
 }

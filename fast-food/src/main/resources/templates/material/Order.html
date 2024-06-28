@@ -72,7 +72,7 @@
             </div>
 
             <br/>
-            <!-- 검색 -->
+            <!-- 조회 -->
             <form th:action="@{'/order'}" role="form" method="get">
                 <th:block th:object="${orderSearchDto}">
                     <div class="panel panel-default">
@@ -104,11 +104,11 @@
                                 </p>
                             </li>
                             <li style="float: right;">
-                                <button class="btn btn-primary" style="width: 60px;" id="searchBtn" type="submit">검색</button>
+                                <button class="btn btn-primary" style="width: 60px;" id="searchBtn" type="submit">조회</button>
                             </li>
                         </ul>
                     </div>
-                    <!-- 검색 끝-->
+                    <!-- 조회 끝-->
                 </th:block>
 
                 <br/>
@@ -118,11 +118,11 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                발주 내역
+                                <h4>발주 내역</h4>
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body" style="height: 500px; overflow: auto">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="width: 100%;">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="width: 100%; font-size: large;">
                                     <thead>
                                     <tr>
                                         <th><input type="checkbox" id="checkall"></th>

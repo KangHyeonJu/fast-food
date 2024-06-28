@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -78,5 +79,38 @@ public class VendorController {
         workbook.close();
     }
 
+    @GetMapping("/searchVendor")
+    public String searchEmployee(
+            @RequestParam(required = false, name = "vdCode") String vdCode,
+            @RequestParam(required = false, name = "vdName") String vdName,
+            @RequestParam(required = false, name = "mtName") String mtName,
+            Model model) {
+
+        List<VendorListDTO> vendorList = vendorService.findAllVendorsWithMaterials()
+                .stream()
+                .map(vendor -> new VendorListDTO(vendor, vendor.getMaterials()))
+                .toList();
+
+        // 필터링 조건에 따라 조회 처리
+        if (vdCode != null && !vdCode.isEmpty()) {
+            vendorList = vendorList.stream()
+                    .filter(wh -> wh.getVdCode().contains(vdCode))
+                    .collect(Collectors.toList());
+        }
+        if (vdName != null && !vdName.isEmpty()) {
+            vendorList = vendorList.stream()
+                    .filter(wh -> wh.getVdName().contains(vdName))
+                    .collect(Collectors.toList());
+        }
+        if (mtName != null && !mtName.isEmpty()){
+            vendorList = vendorList.stream()
+                    .filter(wh -> wh.getMaterialsList().stream()
+                            .anyMatch(material -> material.getMtName().contains(mtName)))
+                    .collect(Collectors.toList());
+        }
+        model.addAttribute("vendorList", vendorList);
+
+        return "system/vendor";  // HTML 템플릿 파일 이름
+    }
 
 }
