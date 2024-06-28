@@ -62,7 +62,10 @@ public class WorksController {
         Works works = worksRepository.findByWkCode(wkCode);
         Employee employee = employeeRepository.findByEmName(emName);
 
-        worksService.setFCState(works);
+        Items items = works.getProduction().getItName();
+        String itName = items.getItName();
+
+        worksService.setFCWork(wkCode, itName);
 
         worksService.saveRSDate(works, employee);
     }
@@ -73,6 +76,10 @@ public class WorksController {
         String wkCode = (String) data.get("wkCode");
         Works works = worksRepository.findByWkCode(wkCode);
 
+        Items items = works.getProduction().getItName();
+        String itName = items.getItName();
+
+        worksService.setFCStop(wkCode, itName);
 
         worksService.saveREDate(works);
     }

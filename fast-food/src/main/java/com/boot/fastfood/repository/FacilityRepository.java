@@ -9,4 +9,6 @@ public interface FacilityRepository extends JpaRepository<Facility, Long> , Faci
     Facility findFacilityByFcName(String fcName);
 
     List<Facility> findByFcCodeIn(List<String> fcCode);
+
+    Facility findByFcCode(String fcCode);
 }
