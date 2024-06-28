@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -37,11 +38,19 @@ public class WorksController {
     @GetMapping("/workList")
     public String workList(Model model){
         // 오늘 날짜 추가
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate today = LocalDate.now();
 
         //공정 불러옴
-        List<Works> works = worksRepository.findBySDateOrEDate(today);
-        model.addAttribute("works", works);
+        List<Works> worksList = worksRepository.findAll();
+
+        List<Works> worksToday = new ArrayList<>();
+        for(Works works : worksList){
+            if((works.getSDate().toLocalDate().equals(today)) || (works.getEDate().toLocalDate().equals(today))){
+                worksToday.add(works);
+            }
+        }
+
+        model.addAttribute("works", worksToday);
 
         //작업자 불러옴
         List<Employee> employees = employeeService.findAll();
