@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <div th:fragment="header">
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -11,6 +12,8 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="/main" style="color:#3333FF;">FAST FOOD</a>
+            <button onclick="addDay(1)">1일 추가</button>
+            <button onclick="resetTime()">시간 초기화</button>
         </div>
 
         <!-- /.navbar-header -->
@@ -107,5 +110,39 @@
         </div>
         <!-- /.navbar-static-side -->
     </nav>
+    <script>
+        function addDay(days) {
+            fetch('/addDays?days=' + days, {
+                method: 'POST',
+            }).then(response => {
+                if (response.ok) {
+                    alert('시간이 변경되었습니다.');
+                    location.reload();  // 페이지를 새로고침하여 변경된 시간을 반영합니다.
+                } else {
+                    alert('시간 변경에 실패했습니다.');
+                }
+            }).catch(error => {
+                console.error('error: ', error);
+                alert('시간 변경 중 오류가 발생했습니다.');
+            });
+        }
+
+        function resetTime() {
+            fetch('/resetTime', {
+                method: 'GET',
+            }).then(response => {
+                if (response.ok) {
+                    alert('시간이 초기화되었습니다.');
+                    location.reload();  // 페이지를 새로고침하여 변경된 시간을 반영합니다.
+                } else {
+                    alert('시간 초기화에 실패했습니다.');
+                }
+            }).catch(error => {
+                console.error('error: ', error);
+                alert('시간 초기화 중 오류가 발생했습니다.');
+            });
+        }
+
+    </script>
 </div>
 </html>

@@ -8,13 +8,9 @@ import java.time.Clock;
 import java.time.LocalDate;
 
 @Service
+@RequiredArgsConstructor
 public class ClockService {
-    private Clock clock;
-
-    @Autowired
-    public void OrderService(Clock clock) {
-        this.clock = clock;
-    }
+    private final Clock clock;
 
     public LocalDate getCurrentDate() {
         return LocalDate.now(clock);

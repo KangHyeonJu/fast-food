@@ -7,14 +7,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 @RestController
 public class ClockController {
+
     private Clock clock;
+
+    Clock systemClock = Clock.systemDefaultZone();
+    Instant instant = Instant.now(systemClock); // 현재 시간을 Instant 객체로 얻음
+    LocalDateTime currentDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 
     @Autowired
     public void AdminController(Clock clock) {
@@ -25,7 +27,6 @@ public class ClockController {
     public void addDays(@RequestParam int days) {
         Instant currentInstant = clock.instant();
         ZonedDateTime newTime = currentInstant.atZone(ZoneId.systemDefault()).plusDays(days);
-        this.clock = Clock.fixed(newTime.toInstant(), ZoneId.systemDefault());
     }
 
     @GetMapping("/resetTime")
@@ -37,4 +38,6 @@ public class ClockController {
     public Clock getClock() {
         return this.clock;
     }
+
+
 }

@@ -1,6 +1,5 @@
 package com.boot.fastfood.controller;
 
-import com.boot.fastfood.dto.ProductionDto;
 import com.boot.fastfood.entity.*;
 import com.boot.fastfood.repository.EmployeeRepository;
 import com.boot.fastfood.repository.ItemsRepository;
@@ -9,11 +8,13 @@ import com.boot.fastfood.service.EmployeeService;
 import com.boot.fastfood.service.WorksService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -21,13 +22,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.Clock;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -39,12 +39,12 @@ public class WorksController {
     private final EmployeeService employeeService;
     private final EmployeeRepository employeeRepository;
     private final ItemsRepository itemsRepository;
-
+    private final Clock clock;
 
     @GetMapping("/workList")
     public String workList(Model model){
         // 오늘 날짜 추가
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(clock);
 
         //공정 불러옴
         List<Works> worksList = worksRepository.findAll();
