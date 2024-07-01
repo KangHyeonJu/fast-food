@@ -3,6 +3,33 @@
       layout:decorate="~{layout/layout1}">
 
 <div layout:fragment="content">
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: flex-end; /* 왼쪽 정렬 */
+            margin-bottom: 10px;
+        }
+
+        .button-container button {
+            margin-left: 10px; /* 버튼 사이의 간격 조정 */
+        }
+
+        p, select {
+            font-size: 16px;
+        }
+
+        .form-group label {
+            margin-right: 10px;
+        }
+
+        .form-control {
+            width: 150px;
+            margin-right: 10px;
+            display: inline-block;
+        }
+    </style>
+
+
     <div id="page-wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -18,6 +45,7 @@
                                     class="btn btn-primary">출고 등록
                             </button>
                         </div>
+                        <br/>
                     </div>
                     <br/>
                 </div>
@@ -29,11 +57,11 @@
                                 <form th:action="@{/searchRelease}" method="get">
                                     <ul class="list-inline">
                                         <li>
-                                            <label>출고일 : <input type="date" name="rsDate"></label>
+                                            <label>출고일 : <input type="date" name="rsDate" class="form-control"></label>
                                         </li>
                                         <li>
                                             <label>원자재명 :
-                                                <select name="mtName">
+                                                <select name="mtName" class="form-control">
                                                     <option value="">전체</option>
                                                     <option th:each="material : ${materials}"
                                                             th:value="${material.mtName}"
@@ -42,11 +70,11 @@
                                             </label>
                                         </li>
                                         <li>
-                                            <label>작업지시 코드 : <input name="wkCode"></label>
+                                            <label>작업지시 코드 : <input name="wkCode" class="form-control"></label>
                                         </li>
                                         <li>
                                             <label> 작업자 :
-                                                <select name="emName">
+                                                <select name="emName" class="form-control">
                                                     <option value="">전체</option>
                                                     <option th:each="employee : ${employees}"
                                                             th:value="${employee.emName}"

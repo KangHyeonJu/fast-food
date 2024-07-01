@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout1}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout1}">
 
 
 <div layout:fragment="content">
@@ -9,25 +10,31 @@
             justify-content: flex-end; /* 왼쪽 정렬 */
             margin-bottom: 10px;
         }
+
         .button-container button {
             margin-left: 10px; /* 버튼 사이의 간격 조정 */
         }
+
         .form-group label {
             margin-right: 10px;
         }
+
         .form-control {
             width: 150px;
-            margin-right:10px;
+            margin-right: 10px;
             display: inline-block;
         }
+
         .add-btn {
             display: flex;
             justify-content: flex-end; /* 왼쪽 정렬 */
         }
+
         .item {
             margin-right: 10px;
             margin-bottom: 10px;
         }
+
         .item-title {
             margin-right: 10px;
         }
@@ -57,37 +64,40 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
-
+        <!--버튼-->
+        <div class="col-lg-12">
+            <div class="button-container">
+                <div class="button-group">
+                    <button type="button" class="btn btn-primary" id="createBtn" data-toggle="modal"
+                            data-target="#itemCreate">품목 등록
+                    </button>
+                </div>
+                <div class="button-group">
+                    <button id="excel-btn" type="button" class="btn btn-success">엑셀 저장</button>
+                </div>
+            </div>
+            <br/>
+        </div>
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="form-group">
                         <p class="fa fa-search"></p>
-                        <label>품목코드</label><input class="form-control"  id="itCodeSearch">
-                        <label>품목명</label><input class="form-control"  id="itNameSearch">
+                        <label>품목코드</label><input class="form-control" id="itCodeSearch">
+                        <label>품목명</label><input class="form-control" id="itNameSearch">
                         <label>품목분류</label>
                         <select class="form-control" id="itTypeSearch">
                             <option value=" ">선택없음</option>
                             <option value="즙">즙</option>
                             <option value="젤리스틱">젤리스틱</option>
-                    </select>
+                        </select>
                         <button type="button" class="btn btn-primary" id="itemSearchBtn">조회</button>
                     </div>
                 </div>
             </div>
         </div>
         <!-- /.col-lg-4 -->
-        <!--버튼-->
-        <div class="col-lg-12">
-            <div class="button-container">
-                <div  class="button-group">
-                    <button type="button" class="btn btn-primary" id="createBtn" data-toggle="modal" data-target="#itemCreate">품목 등록</button>
-                </div>
-                <div  class="button-group">
-                    <button id="excel-btn" type="button" class="btn btn-success">엑셀 저장</button>
-                </div>
-            </div>
-        </div>
+
         <!-- /.col-lg-12 -->
         <div class="container-fluid">
             <div class="row">
@@ -103,395 +113,425 @@
                         </ul>
                         <!-- /.panel-heading -->
                         <div class="panel-body" style="height: 300px">
-                            <table style="width: 100%;font-size: large" class="table table-striped table-bordered table-hover" id="dataTables">
+                            <table style="width: 100%;font-size: large"
+                                   class="table table-striped table-bordered table-hover" id="dataTables">
                                 <thead>
                                 <tr>
-                                    <th width="2%"> </th>
+                                    <th width="2%"></th>
                                     <th width="20%">품목코드</th>
                                     <th width="20%">품목명</th>
                                     <th width="20%">품목분류</th>
                                     <th width="20%">개수</th>
                                 </tr>
                                 </thead>
-                                    <tbody class="scrollable-tbody">
-                                    <tr class="itemList" th:each="item : ${items}">
-                                        <td><input type="checkbox" class="itemCheck" id="itemCheck" th:value="${item.itCode}"></td>
-                                        <td th:text="${item.itCode}" id="showPanel" th:value="${item.itCode}"></td>
-                                        <td class="center" th:text="${item.itName}" id="showPanel2" th:value="${item.itName}"></td>
-                                        <td class="center" th:text="${item.itType}"></td>
-                                        <td class="center" th:text="${item.itEa}"></td>
-                                    </tr>
-                                    </tbody>
-
-                            </table>
-                            <hr style="height: 0.1px; border: none; border-top: dotted #cecece; margin: 50px 0;">
-
-                            <div class="col-lg-12">
-                                <div class="button-container">
-                                    <div class="button-group">
-
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#materials">자재 등록</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <h4>원자재 목록</h4>
-                            <table style="width: 100%; font-size: large" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                <thead>
-                                <tr>
-                                    <th width="2%"> </th>
-                                    <th width="20%">자재코드</th>
-                                    <th width="20%">자재명</th>
-                                    <th width="20%">업체코드</th>
-                                    <th width="20%">업체명</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="materialsList" th:each="materials : ${materialsList.materials}">
-                                    <td><input type="checkbox" class="checkbox" id="checkBox" th:value="${materials.mtCode}"></td>
-                                    <td th:text="${materials.mtCode}" id="mtCode"></td>
-                                    <td class="center" th:text="${materials.mtName}" id="mtName"></td>
-                                    <td class="center" th:text="${materials.vdCode}"></td>
-                                    <td class="center" th:text="${materials.vdName}"></td>
+                                <tbody class="scrollable-tbody">
+                                <tr class="itemList" th:each="item : ${items}">
+                                    <td><input type="checkbox" class="itemCheck" id="itemCheck"
+                                               th:value="${item.itCode}"></td>
+                                    <td th:text="${item.itCode}" id="showPanel" th:value="${item.itCode}"></td>
+                                    <td class="center" th:text="${item.itName}" id="showPanel2"
+                                        th:value="${item.itName}"></td>
+                                    <td class="center" th:text="${item.itType}"></td>
+                                    <td class="center" th:text="${item.itEa}"></td>
                                 </tr>
                                 </tbody>
 
                             </table>
-
                             <hr style="height: 0.1px; border: none; border-top: dotted #cecece; margin: 50px 0;">
 
-                            <div class="col-lg-12">
-                                <div class="panel panel-default" id="panelshow" style="display: none">
-                                    <div class="panel-body">
-                                        <!-- /.table-responsive -->
-                                        <h4 id="itCodeDisplay"></h4>
-                                        <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                            <thead>
-                                            <tr>
-                                                <th width="3%">번호</th>
-                                                <th width="15%">자재코드</th>
-                                                <th width="15%">자재명</th>
-                                                <th width="15%">자재 투입량 (kg, L)</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="itemInfo">
+                            <div class="button-container">
+                                <div class="button-group">
 
-                                            </tbody>
-                                        </table>
-                                        <div class="add-btn">
-                                            <input type="hidden" id="hiddenItCode">
-                                            <button type="button" class="btn btn-primary" id="bomAddBtn">투입량 등록</button>
-                                        </div>
-                                    </div>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#materials">자재 등록
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
-    </div>
-    <!-- /#page-wrapper -->
+                            <br/>
+                            <div class="row">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4>원자재 목록</h4>
+                                    </div>
+                                        <table style="width: 100%; font-size: large"
+                                               class="table table-striped table-bordered table-hover"
+                                               id="dataTables-example">
+                                            <thead>
+                                            <tr>
+                                                <th width="2%"></th>
+                                                <th width="20%">자재코드</th>
+                                                <th width="20%">자재명</th>
+                                                <th width="20%">업체코드</th>
+                                                <th width="20%">업체명</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="materialsList"
+                                                th:each="materials : ${materialsList.materials}">
+                                                <td><input type="checkbox" class="checkbox" id="checkBox"
+                                                           th:value="${materials.mtCode}"></td>
+                                                <td th:text="${materials.mtCode}" id="mtCode"></td>
+                                                <td class="center" th:text="${materials.mtName}" id="mtName"></td>
+                                                <td class="center" th:text="${materials.vdCode}"></td>
+                                                <td class="center" th:text="${materials.vdName}"></td>
+                                            </tr>
+                                            </tbody>
 
-    <div class="modal fade" id="itemCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">품목 등록</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="item group">
-                        <div class="item">
-                            <label class="item-title">품목명</label><input class="form-control" id="itName">
-                        </div>
-                        <div class="item">
-                            <label class="item-title">품목분류</label>
-                            <select class="form-control" id="itType">
-                                <option value="즙">즙</option>
-                                <option value="스틱">스틱</option>
-                            </select>
+                                        </table>
 
-                        </div>
-                        <div class="item">
-                            <label class="item-title"> Box 당 개수<input class="form-control" id="itCnt" type="number"></label>
-                        </div>
+                                        <hr style="height: 0.1px; border: none; border-top: dotted #cecece; margin: 50px 0;">
 
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="itemCreateBtn">등록</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default" id="panelshow" style="display: none">
+                                                <div class="panel-body">
+                                                    <!-- /.table-responsive -->
+                                                    <h4 id="itCodeDisplay"></h4>
+                                                    <table class="table table-striped table-bordered table-hover"
+                                                           id="dataTables-example"
+                                                           style="font-size: large; width: 100%">
+                                                        <thead>
+                                                        <tr>
+                                                            <th width="3%">번호</th>
+                                                            <th width="15%">자재코드</th>
+                                                            <th width="15%">자재명</th>
+                                                            <th width="15%">자재 투입량 (kg, L)</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="itemInfo">
 
-    <div class="modal fade" id="materials" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="Label">자재 등록</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="item group">
-                        <div class="item">
-                            <label class="item-title">자재명</label><input class="form-control" id="mtNameId" >
-                        </div>
-                        <div class="item">
-                             <label class="item-title">업체명</label>
-                            <select class="form-control" id="mtVendorId">
-                                <option th:each="vendor : ${vendorList}" th:text="${vendor.vdName}" th:value="${vendor.vdCode}"></option>
-                            </select>
-                        </div>
-                        <div class="item">
-                            <label class="item-title">최대 주문량</label><input class="form-control" id="mtMaxId" th:type="number" >
-                        </div>
-                        <div class="item">
-                            <label class="item-title">최소 주문량</label><input class="form-control" id="mtMinId" th:type="number" >
-                        </div>
-                        <div class="item">
-                            <label class="item-title">Lead Time</label><input class="form-control" id="mtLeadTime" th:type="number" >
-                        </div>
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="add-btn">
+                                                        <input type="hidden" id="hiddenItCode">
+                                                        <button type="button" class="btn btn-primary"
+                                                                id="bomAddBtn">투입량 등록
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.panel-body -->
+                                </div>
+                            </div>
+                            <!-- /.panel -->
+                        <!-- /.col-lg-12 -->
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="materialsBtn">등록</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                </div>
+                <!-- /.row -->
             </div>
-            <!-- /.modal-content -->
+            <!-- /.container-fluid -->
         </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-</div>
+        <!-- /#page-wrapper -->
 
-<th:block layout:fragment="script">
-    <script>
-        $(document).ready(function() {
-            // 품목을 클릭했을 때 bom 목록 출력됨
-            $(".itemList").on("click", function() {
-                var itCode = $(this).find("#showPanel").text().trim();
-                var itName = $(this).find("#showPanel2").text().trim();
-                $("#hiddenItCode").val(itCode);
-                getBOM(itCode);
-                $("#itCodeDisplay").text(itName + ' BOM 내역');
-            });
-            //itemList 클릭 이벤트 끝
-            $('#excel-btn').click(function () {
-                var selectedItems = [];
-                $('input.itemCheck:checked').each(function () {
-                    selectedItems.push($(this).val());
+        <div class="modal fade" id="itemCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">품목 등록</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="item group">
+                            <div class="item">
+                                <label class="item-title">품목명</label><input class="form-control"
+                                                                            id="itName">
+                            </div>
+                            <div class="item">
+                                <label class="item-title">품목분류</label>
+                                <select class="form-control" id="itType">
+                                    <option value="즙">즙</option>
+                                    <option value="스틱">스틱</option>
+                                </select>
+
+                            </div>
+                            <div class="item">
+                                <label class="item-title"> Box 당 개수<input class="form-control" id="itCnt"
+                                                                          type="number"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="itemCreateBtn">등록</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <div class="modal fade" id="materials" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="Label">자재 등록</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="item group">
+                            <div class="item">
+                                <label class="item-title">자재명</label><input class="form-control"
+                                                                            id="mtNameId">
+                            </div>
+                            <div class="item">
+                                <label class="item-title">업체명</label>
+                                <select class="form-control" id="mtVendorId">
+                                    <option th:each="vendor : ${vendorList}" th:text="${vendor.vdName}"
+                                            th:value="${vendor.vdCode}"></option>
+                                </select>
+                            </div>
+                            <div class="item">
+                                <label class="item-title">최대 주문량</label><input class="form-control"
+                                                                               id="mtMaxId"
+                                                                               th:type="number">
+                            </div>
+                            <div class="item">
+                                <label class="item-title">최소 주문량</label><input class="form-control"
+                                                                               id="mtMinId"
+                                                                               th:type="number">
+                            </div>
+                            <div class="item">
+                                <label class="item-title">Lead Time</label><input class="form-control"
+                                                                                  id="mtLeadTime"
+                                                                                  th:type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="materialsBtn">등록</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>
+
+    <th:block layout:fragment="script">
+        <script>
+            $(document).ready(function () {
+                // 품목을 클릭했을 때 bom 목록 출력됨
+                $(".itemList").on("click", function () {
+                    var itCode = $(this).find("#showPanel").text().trim();
+                    var itName = $(this).find("#showPanel2").text().trim();
+                    $("#hiddenItCode").val(itCode);
+                    getBOM(itCode);
+                    $("#itCodeDisplay").text(itName + ' BOM 내역');
+                });
+                //itemList 클릭 이벤트 끝
+                $('#excel-btn').click(function () {
+                    var selectedItems = [];
+                    $('input.itemCheck:checked').each(function () {
+                        selectedItems.push($(this).val());
+                    });
+
+                    if (selectedItems.length === 0) {
+                        alert('선택된 품목이 없습니다.');
+                        return;
+                    }
+
+                    var form = $('<form action="/routing/export/excel" method="POST"></form>');
+                    for (var i = 0; i < selectedItems.length; i++) {
+                        form.append('<input type="hidden" name="itCode" value="' + selectedItems[i] + '">');
+                    }
+
+                    $('body').append(form);
+
+                    // 폼을 명시적으로 제출합니다.
+                    form.submit();
                 });
 
-                if (selectedItems.length === 0) {
-                    alert('선택된 품목이 없습니다.');
-                    return;
+                let selectCheck = [];
+
+
+                <!--체크박스를 누른 순서로 배열 입력-->
+                //bom 등록
+                document.querySelectorAll("#checkBox").forEach(checkbox => {
+                    checkbox.addEventListener("click", (event) => {
+                        const value = event.target.value;
+                        <!--체크되어 있는 값 비동기 db저장-->
+                        var itCode = $("#hiddenItCode").val();
+                        if (event.target.checked) {
+                            selectCheck.push(value);
+                            fetch("/bom", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                    itCode: itCode,
+                                    mtCode: selectCheck
+                                }),
+                            }).then(() => {
+                                getBOM(itCode);
+                            });
+                        } else {
+                            <!--체크박스 해제할 때 db삭제-->
+                            const index = selectCheck.indexOf(value);
+                            if (index > -1) {
+                                selectCheck.splice(index, 1);
+                            }
+                            fetch("/bom/" + itCode + "/" + value, {
+                                method: "DELETE",
+                            }).then(() => {
+                                getBOM(itCode)
+                            })
+                        }
+
+                    });
+                });
+
+
+                //실시간 db출력하는 함수
+                function getBOM(itCode) {
+                    $.ajax({
+                        url: "/bom/" + itCode,
+                        method: "GET",
+                        success: function (data) {
+                            var tableContent = "";
+                            data.materials.forEach(function (item, index) {
+                                tableContent += "<tr>" +
+                                    "<td>" + (index + 1) + "</td>" +
+                                    "<td class='mtCodeList'>" + item.mtCode + "</td>" +
+                                    "<td>" + item.mtName + "</td>" +
+                                    "<td>" + "<input type='number' id='mtAmount' style='border:0; background-color: #fafafa' value='" + parseFloat(item.mtAmount) + "'>" + "</td>" +
+                                    "</tr>";
+                            });
+                            $("#itemInfo").html(tableContent);
+                            // 패널을 보여줌
+                            $("#panelshow").show();
+                        },
+                        error: function () {
+                            alert("품목 정보를 불러오는 데 실패했습니다.");
+                        }
+                    });
                 }
 
-                var form = $('<form action="/routing/export/excel" method="POST"></form>');
-                for (var i = 0; i < selectedItems.length; i++) {
-                    form.append('<input type="hidden" name="itCode" value="' + selectedItems[i] + '">');
-                }
+                //품목 등록
+                const createButton = document.getElementById("itemCreateBtn");
+                if (createButton) {
+                    createButton.addEventListener("click", (event) => {
+                        var itName = document.getElementById("itName").value;
+                        var itType = document.getElementById("itType").value;
+                        var itCnt = document.getElementById("itCnt").value;
 
-                $('body').append(form);
-
-                // 폼을 명시적으로 제출합니다.
-                form.submit();
-            });
-
-            let selectCheck = [];
-
-
-            <!--체크박스를 누른 순서로 배열 입력-->
-            //bom 등록
-            document.querySelectorAll("#checkBox").forEach(checkbox => {
-                checkbox.addEventListener("click", (event) => {
-                    const value = event.target.value;
-                    <!--체크되어 있는 값 비동기 db저장-->
-                    var itCode = $("#hiddenItCode").val();
-                    if (event.target.checked) {
-                        selectCheck.push(value);
-                        fetch("/bom", {
+                        if (!itName || !itCnt || !itType) {
+                            alert("모두 입력해주세요. ");
+                            return;
+                        }
+                        fetch("/items", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
                             },
                             body: JSON.stringify({
-                                itCode : itCode,
-                                mtCode : selectCheck
+                                itName: itName,
+                                itType: itType,
+                                itCnt: itCnt
                             }),
                         }).then(() => {
-                            getBOM(itCode);
+                            alert("등록 완료되었습니다. ");
+                            location.replace("/process");
                         });
-                    } else {
-                        <!--체크박스 해제할 때 db삭제-->
-                        const index = selectCheck.indexOf(value);
-                        if (index > -1) {
-                            selectCheck.splice(index, 1);
+                    });
+                }
+
+                //자재 등록
+                const materialsBtn = document.getElementById("materialsBtn");
+                if (materialsBtn) {
+                    materialsBtn.addEventListener("click", (event) => {
+                        var mtName = document.getElementById("mtNameId").value
+                        var mtMin = document.getElementById("mtMinId").value
+                        var mtMax = document.getElementById("mtMaxId").value
+                        var vdCode = document.getElementById("mtVendorId").value
+                        var leadTime = document.getElementById("mtLeadTime").value
+                        if (!mtName || !mtMax || !mtMin || !vdCode || !leadTime) {
+                            alert("모두 입력해주세요. ");
+                            return;
                         }
-                        fetch("/bom/" + itCode + "/" + value, {
-                            method:"DELETE",
-                        }).then(() => {
-                            getBOM(itCode)
-                        })
-                    }
-
-                });
-            });
-
-
-            //실시간 db출력하는 함수
-            function getBOM(itCode) {
-                $.ajax({
-                    url: "/bom/" + itCode,
-                    method: "GET",
-                    success: function (data) {
-                        var tableContent = "";
-                        data.materials.forEach(function(item, index) {
-                            tableContent += "<tr>" +
-                                "<td>" + (index + 1) + "</td>" +
-                                "<td class='mtCodeList'>" + item.mtCode + "</td>" +
-                                "<td>" + item.mtName + "</td>" +
-                                "<td>" + "<input type='number' id='mtAmount' style='border:0; background-color: #fafafa' value='" + parseFloat(item.mtAmount) + "'>" + "</td>" +
-                                "</tr>";
-                        });
-                        $("#itemInfo").html(tableContent);
-                        // 패널을 보여줌
-                        $("#panelshow").show();
-                    },
-                    error: function () {
-                        alert("품목 정보를 불러오는 데 실패했습니다.");
-                    }
-                });
-            }
-
-            //품목 등록
-            const createButton = document.getElementById("itemCreateBtn");
-            if (createButton) {
-                createButton.addEventListener("click", (event) => {
-                    var itName = document.getElementById("itName").value;
-                    var itType = document.getElementById("itType").value;
-                    var itCnt = document.getElementById("itCnt").value;
-
-                    if(!itName || !itCnt || !itType) {
-                        alert("모두 입력해주세요. ");
-                        return;
-                    }
-                    fetch("/items", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            itName: itName,
-                            itType: itType,
-                            itCnt: itCnt
-                        }),
-                    }).then(() => {
-                        alert("등록 완료되었습니다. ");
-                        location.replace("/process");
-                    });
-                });
-            }
-
-            //자재 등록
-            const materialsBtn = document.getElementById("materialsBtn");
-            if (materialsBtn) {
-                materialsBtn.addEventListener("click", (event) => {
-                    var mtName = document.getElementById("mtNameId").value
-                    var mtMin = document.getElementById("mtMinId").value
-                    var mtMax = document.getElementById("mtMaxId").value
-                    var vdCode = document.getElementById("mtVendorId").value
-                    var leadTime = document.getElementById("mtLeadTime").value
-                    if(!mtName || !mtMax || !mtMin ||!vdCode ||!leadTime) {
-                        alert("모두 입력해주세요. ");
-                        return;
-                    }
-                    fetch("/addMaterials", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            mtName: mtName,
-                            mtMin : mtMin,
-                            mtMax : mtMax,
-                            vdCode : vdCode,
-                            leadTime : leadTime
-                        }),
-                    }).then(() => {
-                        alert("등록 완료되었습니다. ");
-                        location.replace("/process");
-                    });
-                });
-            }
-
-            $("#itemSearchBtn").on("click", function() {
-                var itCode= $("#itCodeSearch").val();
-                var itName= $("#itNameSearch").val();
-                var itType= $("#itTypeSearch").val();
-
-                var queryParams = [
-                    'itCode=' + itCode,
-                    'itName=' + itName,
-                    'itType=' + itType
-                ];
-
-                location.href = "/routing" + "?" + queryParams.join('&');
-            });
-
-            //bom 투입량 등록
-            $("#bomAddBtn").on("click", function() {
-                var itCode = $("#hiddenItCode").val();
-                $("#itemInfo tr").each(function() {
-                    var mtCode = $(this).find(".mtCodeList").text().trim();
-                    var mtAmount = $(this).find("#mtAmount").val();
-
-                    console.log(mtAmount);
-                    if (mtCode && mtAmount) {
-                        fetch("/bom/" + itCode + "/" + mtCode, {
-                            method: "PUT",
+                        fetch("/addMaterials", {
+                            method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
                             },
-                            body: JSON.stringify({ mtAmount: parseFloat(mtAmount) })
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error("Network response was not ok");
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                alert("등록 완료되었습니다. ");
-                                location.replace("/process");
-                            })
-                            .catch(error => {
-                                alert("품목 정보를 불러오는 데 실패했습니다.");
-                            });
-                    }
+                            body: JSON.stringify({
+                                mtName: mtName,
+                                mtMin: mtMin,
+                                mtMax: mtMax,
+                                vdCode: vdCode,
+                                leadTime: leadTime
+                            }),
+                        }).then(() => {
+                            alert("등록 완료되었습니다. ");
+                            location.replace("/process");
+                        });
+                    });
+                }
+
+                $("#itemSearchBtn").on("click", function () {
+                    var itCode = $("#itCodeSearch").val();
+                    var itName = $("#itNameSearch").val();
+                    var itType = $("#itTypeSearch").val();
+
+                    var queryParams = [
+                        'itCode=' + itCode,
+                        'itName=' + itName,
+                        'itType=' + itType
+                    ];
+
+                    location.href = "/routing" + "?" + queryParams.join('&');
                 });
-            })
 
-        });
-        //실행 이벤트 끝
+                //bom 투입량 등록
+                $("#bomAddBtn").on("click", function () {
+                    var itCode = $("#hiddenItCode").val();
+                    $("#itemInfo tr").each(function () {
+                        var mtCode = $(this).find(".mtCodeList").text().trim();
+                        var mtAmount = $(this).find("#mtAmount").val();
+
+                        console.log(mtAmount);
+                        if (mtCode && mtAmount) {
+                            fetch("/bom/" + itCode + "/" + mtCode, {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({mtAmount: parseFloat(mtAmount)})
+                            })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error("Network response was not ok");
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    alert("등록 완료되었습니다. ");
+                                    location.replace("/process");
+                                })
+                                .catch(error => {
+                                    alert("품목 정보를 불러오는 데 실패했습니다.");
+                                });
+                        }
+                    });
+                })
+
+            });
+            //실행 이벤트 끝
 
 
-
-
-
-    </script>
-</th:block>
+        </script>
+    </th:block>
 </div>
 <!-- /#wrapper -->
 

@@ -35,11 +35,11 @@
                             <form th:action="@{/searchMaterial}" method="get">
                                 <ul class="list-inline">
                                     <li>
-                                        <label>발주 코드 : <input type="text" name="odCode"></label>
+                                        <label>발주 코드 : <input type="text" name="odCode" class="form-control"></label>
                                     </li>
                                     <li>
                                         <label>원자재명 :
-                                            <select name="mtName">
+                                            <select name="mtName" class="form-control">
                                                 <option value="">전체</option>
                                                 <option th:each="material : ${materials}" th:value="${material.mtName}"
                                                         th:text="${material.mtName}"></option>
@@ -47,7 +47,7 @@
                                         </label>
                                     </li>
                                     <li>
-                                        <label>입고 예정일 : <input type="date" name="odDueDate"></label>
+                                        <label>입고 예정일 : <input type="date" name="odDueDate" class="form-control"></label>
                                     </li>
                                     <button class="btn btn-primary" type="submit">조회</button>
                                 </ul>

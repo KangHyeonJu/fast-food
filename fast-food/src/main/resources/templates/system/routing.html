@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout1}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout1}">
 <div layout:fragment="content">
     <style>
         .button-container {
@@ -7,28 +8,35 @@
             justify-content: flex-end; /* 왼쪽 정렬 */
             margin-bottom: 10px;
         }
+
         .button-container button {
             margin-left: 10px; /* 버튼 사이의 간격 조정 */
         }
+
         .form-group label {
             margin-right: 10px;
         }
+
         .form-control {
             width: 150px;
-            margin-right:10px;
+            margin-right: 10px;
             display: inline-block;
         }
+
         .add-btn {
             display: flex;
             justify-content: flex-end; /* 왼쪽 정렬 */
         }
+
         .item {
             margin-right: 10px;
             margin-bottom: 10px;
         }
+
         .item-title {
             margin-right: 10px;
         }
+
         hr {
             margin-top: 10px;
         }
@@ -43,14 +51,28 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
-        <!-- /row -->
+        <!-- /row --><!--버튼-->
+
+        <div class="col-lg-12">
+            <div class="button-container">
+                <div class="button-group">
+                    <button type="button" class="btn btn-primary" id="createBtn" data-toggle="modal"
+                            data-target="#itemCreate">품목 등록
+                    </button>
+                </div>
+                <div class="button-group">
+                    <button id="excel-btn" type="button" class="btn btn-success">엑셀 저장</button>
+                </div>
+            </div>
+            <br/>
+        </div>
 
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="form-group">
                         <p class="fa fa-search"></p>
-                        <label>품목코드</label><input class="form-control" id="itCodeSearch" >
+                        <label>품목코드</label><input class="form-control" id="itCodeSearch">
                         <label>품목명</label><input class="form-control" id="itNameSearch">
                         <label>품목분류</label>
                         <select class="form-control" id="itTypeSearch">
@@ -64,18 +86,7 @@
             </div>
         </div>
         <!-- /.col-lg-12 -->
-        <!--버튼-->
 
-        <div class="col-lg-12">
-            <div class="button-container">
-                <div  class="button-group">
-                    <button type="button" class="btn btn-primary" id="createBtn" data-toggle="modal" data-target="#itemCreate">품목 등록</button>
-                </div>
-                <div  class="button-group">
-                    <button id="excel-btn" type="button" class="btn btn-success">엑셀 저장</button>
-                </div>
-            </div>
-        </div>
         <!-- /.col-lg-12 -->
 
         <div class="container-fluid">
@@ -84,7 +95,8 @@
                     <div class="panel panel-default">
                         <ul class="nav nav-tabs">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/routing" style="background-color: #efefef"><b>라우팅</b></a>
+                                <a class="nav-link active" aria-current="page" href="/routing"
+                                   style="background-color: #efefef"><b>라우팅</b></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/process">BOM</a>
@@ -92,10 +104,11 @@
                         </ul>
                         <!-- /ul -->
                         <div class="panel-body">
-                            <table style="width: 100%; font-size: large" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table style="width: 100%; font-size: large"
+                                   class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th width="2%"> </th>
+                                    <th width="2%"></th>
                                     <th width="20%">품목코드</th>
                                     <th width="20%">품목명</th>
                                     <th width="20%">품목분류</th>
@@ -104,75 +117,84 @@
                                 </thead>
                                 <tbody>
                                 <tr class="itemList" th:each="item : ${items}">
-                                    <td><input type="checkbox" id="itemCheck" class="itemCheck" th:value="${item.itCode}"></td>
+                                    <td><input type="checkbox" id="itemCheck" class="itemCheck"
+                                               th:value="${item.itCode}"></td>
                                     <td th:text="${item.itCode}" id="showPanel" th:value="${item.itCode}"></td>
-                                    <td class="center" th:text="${item.itName}" id="showPanel2" th:value="${item.itName}"></td>
+                                    <td class="center" th:text="${item.itName}" id="showPanel2"
+                                        th:value="${item.itName}"></td>
                                     <td class="center" th:text="${item.itType}"></td>
                                     <td class="center" th:text="${item.itEa}"></td>
                                 </tr>
                                 </tbody>
                             </table>
-
                             <hr style="height: 0.1px; border: none; border-top: dotted #cecece; margin: 50px 0;">
 
-                            <div class="col-lg-12">
-                                <div class="button-container">
-                                    <div  class="button-group">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#process">공정 등록</button>
-                                    </div>
+                            <div class="button-container">
+                                <div class="button-group">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#process">공정 등록
+                                    </button>
                                 </div>
                             </div>
-                            <h4>공정 목록</h4>
-                            <table style="width: 100%; font-size: large" class="table table-striped table-bordered table-hover" id="dataTables-example2">
-                                <thead>
-                                <tr>
-                                    <th width="2%"> </th>
-                                    <th width="20%">공정코드</th>
-                                    <th width="20%">공정명</th>
-                                    <th width="20%">공정내용</th>
-                                    <th width="20%">설비</th>
-                                </tr>
-                                </thead>
-                                <tbody id="processList">
-                                <tr class="processList" th:each="process : ${processList.process}">
-                                    <td><input type="checkbox" class="checkbox" id="checkBox" th:value="${process.pcCode}"></td>
-                                    <td th:text="${process.pcCode}"></td>
-                                    <td class="center" th:text="${process.pcName}"></td>
-                                    <td class="center" th:text="${process.pcCnt}"></td>
-                                    <th:block th:if="${process.facility} != null">
-                                        <td class="center" th:text="${process.facility.fcName}"></td>
-                                    </th:block>
-                                    <th:block th:if="${process.facility} == null">
-                                        <td></td>
-                                    </th:block>
-                                </tr>
-                                </tbody>
+                            <br/>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4>공정 목록</h4>
+                                </div>
+                                <table style="width: 100%; font-size: large"
+                                       class="table table-striped table-bordered table-hover" id="dataTables-example2">
+                                    <thead>
+                                    <tr>
+                                        <th width="2%"></th>
+                                        <th width="20%">공정코드</th>
+                                        <th width="20%">공정명</th>
+                                        <th width="20%">공정내용</th>
+                                        <th width="20%">설비</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="processList">
+                                    <tr class="processList" th:each="process : ${processList.process}">
+                                        <td><input type="checkbox" class="checkbox" id="checkBox"
+                                                   th:value="${process.pcCode}"></td>
+                                        <td th:text="${process.pcCode}"></td>
+                                        <td class="center" th:text="${process.pcName}"></td>
+                                        <td class="center" th:text="${process.pcCnt}"></td>
+                                        <th:block th:if="${process.facility} != null">
+                                            <td class="center" th:text="${process.facility.fcName}"></td>
+                                        </th:block>
+                                        <th:block th:if="${process.facility} == null">
+                                            <td></td>
+                                        </th:block>
+                                    </tr>
+                                    </tbody>
 
-                            </table>
+                                </table>
 
-                            <hr style="height: 0.1px; border: none; border-top: dotted #cecece; margin: 50px 0;">
+                                <hr style="height: 0.1px; border: none; border-top: dotted #cecece; margin: 50px 0;">
 
-                            <div class="col-lg-12">
-                                <div class="panel panel-default" id="panelshow" style="display: none">
-                                    <div class="panel-body">
-                                        <!--조회 패널-->
-                                        <h4 id="itCodeDisplay"></h4>
-                                        <table style="font-size: large;width: 100%;" class="table table-striped table-bordered table-hover" >
-                                            <thead>
-                                            <tr>
-                                                <th width="5%">번호</th>
-                                                <th width="20%">공정코드</th>
-                                                <th width="20%">공정명</th>
-                                                <th width="20%">공정내용</th>
-                                                <th width="20%">설비</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="itemInfo">
+                                <div class="col-lg-12">
+                                    <div class="panel panel-default" id="panelshow" style="display: none">
+                                        <div class="panel-body">
+                                            <!--조회 패널-->
+                                            <h4 id="itCodeDisplay"></h4>
+                                            <table style="font-size: large;width: 100%;"
+                                                   class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th width="5%">번호</th>
+                                                    <th width="20%">공정코드</th>
+                                                    <th width="20%">공정명</th>
+                                                    <th width="20%">공정내용</th>
+                                                    <th width="20%">설비</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="itemInfo">
 
-                                            </tbody>
-                                        </table>
-                                        <div>
-                                            <input type="hidden" id="hiddenItCode">
+                                                </tbody>
+                                            </table>
+                                            <div>
+                                                <input type="hidden" id="hiddenItCode">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -189,7 +211,8 @@
         <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
-    <div class="modal fade" id="itemCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="itemCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -209,7 +232,8 @@
                             </select>
                         </div>
                         <div class="item">
-                            <label class="item-title"> Box 당 개수<input class="form-control" id="itEa" type="number"></label>
+                            <label class="item-title"> Box 당 개수<input class="form-control" id="itEa"
+                                                                      type="number"></label>
                         </div>
                     </div>
                 </div>
@@ -224,7 +248,8 @@
     </div>
     <!-- /.modal -->
 
-    <div class="modal fade" id="process" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="process" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -234,7 +259,7 @@
                 <div class="modal-body">
                     <div class="item group">
                         <div class="item form-group input-group">
-                            <label class="item-title">공정명</label><input class="form-control" id="pcName" >
+                            <label class="item-title">공정명</label><input class="form-control" id="pcName">
                         </div>
                         <div class="item form-group input-group">
                             <label class="item-title">공정내용</label><input class="form-control" id="pcCnt">
@@ -268,7 +293,7 @@
 
 <th:block layout:fragment="script">
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#excel-btn').click(function () {
                 var selectedItems = [];
                 $('input.itemCheck:checked').each(function () {
@@ -292,7 +317,7 @@
             });
 
             // 품목을 클릭했을 때 라우팅 목록 출력됨
-            $(".itemList").on("click", function() {
+            $(".itemList").on("click", function () {
                 var itCode = $(this).find("#showPanel").text().trim();
                 var itName = $(this).find("#showPanel2").text().trim();
                 $("#hiddenItCode").val(itCode);
@@ -317,8 +342,8 @@
                                 "Content-Type": "application/json",
                             },
                             body: JSON.stringify({
-                                itCode : itCode,
-                                pcCode : selectCheck
+                                itCode: itCode,
+                                pcCode: selectCheck
                             }),
                         }).then(() => {
                             getRouting(itCode)
@@ -330,14 +355,13 @@
                             selectCheck.splice(index, 1);
                         }
                         fetch("/routing/" + itCode + "/" + value, {
-                            method:"DELETE",
+                            method: "DELETE",
                         }).then(() => {
                             getRouting(itCode)
                         })
                     }
                 });
             });
-
 
 
             //실시간 db출력하는 함수
@@ -348,19 +372,19 @@
                     success: function (data) {
                         var tableContent = "";
                         //var pcCodes = data.process.map(item => item.pcCode); // 서버에서 받은 공정 코드 리스트
-                        data.process.forEach(function(item, index) {
+                        data.process.forEach(function (item, index) {
                             tableContent += "<tr>" +
                                 "<td>" + (index + 1) + "</td>" +
                                 "<td>" + item.pcCode + "</td>" +
                                 "<td>" + item.pcName + "</td>" +
                                 "<td>" + item.pcCnt + "</td>";
-                            if(item.facility != null){
+                            if (item.facility != null) {
                                 tableContent += "<td>" + item.facility.fcName + "</td>";
                             } else {
                                 tableContent += "<td></td>";
                             }
 
-                            tableContent +=  "</tr>";
+                            tableContent += "</tr>";
 
                         });
                         $("#itemInfo").html(tableContent);
@@ -389,7 +413,7 @@
                     var itType = document.getElementById("itType").value;
                     var itEa = document.getElementById("itEa").value;
 
-                    if(!itName || !itEa || !itType) {
+                    if (!itName || !itEa || !itType) {
                         alert("모두 입력해주세요. ");
                         return;
                     }
@@ -414,11 +438,11 @@
             const processButton = document.getElementById("processBtn");
             if (processButton) {
                 processButton.addEventListener("click", (event) => {
-                    var pcName= document.getElementById("pcName").value;
-                    var pcCnt= document.getElementById("pcCnt").value;
-                    var fcCode= document.getElementById("facility").value
+                    var pcName = document.getElementById("pcName").value;
+                    var pcCnt = document.getElementById("pcCnt").value;
+                    var fcCode = document.getElementById("facility").value
 
-                    if(!pcName || !pcCnt) {
+                    if (!pcName || !pcCnt) {
                         alert("모두 입력해주세요. ");
                         return;
                     }
@@ -431,7 +455,7 @@
                         body: JSON.stringify({
                             pcName: pcName,
                             pcCnt: pcCnt,
-                            fcCode : fcCode
+                            fcCode: fcCode
                         }),
                     }).then(() => {
                         console.log(document.getElementById("facility").value)
@@ -441,10 +465,10 @@
                 });
             }
 
-            $("#itemSearchBtn").on("click", function() {
-                var itCode= $("#itCodeSearch").val();
-                var itName= $("#itNameSearch").val();
-                var itType= $("#itTypeSearch").val();
+            $("#itemSearchBtn").on("click", function () {
+                var itCode = $("#itCodeSearch").val();
+                var itName = $("#itNameSearch").val();
+                var itType = $("#itTypeSearch").val();
 
                 var queryParams = [
                     'itCode=' + itCode,
@@ -456,10 +480,10 @@
             });
 
 
-            $("#processSearchBtn").on("click", function() {
-                var pcCode= $("#pcCodeSearch").val();
-                var pcName= $("#pcNameSearch").val();
-                var pcCnt= $("#pcCntSearch").val();
+            $("#processSearchBtn").on("click", function () {
+                var pcCode = $("#pcCodeSearch").val();
+                var pcName = $("#pcNameSearch").val();
+                var pcCnt = $("#pcCntSearch").val();
 
                 var queryParams = [
                     'itCode=' + itCode,

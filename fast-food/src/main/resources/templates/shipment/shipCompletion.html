@@ -5,8 +5,23 @@
 
 <th:block layout:fragment="css">
     <style>
+        .button-container button {
+            margin-left: 10px; /* 버튼 사이의 간격 조정 */
+        }
+
         p, select {
             font-size: 16px;
+        }
+
+
+        .form-group label {
+            margin-right: 10px;
+        }
+
+        .form-control {
+            width: 150px;
+            margin-right: 10px;
+            display: inline-block;
         }
     </style>
 </th:block>
@@ -86,25 +101,25 @@
                         <div class="panel panel-default">
                             <ul class="list-inline" style="margin: 15px 10px 10px 10px;">
                                 <li>
-                                    <p>출하코드 : <input th:field="*{smCode}" type="text"></p>
+                                    <label>출하코드 : <input th:field="*{smCode}" type="text" class="form-control"></label>
                                 </li>
                                 <li>
-                                    <p>수주코드 : <input th:field="*{ctCode}" type="text"></p>
+                                    <label>수주코드 : <input th:field="*{ctCode}" type="text" class="form-control"></label>
                                 </li>
                                 <li>
-                                    <p>고객명 : <input th:field="*{clName}" type="text"></p>
+                                    <label>고객명 : <input th:field="*{clName}" type="text" class="form-control"></label>
                                 </li>
                                 <li>
-                                    <p>제품명 :
+                                    <label>제품명 :
                                         <select th:field="*{itName}">
                                             <option value="">전체</option>
                                             <th:block th:each="item : ${items}">
                                                 <option th:text="${item.itName}" th:value="${item.itName}"></option>
                                             </th:block>
                                         </select>
-                                    </p>
+                                    </label>
                                 </li>
-                                <li style="float: right;">
+                                <li>
                                     <button class="btn btn-primary" style="width: 60px;" id="searchBtn" type="submit">
                                         조회
                                     </button>
