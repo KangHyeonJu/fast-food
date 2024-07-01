@@ -1,12 +1,17 @@
 package com.boot.fastfood.service;
 
+import com.boot.fastfood.dto.Item.AddItemDTO;
+import com.boot.fastfood.dto.Vendor.AddVendorDTO;
 import com.boot.fastfood.entity.Facility;
+import com.boot.fastfood.entity.Items;
 import com.boot.fastfood.entity.Vendor;
 import com.boot.fastfood.repository.VendorRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +42,15 @@ public class VendorService {
         List<Vendor> vendors = vendorRepository.findAll();
         vendors.forEach(vendor -> Hibernate.initialize(vendor.getMaterials()));
         return vendors;
+    }
+
+    public Vendor save(AddVendorDTO dto) {
+        Vendor vendor = dto.toEntity();
+
+        String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
+        vendor.setVdCode("VD" + nowTime);
+        vendor.setAlAmount(0);
+
+        return vendorRepository.save(vendor);
     }
 }
