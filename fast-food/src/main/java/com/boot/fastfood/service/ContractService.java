@@ -2,6 +2,7 @@ package com.boot.fastfood.service;
 
 import com.boot.fastfood.dto.*;
 import com.boot.fastfood.entity.*;
+import com.boot.fastfood.entity.Calendar;
 import com.boot.fastfood.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +13,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -34,6 +32,11 @@ public class ContractService {
     private final ProcessRepository processRepository;
     private final ShipmentRepository shipmentRepository;
     private final CalendarRepository calendarRepository;
+
+    public List<Contract> getContractsByStatus() {
+        List<String> statuses = Arrays.asList("생산중", "준비중");
+        return contractRepository.findByCtStatusIn(statuses);
+    }
     
 
     public void saveContract(ContractDto contractDto) {

@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class ContractController {
@@ -42,7 +44,8 @@ public class ContractController {
 
     @GetMapping("/contract")
     public String contract(Model model) {
-        List<Contract> contracts = contractRepository.findAll();
+        List<Contract> contracts = contractService.getContractsByStatus();
+
         model.addAttribute("contracts", contracts);
 
         // 다른 필요한 데이터들도 함께 모델에 추가
@@ -75,9 +78,18 @@ public class ContractController {
 
         // 조회 결과 조회
         List<Contract> searchcontracts = contractService.searchContracts(searchDto);
+        List<Contract> contracts = new ArrayList<>();
+
+        for(Contract contract : searchcontracts){
+            if(Objects.equals(contract.getCtStatus(), "완료")){
+
+            }else {
+                contracts.add(contract);
+            }
+        }
 
         // 조회 결과와 조회 조건을 모델에 추가
-        model.addAttribute("contracts", searchcontracts);
+        model.addAttribute("contracts", contracts);
         model.addAttribute("searchDto", searchDto);
 
         // 다른 필요한 데이터들도 함께 모델에 추가

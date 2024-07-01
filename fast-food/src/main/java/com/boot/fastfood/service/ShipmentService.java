@@ -32,6 +32,9 @@ public class ShipmentService {
 
     public void shipRegistration(String smCode, String emName){
         Shipment shipment = shipmentRepository.findBySmCode(smCode);
+
+        shipment.getContract().setCtStatus("완료");
+
         Employee employee = employeeRepository.findByEmName(emName);
         shipment.setSmDate(LocalDate.now());
         shipment.setSmStatues(true);
