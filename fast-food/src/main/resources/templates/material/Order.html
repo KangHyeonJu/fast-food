@@ -9,12 +9,6 @@
             font-size: 16px;
         }
 
-        .button-container {
-            display: flex;
-            justify-content: flex-end; /* 왼쪽 정렬 */
-            margin-bottom: 10px;
-        }
-
         .button-container button {
             margin-left: 10px; /* 버튼 사이의 간격 조정 */
         }
@@ -89,6 +83,7 @@
                 <div class="col-lg-12 text-right mb-20">
                     <button id="excelExportBtn" class="btn btn-success">엑셀 저장</button>
                 </div>
+                <br/>
             </div>
 
             <br/>
@@ -100,14 +95,14 @@
                             <div class="panel-body">
                                 <ul class="list-inline" style="margin: 15px 10px 10px 10px;">
                                     <li>
-                                        <label>발주코드 : <input th:field="*{odCode}" type="text"></label>
+                                        <label>발주코드 : <input th:field="*{odCode}" type="text" class="form-control"></label>
                                     </li>
                                     <li>
-                                        <label>수주코드 : <input th:field="*{ctCode}" type="text"></label>
+                                        <label>수주코드 : <input th:field="*{ctCode}" type="text" class="form-control"></label>
                                     </li>
                                     <li>
                                         <label>원자재명 :
-                                            <select th:field="*{mtCode}">
+                                            <select th:field="*{mtCode}" class="form-control">
                                                 <option value="">전체</option>
                                                 <th:block th:each=" material : ${materialsList}">
                                                     <option th:text="${material.mtName}"
@@ -118,7 +113,7 @@
                                     </li>
                                     <li>
                                         <label>작업자 :
-                                            <select th:field="*{emCode}">
+                                            <select th:field="*{emCode}" class="form-control">
                                                 <option value="">전체</option>
                                                 <th:block th:each="employee : ${employees}">
                                                     <option th:text="${employee.emName}"
