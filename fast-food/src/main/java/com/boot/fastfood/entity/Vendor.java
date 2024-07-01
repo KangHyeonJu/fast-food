@@ -1,7 +1,9 @@
 package com.boot.fastfood.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "vendor")
 public class Vendor {
     @Id
@@ -23,4 +26,11 @@ public class Vendor {
 
     @OneToMany(mappedBy = "vendor")
     private List<Materials> materials;
+
+    @Builder
+    public Vendor(String vdCode, String vdName, Integer alAmount) {
+        this.vdCode = vdCode;
+        this.vdName = vdName;
+        this.alAmount = alAmount;
+    }
 }

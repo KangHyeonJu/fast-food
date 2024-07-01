@@ -52,7 +52,9 @@
         <!--버튼-->
         <div class="col-lg-12">
             <div class="button-container">
-
+                <div  class="button-group">
+                    <button type="button" class="btn btn-primary" id="createBtn" data-toggle="modal" data-target="#itemCreate">업체 등록</button>
+                </div>
                 <div class="button-group">
                     <button id="excel-btn" type="button" class="btn btn-success">엑셀 저장</button>
                 </div>
@@ -104,6 +106,31 @@
     </div>
     <!-- /#page-wrapper -->
 
+    <div class="modal fade" id="itemCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">업체 등록</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="item group">
+                        <div class="item">
+                            <label class="item-title">업체명</label><input class="form-control" id="vdName">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="vendorCreateBtn">등록</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
 </div>
 <!-- /#wrapper -->
 <th:block layout:fragment="script">
@@ -132,6 +159,31 @@
             $('#checkall').click(function () {
                 $('input:checkbox').not(this).prop('checked', this.checked);
             });
+
+            const vendorCreateBtn = document.getElementById("vendorCreateBtn");
+            if (vendorCreateBtn) {
+                vendorCreateBtn.addEventListener("click", (event) => {
+                    var vdName = document.getElementById("vdName").value;
+                    console.log(vdName);
+
+                    if(!vdName) {
+                        alert("모두 입력해주세요. ");
+                        return;
+                    }
+                    fetch("/addVendor", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            vdName: vdName
+                        }),
+                    }).then(() => {
+                        alert("등록 완료되었습니다. ");
+                        location.replace("/vendor");
+                    });
+                });
+            }
         });
     </script>
 </th:block>
