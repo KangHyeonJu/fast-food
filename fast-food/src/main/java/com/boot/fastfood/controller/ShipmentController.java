@@ -36,6 +36,7 @@ public class ShipmentController {
     private final WorksRepository worksRepository;
     private final ProductionService productionService;
     private final ItemsRepository itemsRepository;
+    private final VendorRepository vendorRepository;
 
     @GetMapping("/shipment")
     public String shipmentPage(ShipSearchDto shipSearchDto, Model model){
@@ -83,7 +84,6 @@ public class ShipmentController {
         model.addAttribute("shipments", shipments);
         model.addAttribute("shipSearchDto", shipSearchDto);
         model.addAttribute("items", items);
-
         return "shipment/shipCompletion";
     }
     @PostMapping(value = "/shipment/export/excel", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -114,7 +114,7 @@ public class ShipmentController {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(shipment.getSmCode());
             row.createCell(1).setCellValue(shipment.getContract().getCtCode());
-            row.createCell(2).setCellValue(shipment.getEmployee().getEmName());
+            row.createCell(2).setCellValue(shipment.getContract().getClients().getClName());
             row.createCell(3).setCellValue(shipment.getContract().getItems().getItName());
             row.createCell(4).setCellValue(shipment.getContract().getCtAmount());
             Cell dateCell = row.createCell(5);
@@ -148,7 +148,7 @@ public class ShipmentController {
 
         // 엑셀 헤더 생성
         Row headerRow = sheet.createRow(0);
-        String[] headers = {"출하 코드", "수주 코드", "고객명", "제품명", "출하량", "출하예정일"};
+        String[] headers = {"출하 코드", "수주 코드", "고객명", "제품명", "출하량", "출하예정일", "작업자"};
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(headers[i]);
@@ -164,10 +164,11 @@ public class ShipmentController {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(shipment.getSmCode());
             row.createCell(1).setCellValue(shipment.getContract().getCtCode());
-            row.createCell(2).setCellValue(shipment.getEmployee().getEmName());
+            row.createCell(2).setCellValue(shipment.getContract().getClients().getClName());
             row.createCell(3).setCellValue(shipment.getContract().getItems().getItName());
             row.createCell(4).setCellValue(shipment.getContract().getCtAmount());
             Cell dateCell = row.createCell(5);
+            row.createCell(6).setCellValue(shipment.getEmployee().getEmName());
             dateCell.setCellValue(shipment.getSmDate());
             dateCell.setCellStyle(dateCellStyle);
 
